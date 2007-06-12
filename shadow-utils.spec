@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 4
+Release:	%mkrel 5
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -22,6 +22,8 @@ Patch3:		shadow-4.0.11.1-no-syslog-setlocale.patch
 Patch4:		shadow-4.0.12-dotinname.patch
 # http://qa.mandriva.com/show_bug.cgi?id=29221
 Patch5:		shadow-4.0.12-unlock.patch
+# http://qa.mandriva.com/show_bug.cgi?id=29009
+Patch6:		shadow-4.0.12-do-copy-skel-if-home-directory-exists-but-is-empty.patch
 BuildRequires:	gettext-devel
 BuildRequires:  automake1.7
 Obsoletes:	adduser, newgrp
@@ -49,6 +51,7 @@ groupmod commands are used for managing group accounts.
 %patch3 -p1 -b .chmou
 %patch4 -p1 -b .dot
 %patch5 -p1 -b .unlock
+%patch6 -p1 -b .skel
 
 %build
 %configure --disable-shared
