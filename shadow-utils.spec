@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 5
+Release:	%mkrel 6
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -54,6 +54,7 @@ groupmod commands are used for managing group accounts.
 %patch6 -p1 -b .skel
 
 %build
+%serverbuild
 %configure --disable-shared
 %make
 
