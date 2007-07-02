@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 6
+Release:	%mkrel 7
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -15,7 +15,9 @@ Source3:	adduser.8
 Source4:	pwunconv.8
 Source5:	grpconv.8
 Source6:	grpunconv.8
-Patch0:		shadow-4.0.12-mdk.patch
+# http://qa.mandriva.com/show_bug.cgi?id=27082
+Source7:	shadow-utils-nl.po
+Patch0:         shadow-4.0.12-mdk.patch
 Patch1:		shadow-4.0.12-nscd.patch
 Patch2:		shadow-4.0.3-rpmsave.patch
 Patch3:		shadow-4.0.11.1-no-syslog-setlocale.patch
@@ -52,11 +54,15 @@ groupmod commands are used for managing group accounts.
 %patch4 -p1 -b .dot
 %patch5 -p1 -b .unlock
 %patch6 -p1 -b .skel
+cp -f %{SOURCE7} po/nl.po
+rm -f po/nl.gmo
 
 %build
 %serverbuild
 %configure --disable-shared
 %make
+# because of the extra po file added manually
+make -C po update-gmo
 
 %install
 rm -rf %{buildroot}
