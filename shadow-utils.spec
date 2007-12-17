@@ -31,7 +31,6 @@ BuildRequires:  automake1.7
 Obsoletes:	adduser, newgrp
 Provides: 	adduser, newgrp
 Conflicts:	msec < 0.47
-Buildroot:	%{_tmppath}/%{name}-%{version}
 
 %description
 The shadow-utils package includes the necessary programs for
