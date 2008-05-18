@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 9
+Release:	%mkrel 10
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -26,8 +26,16 @@ Patch4:		shadow-4.0.12-dotinname.patch
 Patch5:		shadow-4.0.12-unlock.patch
 # http://qa.mandriva.com/show_bug.cgi?id=29009
 Patch6:		shadow-4.0.12-do-copy-skel-if-home-directory-exists-but-is-empty.patch
+Patch7:		shadow-4.0.12-avx-owl-crypt_gensalt.patch
+Patch8:		shadow-4.0.12-avx-owl-tcb.patch
 BuildRequires:	gettext-devel
 BuildRequires:  automake1.7
+BuildRequires:	pam-devel
+BuildRequires:	tcb-devel
+BuildRequires:	glibc-crypt_blowfish-devel
+BuildRequires:	pam_userpass-devel
+Requires:	tcb
+Requires:	setup >= 2.7.12-2mdv
 Obsoletes:	adduser, newgrp
 Provides: 	adduser, newgrp
 Conflicts:	msec < 0.47
@@ -54,12 +62,16 @@ groupmod commands are used for managing group accounts.
 %patch4 -p1 -b .dot
 %patch5 -p1 -b .unlock
 %patch6 -p1 -b .skel
+%patch7 -p1 -b .crypt_gensalt
+%patch8 -p1 -b .tcb
 cp -f %{SOURCE7} po/nl.po
 rm -f po/nl.gmo
 
 %build
+libtoolize --copy --force; aclocal; autoconf; automake --add-missing
 %serverbuild
-%configure --disable-shared
+CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
+%configure --disable-shared --disable-desrpc --with-libcrypt --with-libpam --without-libcrack
 %make
 # because of the extra po file added manually
 make -C po update-gmo
@@ -86,14 +98,15 @@ perl -pi -e "s/encrpted/encrypted/g" %{buildroot}%{_mandir}/man8/newusers.8
 rm -rf %{buildroot}
 rm -rf build-$RPM_ARCH
 
+
 %files -f shadow.lang
 %defattr(-,root,root)
 %doc doc/HOWTO NEWS
 %doc doc/LICENSE doc/README doc/README.linux
-%attr(0644,root,root)	%config(noreplace) %{_sysconfdir}/login.defs
+%attr(0640,root,shadow)	%config(noreplace) %{_sysconfdir}/login.defs
 %attr(0600,root,root)	%config(noreplace) %{_sysconfdir}/default/useradd
 %{_bindir}/sg
-%{_bindir}/chage
+%attr(2711,root,shadow) %{_bindir}/chage
 %{_bindir}/faillog
 %{_bindir}/gpasswd
 %{_bindir}/expiry
@@ -109,6 +122,8 @@ rm -rf build-$RPM_ARCH
 %{_sbindir}/*conv
 %{_sbindir}/chpasswd
 %{_sbindir}/newusers
+%{_sbindir}/vipw
+%{_sbindir}/vigr
 #%{_sbindir}/mkpasswd
 %{_mandir}/man1/chage.1*
 %{_mandir}/man1/newgrp.1*
@@ -123,6 +138,8 @@ rm -rf build-$RPM_ARCH
 %{_mandir}/man8/grpck.8*
 %{_mandir}/man8/chpasswd.8*
 %{_mandir}/man8/newusers.8*
+%{_mandir}/man8/vipw.8*
+%{_mandir}/man8/vigr.8*
 #%{_mandir}/man8/mkpasswd.8*
 %{_mandir}/man8/*conv.8*
 %{_mandir}/man8/lastlog.8*
