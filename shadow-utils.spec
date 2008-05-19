@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 10
+Release:	%mkrel 11
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -17,6 +17,9 @@ Source5:	grpconv.8
 Source6:	grpunconv.8
 # http://qa.mandriva.com/show_bug.cgi?id=27082
 Source7:	shadow-utils-nl.po
+Source8:	user-group-mod.pamd
+Source9:	chpasswd-newusers.pamd
+Source10:	chage-chfn-chsh.pamd
 Patch0:         shadow-4.0.12-mdk.patch
 Patch1:		shadow-4.0.12-nscd.patch
 Patch2:		shadow-4.0.3-rpmsave.patch
@@ -91,6 +94,26 @@ install -m644 %SOURCE4 %{buildroot}%_mandir/man8/
 install -m644 %SOURCE5 %{buildroot}%_mandir/man8/
 install -m644 %SOURCE6 %{buildroot}%_mandir/man8/
 perl -pi -e "s/encrpted/encrypted/g" %{buildroot}%{_mandir}/man8/newusers.8
+
+# add pam support files
+mkdir -p %{buildroot}/etc/pam.d/
+install -m 0600 %{SOURCE8} %{buildroot}/etc/pam.d/user-group-mod
+install -m 0600 %{SOURCE9} %{buildroot}/etc/pam.d/chpasswd-newusers
+install -m 0600 %{SOURCE10} %{buildroot}/etc/pam.d/chage-chfn-chsh
+
+pushd %{buildroot}/etc/pam.d
+    for f in chpasswd newusers; do
+        ln -s chpasswd-newusers ${f}
+    done
+    for f in chage; do
+        # chfn and chsh are built without pam support in util-linux-ng
+        ln -s chage-chfn-chsh ${f}
+    done
+    for f in groupadd groupdel groupmod useradd userdel usermod; do
+        ln -s user-group-mod ${f}
+    done
+popd
+
 
 %find_lang shadow
 
