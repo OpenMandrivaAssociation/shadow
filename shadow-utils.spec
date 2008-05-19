@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 11
+Release:	%mkrel 12
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -39,6 +39,7 @@ BuildRequires:	glibc-crypt_blowfish-devel
 BuildRequires:	pam_userpass-devel
 Requires:	tcb
 Requires:	setup >= 2.7.12-2mdv
+Requires:	pam_userpass
 Obsoletes:	adduser, newgrp
 Provides: 	adduser, newgrp
 Conflicts:	msec < 0.47
