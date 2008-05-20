@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 12
+Release:	%mkrel 13
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -168,5 +168,19 @@ rm -rf build-$RPM_ARCH
 %{_mandir}/man8/*conv.8*
 %{_mandir}/man8/lastlog.8*
 %{_mandir}/man8/faillog.8*
+%attr(640,root,shadow) %config(noreplace) /etc/pam.d/chage-chfn-chsh
+/etc/pam.d/chage
+/etc/pam.d/chfn
+/etc/pam.d/chsh
+%attr(640,root,shadow) %config(noreplace) /etc/pam.d/chpasswd-newusers 
+/etc/pam.d/chpasswd
+/etc/pam.d/newusers
+%attr(640,root,shadow) %config(noreplace) /etc/pam.d/user-group-mod
+/etc/pam.d/useradd
+/etc/pam.d/userdel
+/etc/pam.d/usermod
+/etc/pam.d/groupadd
+/etc/pam.d/groupdel
+/etc/pam.d/groupmod
 
 
