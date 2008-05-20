@@ -170,8 +170,6 @@ rm -rf build-$RPM_ARCH
 %{_mandir}/man8/faillog.8*
 %attr(640,root,shadow) %config(noreplace) /etc/pam.d/chage-chfn-chsh
 /etc/pam.d/chage
-/etc/pam.d/chfn
-/etc/pam.d/chsh
 %attr(640,root,shadow) %config(noreplace) /etc/pam.d/chpasswd-newusers 
 /etc/pam.d/chpasswd
 /etc/pam.d/newusers
