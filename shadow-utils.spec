@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 14
+Release:	%mkrel 15
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -43,6 +43,7 @@ Requires:	pam_userpass
 Obsoletes:	adduser, newgrp
 Provides: 	adduser, newgrp
 Conflicts:	msec < 0.47
+Conflicts:	util-linux-ng < 2.13.1-6
 Buildroot:	%{_tmppath}/%{name}-%{version}
 
 %description
