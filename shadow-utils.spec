@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.0.12
-Release:	%mkrel 15
+Release:	%mkrel 16
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
