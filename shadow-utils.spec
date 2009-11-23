@@ -1,8 +1,8 @@
 %define _unpackaged_files_terminate_build 0
 
 Name:		shadow-utils
-Version:	4.0.12
-Release:	%mkrel 20
+Version:	4.1.4.2
+Release:	%mkrel 1
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -20,19 +20,11 @@ Source7:	shadow-utils-nl.po
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
-Patch0:         shadow-4.0.12-mdk.patch
-Patch1:		shadow-4.0.12-nscd.patch
 Patch2:		shadow-4.0.3-rpmsave.patch
 Patch3:		shadow-4.0.11.1-no-syslog-setlocale.patch
-Patch4:		shadow-4.0.12-dotinname.patch
-# http://qa.mandriva.com/show_bug.cgi?id=29221
-Patch5:		shadow-4.0.12-unlock.patch
-# http://qa.mandriva.com/show_bug.cgi?id=29009
-Patch6:		shadow-4.0.12-do-copy-skel-if-home-directory-exists-but-is-empty.patch
-Patch7:		shadow-4.0.12-avx-owl-crypt_gensalt.patch
+Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch8:		shadow-4.0.12-avx-owl-tcb.patch
-Patch9:		shadow-4.0.12-shadow_perms.patch
-Patch10:	shadow-utils-CVE-2008-5394.patch
+Patch9:		shadow-4.1.4.2-shadow_perms.patch
 BuildRequires:	gettext-devel
 BuildRequires:  automake1.7
 BuildRequires:	pam-devel
@@ -62,17 +54,11 @@ groupmod commands are used for managing group accounts.
 
 %prep
 %setup -q -n shadow-%{version}
-%patch0 -p1 -b .mdk
-%patch1 -p1 -b .nscd
 %patch2 -p1 -b .rpmsave
 %patch3 -p1 -b .chmou
 %patch4 -p1 -b .dot
-%patch5 -p1 -b .unlock
-%patch6 -p1 -b .skel
-%patch7 -p1 -b .crypt_gensalt
 %patch8 -p1 -b .tcb
 %patch9 -p1 -b .shadow_perms
-%patch10 -p1 -b .CVE-2008-5394
 
 cp -f %{SOURCE7} po/nl.po
 rm -f po/nl.gmo
