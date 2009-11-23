@@ -7,8 +7,8 @@ Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
-URL:		http://shadow.pld.org.pl/
-Source0:	ftp://ftp.pld.org.pl/software/shadow/shadow-%{version}.tar.bz2
+URL:		http://pkg-shadow.alioth.debian.org/
+Source0:	ftp://pkg-shadow.alioth.debian.org/pub/pkg-shadow/shadow-%{version}.tar.bz2
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
