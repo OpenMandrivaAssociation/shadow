@@ -89,6 +89,7 @@ install -m644 %SOURCE6 %{buildroot}%_mandir/man8/
 perl -pi -e "s/encrpted/encrypted/g" %{buildroot}%{_mandir}/man8/newusers.8
 
 # add pam support files
+rm -rf %{buildroot}/etc/pam.d/
 mkdir -p %{buildroot}/etc/pam.d/
 install -m 0600 %{SOURCE8} %{buildroot}/etc/pam.d/user-group-mod
 install -m 0600 %{SOURCE9} %{buildroot}/etc/pam.d/chpasswd-newusers
@@ -118,7 +119,7 @@ rm -rf build-$RPM_ARCH
 %files -f shadow.lang
 %defattr(-,root,root)
 %doc doc/HOWTO NEWS
-%doc doc/LICENSE doc/README doc/README.linux
+%doc doc/WISHLIST doc/README.limits doc/README.platforms
 %attr(0640,root,shadow)	%config(noreplace) %{_sysconfdir}/login.defs
 %attr(0600,root,root)	%config(noreplace) %{_sysconfdir}/default/useradd
 %{_bindir}/sg
