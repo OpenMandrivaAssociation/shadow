@@ -22,7 +22,8 @@ Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
 Patch2:		shadow-4.1.4.2-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
-Patch8:		shadow-4.0.12-avx-owl-tcb.patch
+Patch7:		shadow-4.1.4.2-avx-owl-crypt_gensalt.patch
+Patch8:		shadow-4.1.4.2-avx-owl-tcb.patch
 Patch9:		shadow-4.1.4.2-shadow_perms.patch
 BuildRequires:	gettext-devel
 BuildRequires:  automake1.7
@@ -55,6 +56,7 @@ groupmod commands are used for managing group accounts.
 %setup -q -n shadow-%{version}
 %patch2 -p1 -b .rpmsave
 %patch4 -p1 -b .dot
+%patch7 -p1 -b .salt
 %patch8 -p1 -b .tcb
 %patch9 -p1 -b .shadow_perms
 
