@@ -21,7 +21,6 @@ Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
 Patch2:		shadow-4.1.4.2-rpmsave.patch
-Patch3:		shadow-4.0.11.1-no-syslog-setlocale.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch8:		shadow-4.0.12-avx-owl-tcb.patch
 Patch9:		shadow-4.1.4.2-shadow_perms.patch
@@ -55,7 +54,6 @@ groupmod commands are used for managing group accounts.
 %prep
 %setup -q -n shadow-%{version}
 %patch2 -p1 -b .rpmsave
-%patch3 -p1 -b .chmou
 %patch4 -p1 -b .dot
 %patch8 -p1 -b .tcb
 %patch9 -p1 -b .shadow_perms
