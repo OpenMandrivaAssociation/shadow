@@ -20,7 +20,7 @@ Source7:	shadow-utils-nl.po
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
-Patch2:		shadow-4.0.3-rpmsave.patch
+Patch2:		shadow-4.1.4.2-rpmsave.patch
 Patch3:		shadow-4.0.11.1-no-syslog-setlocale.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch8:		shadow-4.0.12-avx-owl-tcb.patch
