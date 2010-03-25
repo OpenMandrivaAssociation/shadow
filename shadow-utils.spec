@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.1.4.2
-Release:	%mkrel 5
+Release:	%mkrel 6
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -25,6 +25,7 @@ Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch7:		shadow-4.1.4.2-avx-owl-crypt_gensalt.patch
 Patch8:		shadow-4.1.4.2-avx-owl-tcb.patch
 Patch9:		shadow-4.1.4.2-shadow_perms.patch
+Patch10:	shadow-4.1.4.2-groupmod-username.patch
 BuildRequires:	gettext-devel
 BuildRequires:  automake1.7
 BuildRequires:	pam-devel
@@ -59,6 +60,7 @@ groupmod commands are used for managing group accounts.
 %patch7 -p1 -b .salt
 %patch8 -p1 -b .tcb
 %patch9 -p1 -b .shadow_perms
+%patch10 -p0 -b .groupmod
 
 cp -f %{SOURCE7} po/nl.po
 rm -f po/nl.gmo
