@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.1.4.2
-Release:	%mkrel 7
+Release:	%mkrel 8
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -27,7 +27,7 @@ Patch8:		shadow-4.1.4.2-avx-owl-tcb.patch
 Patch9:		shadow-4.1.4.2-shadow_perms.patch
 Patch10:	shadow-4.1.4.2-groupmod-username.patch
 BuildRequires:	gettext-devel
-BuildRequires:  automake1.7
+BuildRequires:  automake
 BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	glibc-crypt_blowfish-devel
