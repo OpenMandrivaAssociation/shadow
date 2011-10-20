@@ -2,7 +2,7 @@
 
 Name:		shadow-utils
 Version:	4.1.4.2
-Release:	%mkrel 9
+Release:	10
 Epoch:		2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
@@ -41,7 +41,6 @@ Provides:	/usr/sbin/groupadd
 %rename		newgrp
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
-Buildroot:	%{_tmppath}/%{name}-%{version}
 
 %description
 The shadow-utils package includes the necessary programs for
@@ -77,7 +76,6 @@ CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
 make -C po update-gmo
 
 %install
-rm -rf %{buildroot}
 %{makeinstall_std} gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
 
 install -d -m 750 %{buildroot}%{_sysconfdir}/default
@@ -115,13 +113,8 @@ popd
 
 %find_lang shadow
 
-%clean
-rm -rf %{buildroot}
-rm -rf build-$RPM_ARCH
-
 
 %files -f shadow.lang
-%defattr(-,root,root)
 %doc doc/HOWTO NEWS
 %doc doc/WISHLIST doc/README.limits doc/README.platforms
 %attr(0640,root,shadow)	%config(noreplace) %{_sysconfdir}/login.defs
