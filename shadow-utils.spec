@@ -35,6 +35,8 @@ BuildRequires:	pam_userpass-devel
 Requires:	tcb
 Requires:	setup >= 2.7.12-2mdv
 Requires:	pam_userpass
+Provides:	/usr/sbin/useradd
+Provides:	/usr/sbin/groupadd
 %rename		adduser
 %rename		newgrp
 Conflicts:	msec < 0.47
