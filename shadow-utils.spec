@@ -35,8 +35,8 @@ BuildRequires:	pam_userpass-devel
 Requires:	tcb
 Requires:	setup >= 2.7.12-2mdv
 Requires:	pam_userpass
-Obsoletes:	adduser, newgrp
-Provides: 	adduser, newgrp
+%rename		adduser
+%rename		newgrp
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
 Buildroot:	%{_tmppath}/%{name}-%{version}
