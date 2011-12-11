@@ -1,14 +1,14 @@
 %define _unpackaged_files_terminate_build 0
 
 Name:		shadow-utils
-Version:	4.1.4.2
-Release:	10
 Epoch:		2
+Version:	4.1.4.2
+Release:	11
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
 URL:		http://pkg-shadow.alioth.debian.org/
-Source0:	ftp://pkg-shadow.alioth.debian.org/pub/pkg-shadow/shadow-%{version}.tar.bz2
+Source0:	http://pkg-shadow.alioth.debian.org/releases/shadow-%{version}.tar.bz2
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
@@ -26,15 +26,14 @@ Patch7:		shadow-4.1.4.2-avx-owl-crypt_gensalt.patch
 Patch8:		shadow-4.1.4.2-avx-owl-tcb.patch
 Patch9:		shadow-4.1.4.2-shadow_perms.patch
 Patch10:	shadow-4.1.4.2-groupmod-username.patch
+
 BuildRequires:	gettext-devel
-BuildRequires:  automake
 BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	glibc-crypt_blowfish-devel
 BuildRequires:	pam_userpass-devel
-Requires:	tcb
-Requires:	setup >= 2.7.12-2mdv
-Requires:	pam_userpass
+
+Requires:	setup >= 2.7.12-2
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
 %rename		adduser
@@ -45,14 +44,22 @@ Conflicts:	util-linux-ng < 2.13.1-6
 %description
 The shadow-utils package includes the necessary programs for
 converting UNIX password files to the shadow password format, plus
-programs for managing user and group accounts.  The pwconv command
-converts passwords to the shadow password format.  The pwunconv command
-unconverts shadow passwords and generates an npasswd file (a standard
-UNIX password file).  The pwck command checks the integrity of
-password and shadow files.  The lastlog command prints out the last
-login times for all users.  The useradd, userdel and usermod commands
-are used for managing user accounts.  The groupadd, groupdel and
-groupmod commands are used for managing group accounts.
+programs for managing user and group accounts.  
+- The pwck command checks the integrity of password and shadow files.  
+- The lastlog command prints out the last login times for all users.  
+- The useradd, userdel and usermod commands are used for managing user accounts.  
+- The groupadd, groupdel and groupmod commands are used for managing group accounts.
+
+%package -n shadow-conv
+Summary:    Conversion tools for ${name}
+Group:      System/Libraries
+Conflicts:  %{name} < 2:4.1.4.2-11
+
+%description -n shadow-conv
+This package contains the conversion tools for %{name} needed by setup. 
+- The pwconv command converts passwords to the shadow password format.  
+- The pwunconv command unconverts shadow passwords and generates 
+  an npasswd file (a standard UNIX password file).
 
 %prep
 %setup -q -n shadow-%{version}
@@ -82,7 +89,6 @@ install -d -m 750 %{buildroot}%{_sysconfdir}/default
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/login.defs
 install -m 0600 %{SOURCE2} %{buildroot}%{_sysconfdir}/default/useradd
 
-
 ln -s useradd %{buildroot}%_sbindir/adduser
 install -m644 %SOURCE3 %{buildroot}%_mandir/man8/
 install -m644 %SOURCE4 %{buildroot}%_mandir/man8/
@@ -110,9 +116,11 @@ pushd %{buildroot}/etc/pam.d
     done
 popd
 
-
 %find_lang shadow
 
+%files -n shadow-conv
+%{_sbindir}/*conv
+%{_mandir}/man8/*conv.8*
 
 %files -f shadow.lang
 %doc doc/HOWTO NEWS
@@ -133,7 +141,6 @@ popd
 %{_sbindir}/group*
 %{_sbindir}/grpck
 %{_sbindir}/pwck
-%{_sbindir}/*conv
 %{_sbindir}/chpasswd
 %{_sbindir}/newusers
 %{_sbindir}/vipw
@@ -155,7 +162,6 @@ popd
 %{_mandir}/man8/vipw.8*
 %{_mandir}/man8/vigr.8*
 #%{_mandir}/man8/mkpasswd.8*
-%{_mandir}/man8/*conv.8*
 %{_mandir}/man8/lastlog.8*
 %{_mandir}/man8/faillog.8*
 %attr(640,root,shadow) %config(noreplace) /etc/pam.d/chage-chfn-chsh
@@ -170,5 +176,4 @@ popd
 /etc/pam.d/groupadd
 /etc/pam.d/groupdel
 /etc/pam.d/groupmod
-
 
