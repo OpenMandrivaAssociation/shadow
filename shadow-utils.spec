@@ -3,7 +3,7 @@
 Name:		shadow-utils
 Epoch:		2
 Version:	4.1.4.2
-Release:	11
+Release:	12
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -51,7 +51,7 @@ programs for managing user and group accounts.
 - The groupadd, groupdel and groupmod commands are used for managing group accounts.
 
 %package -n shadow-conv
-Summary:    Conversion tools for ${name}
+Summary:    Conversion tools for %{name}
 Group:      System/Libraries
 Conflicts:  %{name} < 2:4.1.4.2-11
 
