@@ -1,0 +1,12 @@
+sources:
+  "adduser.8:"	60c4b170a97dd9a91b8d55bf8e087c279be2366e
+  "chage-chfn-chsh.pamd:"	a643f8ab4af55245347473be115d0c3a83599431
+  "chpasswd-newusers.pamd:"	9b0c4259c8daea0cb3a989dbe9d913f84eb60d21
+  "grpconv.8:"	7272f73c3d1e8d190477bf65417089f37015c8a2
+  "grpunconv.8:"	7272f73c3d1e8d190477bf65417089f37015c8a2
+  "pwunconv.8:"	7272f73c3d1e8d190477bf65417089f37015c8a2
+  "shadow-4.1.4.2.tar.bz2:"	43e29471057c671de51360b10e3ee2b419c78ffa
+  "shadow-970616.login.defs:"	42219e846c4b622e953ee2280bb383775db995eb
+  "shadow-970616.useradd:"	348916abd4f794ee99310e1c006fbf00296ea2d7
+  "shadow-utils-nl.po:"	44c2b0fb0089a49e52aa60fae673fd397fe15f84
+  "user-group-mod.pamd:"	12b28e21a921bba3809708ff276798124caa0a76

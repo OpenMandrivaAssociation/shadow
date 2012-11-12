@@ -1,0 +1,29 @@
+--- shadow-4.1.4.2/libmisc/copydir.c.rpmsave	2009-05-22 12:16:14.000000000 +0200
++++ shadow-4.1.4.2/libmisc/copydir.c	2009-11-23 16:50:05.000000000 +0100
+@@ -204,6 +204,7 @@
+ 	bool set_orig = false;
+ 	struct DIRECT *ent;
+ 	DIR *dir;
++	int len = 0;
+ 
+ 	/*
+ 	 * Make certain both directories exist.  This routine is called
+@@ -243,6 +244,18 @@
+ 			char *dst_name;
+ 			size_t src_len = strlen (ent->d_name) + 2;
+ 			size_t dst_len = strlen (ent->d_name) + 2;
++
++			/*
++			 * Skip the ".rpmsave", ".rpmnew" and ".rpmorig" entries
++			 */
++			
++			len = strlen (ent->d_name);
++			if (len > 8 && (strcmp ((ent->d_name+len-8) , ".rpmsave") == 0 ||
++				strcmp ((ent->d_name+len-8), ".rpmorig") == 0))
++				continue;
++			if (len > 7 && strcmp ((ent->d_name+len-7), ".rpmnew") == 0)
++			    continue;
++
+ 			src_len += strlen (src_root);
+ 			dst_len += strlen (dst_root);
+ 
