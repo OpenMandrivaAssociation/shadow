@@ -99,29 +99,29 @@ index 6058f85..e6d03ff 100644
  }
  
 +#endif
-diff --git a/man/login.defs.5 b/man/login.defs.5
-index 8d2b852..38aa78a 100644
---- a/man/login.defs.5
-+++ b/man/login.defs.5
-@@ -244,6 +244,9 @@ will execute this shell instead of the users\' shell specified in
- If defined, login failures will be logged in this file in a utmp format\&.
- .RE
- .PP
-+CRYPT_PREFIX (string), CRYPT_ROUNDS (number)
-+The password hashing method and iteration count to use for group passwords that may be set with \fBgpasswd\fR(1).  Please refer to \fBcrypt\fR(3) for information on supported password hashing methods.
-+.PP
- \fBGID_MAX\fR (number), \fBGID_MIN\fR (number)
- .RS 4
- Range of group IDs used for the creation of regular groups by
-@@ -662,7 +665,7 @@ CHSH_AUTH LOGIN_STRING
- gpasswd
- .RS 4
- ENCRYPT_METHOD MAX_MEMBERS_PER_GROUP MD5_CRYPT_ENAB
--SHA_CRYPT_MAX_ROUNDS SHA_CRYPT_MIN_ROUNDS
-+SHA_CRYPT_MAX_ROUNDS SHA_CRYPT_MIN_ROUNDS CRYPT_PREFIX CRYPT_ROUNDS
- .RE
- .PP
- groupadd
--- 
+#diff --git a/man/login.defs.5 b/man/login.defs.5
+#index 8d2b852..38aa78a 100644
+#--- a/man/login.defs.5
+#+++ b/man/login.defs.5
+#@@ -244,6 +244,9 @@ will execute this shell instead of the users\' shell specified in
+# If defined, login failures will be logged in this file in a utmp format\&.
+# .RE
+# .PP
+#+CRYPT_PREFIX (string), CRYPT_ROUNDS (number)
+#+The password hashing method and iteration count to use for group passwords that may be set with \fBgpasswd\fR(1).  Please refer to \fBcrypt\fR(3) for information on supported password hashing methods.
+#+.PP
+# \fBGID_MAX\fR (number), \fBGID_MIN\fR (number)
+# .RS 4
+# Range of group IDs used for the creation of regular groups by
+#@@ -662,7 +665,7 @@ CHSH_AUTH LOGIN_STRING
+# gpasswd
+# .RS 4
+# ENCRYPT_METHOD MAX_MEMBERS_PER_GROUP MD5_CRYPT_ENAB
+#-SHA_CRYPT_MAX_ROUNDS SHA_CRYPT_MIN_ROUNDS
+#+SHA_CRYPT_MAX_ROUNDS SHA_CRYPT_MIN_ROUNDS CRYPT_PREFIX CRYPT_ROUNDS
+# .RE
+# .PP
+# groupadd
+#-- 
 1.6.5.3
 

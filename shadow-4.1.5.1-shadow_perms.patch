@@ -1,22 +1,22 @@
---- shadow-4.1.4.2/lib/commonio.c.shadow_perms	2009-05-10 15:49:05.000000000 +0200
-+++ shadow-4.1.4.2/lib/commonio.c	2009-11-23 16:41:06.000000000 +0100
+--- shadow-4.1.5.1/lib/commonio.c.shadow_perms	2012-07-12 12:43:09.285419379 +0100
++++ shadow-4.1.5.1/lib/commonio.c	2012-07-12 12:43:35.309942373 +0100
 @@ -50,6 +50,7 @@
- #endif
+ #endif				/* WITH_TCB */
  #include "prototypes.h"
  #include "commonio.h"
 +#include <grp.h>
  
  /* local function prototypes */
  static int lrename (const char *, const char *);
-@@ -810,6 +811,7 @@
+@@ -913,6 +914,7 @@
  	char buf[1024];
  	int errors = 0;
  	struct stat sb;
 +	struct group *grp;
  
- #ifdef WITH_SELINUX
- 	/*@null@*/security_context_t old_context = NULL;
-@@ -872,9 +874,12 @@
+ 	if (!db->isopen) {
+ 		errno = EINVAL;
+@@ -970,9 +972,12 @@
  		 * Default permissions for new [g]shadow files.
  		 * (passwd and group always exist...)
  		 */
