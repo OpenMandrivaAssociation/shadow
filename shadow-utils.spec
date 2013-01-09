@@ -9,7 +9,7 @@
 Name:		shadow-utils
 Epoch:		2
 Version:	4.1.5.1
-Release:	3
+Release:	4
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -43,6 +43,7 @@ BuildRequires:	pam_userpass-devel
 Requires:	setup >= 2.7.12-2
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
+Requires:	setup
 %rename		adduser
 %rename		newgrp
 Conflicts:	msec < 0.47
