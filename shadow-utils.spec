@@ -60,7 +60,7 @@ programs for managing user and group accounts.
   group accounts.
 
 %package -n shadow-conv
-Summary:	Conversion tools for ${name}
+Summary:	Conversion tools for %{name}
 Group:		System/Libraries
 Conflicts:	%{name} < 2:4.1.5.1
 
