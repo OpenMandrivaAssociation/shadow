@@ -39,7 +39,7 @@ BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	glibc-crypt_blowfish-devel
 BuildRequires:	pam_userpass-devel
-
+BuildRequires:	bison
 Requires:	setup >= 2.7.12-2
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
