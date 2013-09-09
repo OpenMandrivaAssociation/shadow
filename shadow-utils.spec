@@ -9,7 +9,7 @@
 Name:		shadow-utils
 Epoch:		2
 Version:	4.1.5.1
-Release:	5
+Release:	6
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -39,7 +39,7 @@ BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	glibc-crypt_blowfish-devel
 BuildRequires:	pam_userpass-devel
-
+BuildRequires:	bison
 Requires:	setup >= 2.7.12-2
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
@@ -83,10 +83,10 @@ cp -f %{SOURCE7} po/nl.po
 rm -f po/nl.gmo
 
 %build
+%serverbuild_hardened
 libtoolize --copy --force; aclocal; autoconf; automake --add-missing
-%serverbuild
 CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
-%configure --disable-shared --disable-desrpc --with-libcrypt --with-libpam --without-libcrack
+%configure2_5x --disable-shared --disable-desrpc --with-libcrypt --with-libpam --without-libcrack
 %make
 # because of the extra po file added manually
 make -C po update-gmo
