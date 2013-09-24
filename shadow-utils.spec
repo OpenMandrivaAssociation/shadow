@@ -40,6 +40,7 @@ BuildRequires:	tcb-devel
 BuildRequires:	glibc-crypt_blowfish-devel
 BuildRequires:	pam_userpass-devel
 BuildRequires:	bison
+Requires:	pam_userpass
 Requires:	setup >= 2.7.12-2
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
