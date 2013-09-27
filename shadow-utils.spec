@@ -9,7 +9,7 @@
 Name:		shadow-utils
 Epoch:		2
 Version:	4.1.5.1
-Release:	7
+Release:	8
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -29,8 +29,6 @@ Source10:	chage-chfn-chsh.pamd
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
-# Patch 8 is disabled because it seems to be no longer needed in 4.1.5.1
-Patch8:		shadow-4.1.4.2-avx-owl-tcb.patch
 Patch9:		shadow-4.1.5.1-shadow_perms.patch
 Patch11:	shadow-4.1.5.1-tcb-build.patch
 
@@ -38,9 +36,7 @@ BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	glibc-crypt_blowfish-devel
-BuildRequires:	pam_userpass-devel
 BuildRequires:	bison
-Requires:	pam_userpass
 Requires:	setup >= 2.7.12-2
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
