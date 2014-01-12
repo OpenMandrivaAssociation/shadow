@@ -9,7 +9,7 @@
 Name:		shadow-utils
 Epoch:		2
 Version:	4.1.5.1
-Release:	10
+Release:	11
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
