@@ -5,8 +5,9 @@
 # than here so kill them off
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
 %define unwanted_i18n_mans sg shadow
+%define oname shadow
 
-Name:		shadow-utils
+Name:		%{oname}-utils
 Epoch:		2
 Version:	4.2.1
 Release:	1
@@ -14,7 +15,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
 URL:		http://pkg-shadow.alioth.debian.org/
-Source0:	http://pkg-shadow.alioth.debian.org/releases/%{name}-%{version}.tar.xz
+Source0:	http://pkg-shadow.alioth.debian.org/releases/%{oname}-%{version}.tar.xz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
