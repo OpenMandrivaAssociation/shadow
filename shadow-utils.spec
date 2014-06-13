@@ -10,7 +10,7 @@
 Name:		%{oname}-utils
 Epoch:		2
 Version:	4.2.1
-Release:	1
+Release:	2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
