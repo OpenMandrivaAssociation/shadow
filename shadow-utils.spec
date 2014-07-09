@@ -36,9 +36,8 @@ Patch11:	shadow-4.1.5.1-tcb-build.patch
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
-BuildRequires:	glibc-crypt
-BuildRequires:	blowfish-devel
 BuildRequires:	bison
+BuildRequires:	glibc-devel
 Requires:		setup >= 2.7.12-2
 Requires:		filesystem
 Provides:		/usr/sbin/useradd
@@ -87,7 +86,7 @@ rm -f po/nl.gmo
 libtoolize --copy --force; aclocal; autoconf; automake --add-missing
 CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
 %configure \
-		--disable-shared \
+	--disable-shared \
         --disable-desrpc \
         --with-libcrypt \
         --with-libpam \
@@ -168,6 +167,8 @@ done
 %attr(2711,root,shadow) %{_bindir}/chage
 %{_bindir}/faillog
 %{_bindir}/gpasswd
+%{_bindir}/newgidmap
+%{_bindir}/newuidmap
 %{_bindir}/expiry
 %{_bindir}/login
 %attr(4711,root,root)   %{_bindir}/newgrp
@@ -182,6 +183,8 @@ done
 %{_sbindir}/newusers
 %{_sbindir}/vipw
 %{_sbindir}/vigr
+%{_mandir}/man1/newgidmap.1*
+%{_mandir}/man1/newuidmap.1*
 %{_mandir}/man1/chage.1*
 %{_mandir}/man1/expiry.1*
 %{_mandir}/man1/newgrp.1*
@@ -192,6 +195,8 @@ done
 %{_mandir}/man5/gshadow.5*
 %{_mandir}/man5/login.defs.5*
 %{_mandir}/man5/faillog.5*
+%{_mandir}/man5/subgid.5*
+%{_mandir}/man5/subuid.5*
 %{_mandir}/man8/adduser.8*
 %{_mandir}/man8/group*.8*
 %{_mandir}/man8/user*.8*
