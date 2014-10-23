@@ -10,7 +10,7 @@
 Name:		%{oname}-utils
 Epoch:		2
 Version:	4.2.1
-Release:	4
+Release:	5
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -46,6 +46,7 @@ Provides:		/usr/sbin/groupadd
 %rename	newgrp
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
+Conflicts:	man-pages-fr < 3.03.0-19
 
 %description
 The shadow-utils package includes the necessary programs for
