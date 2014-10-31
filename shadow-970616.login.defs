@@ -22,6 +22,7 @@ PASS_WARN_AGE	7
 #
 # Min/max values for automatic uid selection in useradd
 #
+
 UID_MIN			  500
 UID_MAX			60000
 
@@ -98,7 +99,6 @@ SYSLOG_SG_ENAB		yes
 # a ":" delimited list of device names.  Root logins will be allowed only
 # upon these devices.
 #
-CONSOLE		/etc/securetty
 #CONSOLE	console:tty01:tty02:tty03:tty04
 
 #
