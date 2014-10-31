@@ -10,7 +10,7 @@
 Name:		%{oname}-utils
 Epoch:		2
 Version:	4.2.1
-Release:	5
+Release:	6
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -91,7 +91,8 @@ CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
         --disable-desrpc \
         --with-libcrypt \
         --with-libpam \
-        --without-libcrack
+        --without-libcrack \
+        --with-group-name-max-length=32
 
 %make
 # because of the extra po file added manually
