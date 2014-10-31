@@ -38,7 +38,7 @@ BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	bison
 BuildRequires:	glibc-devel
-Requires:		setup >= 2.7.12-2
+Requires:		setup >= 2.8.2-1
 Requires:		filesystem
 Provides:		/usr/sbin/useradd
 Provides:		/usr/sbin/groupadd
