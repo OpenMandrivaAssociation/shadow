@@ -10,7 +10,7 @@
 Name:		%{oname}-utils
 Epoch:		2
 Version:	4.2.1
-Release:	8
+Release:	9
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -27,6 +27,7 @@ Source7:	shadow-utils-nl.po
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
+Source11:	lastlog.tmpfiles
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
@@ -38,10 +39,10 @@ BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	bison
 BuildRequires:	glibc-devel
-Requires:		setup >= 2.8.7-1
-Requires:		filesystem
-Provides:		/usr/sbin/useradd
-Provides:		/usr/sbin/groupadd
+Requires:	setup >= 2.8.7-1
+Requires:	filesystem
+Provides:	/usr/sbin/useradd
+Provides:	/usr/sbin/groupadd
 %rename	adduser
 %rename	newgrp
 Conflicts:	msec < 0.47
@@ -51,9 +52,9 @@ Conflicts:	man-pages-fr < 3.03.0-19
 %description
 The shadow-utils package includes the necessary programs for
 converting UNIX password files to the shadow password format, plus
-programs for managing user and group accounts.  
-- The pwck command checks the integrity of password and shadow files.  
-- The lastlog command prints out the last login times for all users.  
+programs for managing user and group accounts.
+- The pwck command checks the integrity of password and shadow files.
+- The lastlog command prints out the last login times for all users.
 - The useradd, userdel and usermod commands are used for managing
   user accounts.  
 - The groupadd, groupdel and groupmod commands are used for managing
@@ -65,8 +66,8 @@ Group:		System/Libraries
 Conflicts:	%{name} < 2:4.1.5.1
 
 %description -n shadow-conv
-This package contains the conversion tools for %{name} needed by setup. 
-- The pwconv command converts passwords to the shadow password format.  
+This package contains the conversion tools for %{name} needed by setup.
+- The pwconv command converts passwords to the shadow password format.
 - The pwunconv command unconverts shadow passwords and generates 
   an npasswd file (a standard UNIX password file).
 
@@ -75,7 +76,6 @@ This package contains the conversion tools for %{name} needed by setup.
 %patch2 -p1 -b .rpmsave
 %patch4 -p1 -b .dot
 %patch7 -p1 -b .salt
-#patch8 -p1 -b .tcb
 %patch9 -p1 -b .shadow_perms
 %patch11 -p1 -b .tcb2
 
@@ -156,6 +156,9 @@ for dir in $(ls -1d %{buildroot}%{_mandir}/{??,??_??}) ; do
   echo "%%lang($lang) $dir/man*/*" >> shadow.lang
 done
 
+# (tpg) create last log file
+install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
+
 %files -n shadow-conv
 %{_sbindir}/*conv
 %{_mandir}/man8/*conv.8*
@@ -185,6 +188,7 @@ done
 %{_sbindir}/newusers
 %{_sbindir}/vipw
 %{_sbindir}/vigr
+%{_tmpfilesdir}/lastlog.conf
 %{_mandir}/man1/newgidmap.1*
 %{_mandir}/man1/newuidmap.1*
 %{_mandir}/man1/chage.1*
