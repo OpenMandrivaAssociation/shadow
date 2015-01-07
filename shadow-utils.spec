@@ -1,6 +1,6 @@
 # (cg) Certain binaries build in this package are no longer wanted or are now
 # provided by other packages (e.g. coreutils, util-linux or passwd)
-%define unwanted chfn chsh groups passwd porttime su suauth nologin chgpasswd getspnam
+%define unwanted chfn chsh expiry groups login passwd porttime su suauth faillog logoutd nologin chgpasswd getspnam
 # (cg) Some localised man pages are provided by the man-pages package rather
 # than here so kill them off
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
@@ -10,7 +10,7 @@
 Name:		%{oname}-utils
 Epoch:		2
 Version:	4.2.1
-Release:	9
+Release:	10
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -56,7 +56,7 @@ programs for managing user and group accounts.
 - The pwck command checks the integrity of password and shadow files.
 - The lastlog command prints out the last login times for all users.
 - The useradd, userdel and usermod commands are used for managing
-  user accounts.  
+  user accounts.
 - The groupadd, groupdel and groupmod commands are used for managing
   group accounts.
 
