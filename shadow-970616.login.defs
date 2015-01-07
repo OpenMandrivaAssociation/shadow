@@ -191,3 +191,5 @@ DEFAULT_HOME	yes
 #
 USERGROUPS_ENAB yes
 
+# Use SHA512 to encrypt password.
+ENCRYPT_METHOD SHA512
