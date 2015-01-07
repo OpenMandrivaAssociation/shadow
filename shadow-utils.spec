@@ -170,15 +170,11 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 %attr(0600,root,root)	%config(noreplace) %{_sysconfdir}/default/useradd
 %{_bindir}/sg
 %attr(2711,root,shadow) %{_bindir}/chage
-%{_bindir}/faillog
 %{_bindir}/gpasswd
 %{_bindir}/newgidmap
 %{_bindir}/newuidmap
-%{_bindir}/expiry
-%{_bindir}/login
 %attr(4711,root,root)   %{_bindir}/newgrp
 %{_bindir}/lastlog
-%{_sbindir}/logoutd
 %{_sbindir}/adduser
 %{_sbindir}/user*
 %{_sbindir}/group*
@@ -192,7 +188,6 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 %{_mandir}/man1/newgidmap.1*
 %{_mandir}/man1/newuidmap.1*
 %{_mandir}/man1/chage.1*
-%{_mandir}/man1/expiry.1*
 %{_mandir}/man1/newgrp.1*
 %{_mandir}/man1/sg.1*
 %{_mandir}/man1/gpasswd.1*
@@ -200,7 +195,6 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 %{_mandir}/man5/shadow.5*
 %{_mandir}/man5/gshadow.5*
 %{_mandir}/man5/login.defs.5*
-%{_mandir}/man5/faillog.5*
 %{_mandir}/man5/subgid.5*
 %{_mandir}/man5/subuid.5*
 %{_mandir}/man8/adduser.8*
@@ -209,12 +203,10 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 %{_mandir}/man8/pwck.8*
 %{_mandir}/man8/grpck.8*
 %{_mandir}/man8/chpasswd.8*
-%{_mandir}/man8/logoutd.8*
 %{_mandir}/man8/newusers.8*
 %{_mandir}/man8/vipw.8*
 %{_mandir}/man8/vigr.8*
 %{_mandir}/man8/lastlog.8*
-%{_mandir}/man8/faillog.8*
 %attr(640,root,shadow) %config(noreplace) /etc/pam.d/chage-chfn-chsh
 /etc/pam.d/chage
 %attr(640,root,shadow) %config(noreplace) /etc/pam.d/chpasswd-newusers 
