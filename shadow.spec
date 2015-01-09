@@ -5,17 +5,16 @@
 # than here so kill them off
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
 %define unwanted_i18n_mans sg shadow
-%define oname shadow
 
-Name:		%{oname}-utils
+Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	10
+Release:	11
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
 URL:		http://pkg-shadow.alioth.debian.org/
-Source0:	http://pkg-shadow.alioth.debian.org/releases/%{oname}-%{version}.tar.xz
+Source0:	http://pkg-shadow.alioth.debian.org/releases/%{name}-%{version}.tar.xz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
@@ -23,7 +22,7 @@ Source4:	pwunconv.8
 Source5:	grpconv.8
 Source6:	grpunconv.8
 # http://qa.mandriva.com/show_bug.cgi?id=27082
-Source7:	shadow-utils-nl.po
+Source7:	shadow-nl.po
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
@@ -47,12 +46,13 @@ Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
 %rename	adduser
 %rename	newgrp
+%rename	shadow-utils
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
 Conflicts:	man-pages-fr < 3.03.0-19
 
 %description
-The shadow-utils package includes the necessary programs for
+The shadow package includes the necessary programs for
 converting UNIX password files to the shadow password format, plus
 programs for managing user and group accounts.
 - The pwck command checks the integrity of password and shadow files.
@@ -74,7 +74,7 @@ This package contains the conversion tools for %{name} needed by setup.
   an npasswd file (a standard UNIX password file).
 
 %prep
-%setup -q -n shadow-%{version}
+%setup -q
 %patch2 -p1 -b .rpmsave
 %patch4 -p1 -b .dot
 %patch7 -p1 -b .salt
