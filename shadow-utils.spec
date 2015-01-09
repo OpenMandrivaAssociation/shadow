@@ -28,6 +28,8 @@ Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
 Source11:	lastlog.tmpfiles
+Source12:	shadow.timer
+Source13:	shadow.service
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
@@ -159,6 +161,9 @@ done
 # (tpg) create last log file
 install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 
+install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
+install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
+
 %files -n shadow-conv
 %{_sbindir}/*conv
 %{_mandir}/man8/*conv.8*
@@ -185,6 +190,8 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 %{_sbindir}/vipw
 %{_sbindir}/vigr
 %{_tmpfilesdir}/lastlog.conf
+%{_unitdir}/shadow.service
+%{_unitdir}/shadow.timer
 %{_mandir}/man1/newgidmap.1*
 %{_mandir}/man1/newuidmap.1*
 %{_mandir}/man1/chage.1*
