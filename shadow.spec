@@ -9,7 +9,7 @@
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	12
+Release:	13
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -40,13 +40,14 @@ BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	bison
 BuildRequires:	glibc-devel
-Requires:	setup >= 2.8.7-1
+Requires:	setup >= 2.8.8-13
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
 %rename	adduser
 %rename	newgrp
 %rename	shadow-utils
+%rename shadow-conv
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
 Conflicts:	man-pages-fr < 3.03.0-19
@@ -61,17 +62,6 @@ programs for managing user and group accounts.
   user accounts.
 - The groupadd, groupdel and groupmod commands are used for managing
   group accounts.
-
-%package -n shadow-conv
-Summary:	Conversion tools for %{name}
-Group:		System/Libraries
-Conflicts:	%{name} < 2:4.1.5.1
-
-%description -n shadow-conv
-This package contains the conversion tools for %{name} needed by setup.
-- The pwconv command converts passwords to the shadow password format.
-- The pwunconv command unconverts shadow passwords and generates 
-  an npasswd file (a standard UNIX password file).
 
 %prep
 %setup -q
@@ -164,16 +154,13 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
-%files -n shadow-conv
-%{_sbindir}/*conv
-%{_mandir}/man8/*conv.8*
-
 %files -f shadow.lang
 %doc doc/HOWTO NEWS
 %doc doc/WISHLIST doc/README.limits doc/README.platforms
 %attr(0640,root,shadow)	%config(noreplace) %{_sysconfdir}/login.defs
 %attr(0600,root,root)	%config(noreplace) %{_sysconfdir}/default/useradd
 %{_bindir}/sg
+%{_sbindir}/*conv
 %attr(2711,root,shadow) %{_bindir}/chage
 %{_bindir}/gpasswd
 %{_bindir}/newgidmap
@@ -197,6 +184,7 @@ install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 %{_mandir}/man1/chage.1*
 %{_mandir}/man1/newgrp.1*
 %{_mandir}/man1/sg.1*
+%{_mandir}/man8/*conv.8*
 %{_mandir}/man1/gpasswd.1*
 %{_mandir}/man3/shadow.3*
 %{_mandir}/man5/shadow.5*
