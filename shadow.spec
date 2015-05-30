@@ -8,13 +8,13 @@
 
 Name:		shadow-utils
 Epoch:		2
-Version:	4.1.5.1
-Release:	13.1
+Version:	4.2.1
+Release:	0.1
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
 URL:		http://pkg-shadow.alioth.debian.org/
-Source0:	http://pkg-shadow.alioth.debian.org/releases/shadow-%{version}.tar.bz2
+Source0:	http://pkg-shadow.alioth.debian.org/releases/shadow-%{version}.tar.xz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
@@ -37,11 +37,12 @@ BuildRequires:	pam-devel
 BuildRequires:	tcb-devel
 BuildRequires:	glibc-crypt_blowfish-devel
 BuildRequires:	bison
-Requires:	setup >= 2.7.12-2
-Provides:	/usr/sbin/useradd
-Provides:	/usr/sbin/groupadd
-%rename		adduser
-%rename		newgrp
+Requires:		setup >= 2.7.12-2
+Requires:		filesystem
+Provides:		/usr/sbin/useradd
+Provides:		/usr/sbin/groupadd
+%rename	adduser
+%rename	newgrp
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
 
@@ -83,7 +84,14 @@ rm -f po/nl.gmo
 %serverbuild_hardened
 libtoolize --copy --force; aclocal; autoconf; automake --add-missing
 CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
-%configure2_5x --disable-shared --disable-desrpc --with-libcrypt --with-libpam --without-libcrack
+%configure2_5x \
+		--disable-shared \
+        --disable-desrpc \
+        --with-libcrypt \
+        --with-libpam \
+        --without-libcrack \
+	--with-group-name-max-length=32
+
 %make
 # because of the extra po file added manually
 make -C po update-gmo
@@ -125,14 +133,14 @@ popd
 # (cg) Remove unwanted binaries (and their corresponding man pages)
 for unwanted in %{unwanted}; do
   rm -f %{buildroot}{%{_bindir},%{_sbindir}}/$unwanted
-  rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.*
+  rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
 done
 
 rm -f %{buildroot}%{_mandir}/man1/login.1*
 
 # (cg) Remove man pages provided by the "man-pages" package...
 for unwanted in %{unwanted_i18n_mans}; do
-  rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.*
+  rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.[[:digit:]]*
 done
 
 # (cg) Find all localised man pages
@@ -161,6 +169,8 @@ done
 %{_bindir}/gpasswd
 %{_bindir}/expiry
 %{_bindir}/login
+%{_bindir}/newgidmap
+%{_bindir}/newuidmap
 %attr(4711,root,root)   %{_bindir}/newgrp
 %{_bindir}/lastlog
 %{_sbindir}/logoutd
@@ -178,6 +188,8 @@ done
 %{_mandir}/man1/newgrp.1*
 %{_mandir}/man1/sg.1*
 %{_mandir}/man1/gpasswd.1*
+%{_mandir}/man1/newgidmap.1.xz
+%{_mandir}/man1/newuidmap.1.xz
 %{_mandir}/man3/shadow.3*
 %{_mandir}/man5/shadow.5*
 %{_mandir}/man5/gshadow.5*
@@ -191,6 +203,8 @@ done
 %{_mandir}/man8/chpasswd.8*
 %{_mandir}/man8/logoutd.8*
 %{_mandir}/man8/newusers.8*
+%{_mandir}/man5/subgid.5.xz
+%{_mandir}/man5/subuid.5.xz
 %{_mandir}/man8/vipw.8*
 %{_mandir}/man8/vigr.8*
 %{_mandir}/man8/lastlog.8*
