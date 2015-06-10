@@ -9,7 +9,7 @@
 Name:		shadow-utils
 Epoch:		2
 Version:	4.2.1
-Release:	0.1
+Release:	0.2
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -45,6 +45,7 @@ Provides:		/usr/sbin/groupadd
 %rename	newgrp
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
+Conflicts:	man-pages-fr < 3.03.0-12.2
 
 %description
 The shadow-utils package includes the necessary programs for
@@ -90,7 +91,7 @@ CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
         --with-libcrypt \
         --with-libpam \
         --without-libcrack \
-	--with-group-name-max-length=32
+        --with-group-name-max-length=32
 
 %make
 # because of the extra po file added manually
