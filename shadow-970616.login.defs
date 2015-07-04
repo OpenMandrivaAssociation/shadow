@@ -23,14 +23,14 @@ PASS_WARN_AGE	7
 # Min/max values for automatic uid selection in useradd
 #
 
-UID_MIN			  500
-UID_MAX			60000
+UID_MIN	500
+UID_MAX	60000
 
 #
 # Min/max values for automatic gid selection in groupadd
 #
-GID_MIN			  500
-GID_MAX			60000
+GID_MIN	500
+GID_MAX	60000
 
 #
 # If defined, this command is run when removing a user.
@@ -50,32 +50,32 @@ CREATE_HOME	yes
 # The password hashing method and iteration count to use for group
 # passwords that may be set with gpasswd(1).
 #
-CRYPT_PREFIX            $2a$
-CRYPT_ROUNDS            8
+CRYPT_PREFIX	$2a$
+CRYPT_ROUNDS	8
 
 #
 # Whether to use tcb password shadowing scheme.  Use 'yes' if using
 # tcb and 'no' if using /etc/shadow
 #
-USE_TCB                 no
+USE_TCB	no
 
 #
 # Whether newly created tcb-style shadow files should be readable by
 # group "auth".
 #
-TCB_AUTH_GROUP          yes
+TCB_AUTH_GROUP	yes
 
 #
 # Whether useradd should create symlinks rather than directories under
 # /etc/tcb for newly created accounts with UIDs over 1000.  See tcb(5)
 # for information on why this may be needed.
 #
-TCB_SYMLINKS            no
+TCB_SYMLINKS	no
 
 #
 # Delay in seconds before being allowed another attempt after a login failure
 #
-FAIL_DELAY		3
+FAIL_DELAY	3
 
 #
 # Enable display of unknown usernames when login failures are recorded.
@@ -85,14 +85,14 @@ LOG_UNKFAIL_ENAB	no
 #
 # Enable logging of successful logins
 #
-LOG_OK_LOGINS		no
+LOG_OK_LOGINS	no
 
 #
 # Enable "syslog" logging of su activity - in addition to sulog file logging.
 # SYSLOG_SG_ENAB does the same for newgrp and sg.
 #
-SYSLOG_SU_ENAB		yes
-SYSLOG_SG_ENAB		yes
+SYSLOG_SU_ENAB	yes
+SYSLOG_SG_ENAB	yes
 
 #
 # If defined, either full pathname of a file containing device names or
@@ -107,7 +107,7 @@ SYSLOG_SG_ENAB		yes
 # command is "-su".  If not defined, then "ps" would display the
 # name of the shell actually being run, e.g. something like "-sh".
 #
-SU_NAME		su
+SU_NAME	su
 
 #
 # If defined, file which inhibits all the usual chatter during the login
@@ -161,20 +161,20 @@ UMASK		022
 #
 # Max number of login retries if password is bad
 #
-LOGIN_RETRIES		5
+LOGIN_RETRIES	5
 
 #
 # Max time in seconds for login
 #
-LOGIN_TIMEOUT		60
+LOGIN_TIMEOUT	60
 
 #
 # Which fields may be changed by regular users using chfn - use
 # any combination of letters "frwh" (full name, room number, work
 # phone, home phone).  If not defined, no changes are allowed.
 # For backward compatibility, "yes" = "rwh" and "no" = "frwh".
-# 
-CHFN_RESTRICT		rwh
+#
+CHFN_RESTRICT	rwh
 
 #
 # Should login be allowed if we can't cd to the home directory?
@@ -189,7 +189,7 @@ DEFAULT_HOME	yes
 #
 # This also enables userdel to remove user groups if no members exist.
 #
-USERGROUPS_ENAB yes
+USERGROUPS_ENAB	yes
 
 # Use SHA512 to encrypt password.
-ENCRYPT_METHOD SHA512
+ENCRYPT_METHOD	SHA512
