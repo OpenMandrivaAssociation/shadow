@@ -57,7 +57,6 @@ CREATE_HOME	yes
 # The password hashing method and iteration count to use for group
 # passwords that may be set with gpasswd(1).
 #
-CRYPT_PREFIX	$2a$
 CRYPT_ROUNDS	8
 
 #
@@ -199,4 +198,4 @@ DEFAULT_HOME	yes
 USERGROUPS_ENAB	yes
 
 # Use SHA512 to encrypt password.
-ENCRYPT_METHOD	SHA512
+ENCRYPT_METHOD SHA512
