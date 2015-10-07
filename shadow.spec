@@ -9,7 +9,7 @@
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	16
+Release:	17
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
