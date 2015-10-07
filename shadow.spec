@@ -80,11 +80,12 @@ libtoolize --copy --force; aclocal; autoconf; automake --add-missing
 CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
 %configure \
 	--disable-shared \
-        --disable-desrpc \
-        --with-libcrypt \
-        --with-libpam \
-        --without-libcrack \
-        --with-group-name-max-length=32
+    --disable-desrpc \
+    --with-sha-crypt \
+    --with-libcrypt \
+    --with-libpam \
+    --without-libcrack \
+    --with-group-name-max-length=32
 
 %make
 # because of the extra po file added manually
