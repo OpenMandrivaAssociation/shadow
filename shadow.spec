@@ -9,7 +9,7 @@
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	17
+Release:	18
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -154,6 +154,13 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
+
+%post
+# (tpg) convert groups and passwords just in case
+if [ $1 -ge 2 ]; then
+	%{_sbindir}/grpconv
+	%{_sbindir}/pwconv
+fi
 
 %files -f shadow.lang
 %doc doc/HOWTO NEWS
