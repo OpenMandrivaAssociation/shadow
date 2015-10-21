@@ -6,11 +6,11 @@
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
 %define unwanted_i18n_mans sg shadow
 
+Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	18
-Summary:	Utilities for managing shadow password files and user/group accounts
+Release:	22
 License:	BSD
 Group:		System/Base
 URL:		http://pkg-shadow.alioth.debian.org/
@@ -160,6 +160,13 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
+
+%post
+# (tpg) convert groups and passwords just in case
+if [ $1 -ge 2 ]; then
+	%{_sbindir}/grpconv
+	%{_sbindir}/pwconv
+fi
 
 %files -f shadow.lang
 %doc doc/HOWTO NEWS
