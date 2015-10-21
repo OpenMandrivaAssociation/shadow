@@ -94,6 +94,11 @@ LOG_UNKFAIL_ENAB	no
 LOG_OK_LOGINS	no
 
 #
+# Enable logging of failed logins
+#
+FAILLOG_ENAB	yes
+
+#
 # Enable "syslog" logging of su activity - in addition to sulog file logging.
 # SYSLOG_SG_ENAB does the same for newgrp and sg.
 #

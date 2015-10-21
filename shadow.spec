@@ -9,7 +9,7 @@
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	17
+Release:	18
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -34,6 +34,10 @@ Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
 Patch9:		shadow-4.1.5.1-shadow_perms.patch
 Patch11:	shadow-4.1.5.1-tcb-build.patch
+
+# patches from Fedora
+Patch12:	shadow-4.1.5.1-logmsg.patch
+Patch13:	shadow-4.2.1-no-lock-dos.patch
 
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
@@ -70,6 +74,8 @@ programs for managing user and group accounts.
 %patch7 -p1 -b .salt
 %patch9 -p1 -b .shadow_perms
 %patch11 -p1 -b .tcb2
+%patch12 -p1
+%patch13 -p1
 
 cp -f %{SOURCE7} po/nl.po
 rm -f po/nl.gmo
@@ -79,7 +85,7 @@ rm -f po/nl.gmo
 libtoolize --copy --force; aclocal; autoconf; automake --add-missing
 CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
 %configure \
-	--disable-shared \
+    --disable-shared \
     --disable-desrpc \
     --with-sha-crypt \
     --with-libcrypt \
