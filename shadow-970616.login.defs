@@ -69,7 +69,7 @@ USE_TCB	no
 # Whether newly created tcb-style shadow files should be readable by
 # group "auth".
 #
-TCB_AUTH_GROUP	yes
+TCB_AUTH_GROUP	no
 
 #
 # Whether useradd should create symlinks rather than directories under

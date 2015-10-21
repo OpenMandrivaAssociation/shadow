@@ -33,7 +33,6 @@ Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
 Patch9:		shadow-4.1.5.1-shadow_perms.patch
-# (tpg) enable only if TCB is going to be enabled by default
 Patch11:	shadow-4.1.5.1-tcb-build.patch
 
 # patches from Fedora
@@ -42,6 +41,7 @@ Patch13:	shadow-4.2.1-no-lock-dos.patch
 
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
+BuildRequires:	tcb-devel
 BuildRequires:	bison
 BuildRequires:	glibc-devel
 Requires:	setup >= 2.8.8-13
@@ -73,6 +73,7 @@ programs for managing user and group accounts.
 %patch4 -p1 -b .dot
 %patch7 -p1 -b .salt
 %patch9 -p1 -b .shadow_perms
+%patch11 -p1 -b .tcb2
 %patch12 -p1
 %patch13 -p1
 
@@ -82,10 +83,8 @@ rm -f po/nl.gmo
 %build
 %serverbuild_hardened
 libtoolize --copy --force; aclocal; autoconf; automake --add-missing
-# (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
-CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
+CFLAGS="%{optflags} -DSHADOWTCB -DEXTRA_CHECK_HOME_DIR" \
 %configure \
-    --without-tcb \
     --disable-shared \
     --disable-desrpc \
     --with-sha-crypt \
@@ -162,17 +161,14 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
-
 %post
 # (tpg) convert groups and passwords just in case
 if [ $1 -ge 2 ]; then
-# (tpg) set up "USE_TCB no" to fix bugs
+# (tpg) enable "USE_TCB yes" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
 # https://issues.openmandriva.org/show_bug.cgi?id=1370
-    if grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
-        sed -i -e 's/^USE_TCB.*/USE_TCB no/g' %{_sysconfdir}/login.defs
-        sed -i -e 's/^TCB_AUTH_GROUP.*/TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs ||:
-        sed -i -e 's/^TCB_SYMLINKS.*/TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
+    if ! grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
+	sed -i -e 's/^USE_TCB.*/USE_TCB yes/g' %{_sysconfdir}/login.defs
     fi
 
 # (tpg) run convert tools
