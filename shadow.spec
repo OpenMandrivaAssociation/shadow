@@ -1,6 +1,6 @@
 # (cg) Certain binaries build in this package are no longer wanted or are now
 # provided by other packages (e.g. coreutils, util-linux or passwd)
-%define unwanted expiry groups login passwd porttime su suauth faillog logoutd nologin chgpasswd getspnam
+%define unwanted chfn chsh expiry groups login passwd porttime su suauth faillog logoutd nologin chgpasswd getspnam
 # (cg) Some localised man pages are provided by the man-pages package rather
 # than here so kill them off
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
@@ -9,7 +9,7 @@
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	20
+Release:	21
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -173,8 +173,6 @@ fi
 %{_bindir}/gpasswd
 %{_bindir}/newgidmap
 %{_bindir}/newuidmap
-%attr(4711,root,root)   %{_bindir}/chfn
-%attr(4711,root,root)   %{_bindir}/chsh
 %attr(4711,root,root)   %{_bindir}/newgrp
 %{_bindir}/lastlog
 %{_sbindir}/adduser
@@ -194,8 +192,6 @@ fi
 %{_mandir}/man1/chage.1*
 %{_mandir}/man1/newgrp.1*
 %{_mandir}/man1/sg.1*
-%{_mandir}/man1/chfn.1*
-%{_mandir}/man1/chsh.1*
 %{_mandir}/man8/*conv.8*
 %{_mandir}/man1/gpasswd.1*
 %{_mandir}/man3/shadow.3*
