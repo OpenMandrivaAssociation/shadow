@@ -9,7 +9,7 @@
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	19
+Release:	20
 Summary:	Utilities for managing shadow password files and user/group accounts
 License:	BSD
 Group:		System/Base
@@ -173,8 +173,8 @@ fi
 %{_bindir}/gpasswd
 %{_bindir}/newgidmap
 %{_bindir}/newuidmap
-%{_bindir}/chfn
-%{_bindir}/chsh
+%attr(4711,root,root)   %{_bindir}/chfn
+%attr(4711,root,root)   %{_bindir}/chsh
 %attr(4711,root,root)   %{_bindir}/newgrp
 %{_bindir}/lastlog
 %{_sbindir}/adduser
