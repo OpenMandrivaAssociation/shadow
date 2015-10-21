@@ -63,20 +63,20 @@ CRYPT_ROUNDS	8
 # Whether to use tcb password shadowing scheme.  Use 'yes' if using
 # tcb and 'no' if using /etc/shadow
 #
-USE_TCB	no
+#USE_TCB	no
 
 #
 # Whether newly created tcb-style shadow files should be readable by
 # group "auth".
 #
-TCB_AUTH_GROUP	no
+#TCB_AUTH_GROUP	no
 
 #
 # Whether useradd should create symlinks rather than directories under
 # /etc/tcb for newly created accounts with UIDs over 1000.  See tcb(5)
 # for information on why this may be needed.
 #
-TCB_SYMLINKS	no
+#TCB_SYMLINKS	no
 
 #
 # Delay in seconds before being allowed another attempt after a login failure
@@ -96,7 +96,7 @@ LOG_OK_LOGINS	no
 #
 # Enable logging of failed logins
 #
-FAILLOG_ENAB	yes
+#FAILLOG_ENAB	no
 
 #
 # Enable "syslog" logging of su activity - in addition to sulog file logging.

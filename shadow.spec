@@ -10,7 +10,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.2.1
-Release:	23
+Release:	24
 License:	BSD
 Group:		System/Base
 URL:		http://pkg-shadow.alioth.debian.org/
@@ -164,16 +164,26 @@ install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
 
 %post
-# (tpg) convert groups and passwords just in case
+# (tpg) convert groups and passwords to shadow model
 if [ $1 -ge 2 ]; then
 # (tpg) set up "USE_TCB no" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
 # https://issues.openmandriva.org/show_bug.cgi?id=1370
     if grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
-        sed -i -e 's/^USE_TCB.*/USE_TCB no/g' %{_sysconfdir}/login.defs
-        sed -i -e 's/^TCB_AUTH_GROUP.*/TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs ||:
-        sed -i -e 's/^TCB_SYMLINKS.*/TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
+	sed -i -e 's/^USE_TCB.*/#USE_TCB no/g' %{_sysconfdir}/login.defs
     fi
+
+    if grep -Plqi '^TCB_AUTH_GROUP.*' %{_sysconfdir}/login.defs ; then
+        sed -i -e 's/^TCB_AUTH_GROUP.*/#TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs
+    fi
+
+    if grep -Plqi '^TCB_SYMLINKS.*' %{_sysconfdir}/login.defs ; then
+        sed -i -e 's/^TCB_SYMLINKS.*/#TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
+    fi
+
+    for i in gshadow shadow passwd group; do
+	[ -e /etc/$i.lock ] && rm -f /etc/$i.lock ;
+    done
 
 # (tpg) run convert tools
     %{_sbindir}/grpconv
