@@ -80,11 +80,11 @@ programs for managing user and group accounts.
 
 cp -f %{SOURCE7} po/nl.po
 rm -f po/nl.gmo
-touch config.rpath
-touch config.h.in
 
 %build
 %serverbuild_hardened
+autoreconf -fiv
+
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
 %configure \
