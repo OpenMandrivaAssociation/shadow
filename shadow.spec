@@ -83,7 +83,6 @@ rm -f po/nl.gmo
 
 %build
 %serverbuild_hardened
-libtoolize --copy --force; aclocal; autoconf; automake --add-missing
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
 %configure \
