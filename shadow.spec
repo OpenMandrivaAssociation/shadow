@@ -9,12 +9,12 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
-Version:	4.2.1
-Release:	24
+Version:	4.3.0
+Release:	1
 License:	BSD
 Group:		System/Base
-URL:		http://pkg-shadow.alioth.debian.org/
-Source0:	http://pkg-shadow.alioth.debian.org/releases/%{name}-%{version}.tar.xz
+URL:		https://github.com/shadow-maint/shadow
+Source0:	http://pkg-shadow.alioth.debian.org/releases/%{name}-%{version}.tar.gz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
@@ -31,7 +31,9 @@ Source12:	shadow.timer
 Source13:	shadow.service
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
+# (tpg) not needed ?
 Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
+# (tpg) not needed ?
 Patch9:		shadow-4.1.5.1-shadow_perms.patch
 # (tpg) enable only if TCB is going to be enabled by default
 Patch11:	shadow-4.1.5.1-tcb-build.patch
@@ -71,8 +73,8 @@ programs for managing user and group accounts.
 %setup -q
 %patch2 -p1 -b .rpmsave
 %patch4 -p1 -b .dot
-%patch7 -p1 -b .salt
-%patch9 -p1 -b .shadow_perms
+#patch7 -p1 -b .salt
+#patch9 -p1 -b .shadow_perms
 %patch12 -p1
 %patch13 -p1
 
