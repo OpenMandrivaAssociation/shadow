@@ -95,6 +95,7 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --with-libcrypt \
     --with-libpam \
     --without-libcrack \
+    --enable-man \
     --with-group-name-max-length=32
 
 %make
