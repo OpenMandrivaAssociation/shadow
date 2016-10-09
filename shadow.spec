@@ -9,7 +9,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
-Version:	4.3.0
+Version:	4.4
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -166,6 +166,12 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
+%triggerin -p <lua> -- %{name} <= %{version}-%{release}
+shadow_lock = "/etc/shadow.lock"
+st = posix.stat(shadow_lock)
+if st and st.type == "regular" and st.size == 0 then
+    os.remove(shadow_lock)
+end
 
 %post
 # (tpg) convert groups and passwords to shadow model
@@ -173,6 +179,10 @@ if [ $1 -ge 2 ]; then
 # (tpg) set up "USE_TCB no" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
 # https://issues.openmandriva.org/show_bug.cgi?id=1370
+    if grep -Plqi '^CRYPT_PREFIX.*' %{_sysconfdir}/login.defs ; then
+	sed -i 's/^CRYPT_PREFIX.*/ENCRYPT_METHOD SHA512/g' %{_sysconfdir}/login.defs
+    fi
+
     if grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
 	sed -i -e 's/^USE_TCB.*/#USE_TCB no/g' %{_sysconfdir}/login.defs
     fi
@@ -195,17 +205,15 @@ if [ $1 -ge 2 ]; then
 fi
 
 %files -f shadow.lang
-%doc doc/HOWTO NEWS
-%doc doc/WISHLIST doc/README.limits doc/README.platforms
-%attr(0640,root,shadow)	%config(noreplace) %{_sysconfdir}/login.defs
-%attr(0600,root,root)	%config(noreplace) %{_sysconfdir}/default/useradd
+%attr(0640,root,shadow) %config(noreplace) %{_sysconfdir}/login.defs
+%attr(0600,root,root) %config(noreplace) %{_sysconfdir}/default/useradd
 %{_bindir}/sg
 %{_sbindir}/*conv
 %attr(2711,root,shadow) %{_bindir}/chage
 %{_bindir}/gpasswd
 %{_bindir}/newgidmap
 %{_bindir}/newuidmap
-%attr(4711,root,root)   %{_bindir}/newgrp
+%attr(4711,root,root) %{_bindir}/newgrp
 %{_bindir}/lastlog
 %{_sbindir}/adduser
 %{_sbindir}/user*
