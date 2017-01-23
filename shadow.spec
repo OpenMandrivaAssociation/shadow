@@ -6,23 +6,23 @@
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
 %define unwanted_i18n_mans sg shadow
 
+%define _disable_rebuild_configure 1
+
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
-Version:	4.2.1
-Release:	24
+Version:	4.4
+Release:	1
 License:	BSD
 Group:		System/Base
-URL:		http://pkg-shadow.alioth.debian.org/
-Source0:	http://pkg-shadow.alioth.debian.org/releases/%{name}-%{version}.tar.xz
+URL:		https://github.com/shadow-maint/shadow
+Source0:	http://pkg-shadow.alioth.debian.org/releases/%{name}-%{version}.tar.gz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
 Source4:	pwunconv.8
 Source5:	grpconv.8
 Source6:	grpunconv.8
-# http://qa.mandriva.com/show_bug.cgi?id=27082
-Source7:	shadow-nl.po
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
@@ -31,19 +31,32 @@ Source12:	shadow.timer
 Source13:	shadow.service
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
-Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
-Patch9:		shadow-4.1.5.1-shadow_perms.patch
+# (tpg) not needed ?
+#Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
+# (tpg) not needed ?
+#Patch9:		shadow-4.1.5.1-shadow_perms.patch
 # (tpg) enable only if TCB is going to be enabled by default
-Patch11:	shadow-4.1.5.1-tcb-build.patch
+#Patch11:	shadow-4.1.5.1-tcb-build.patch
 
 # patches from Fedora
 Patch12:	shadow-4.1.5.1-logmsg.patch
 Patch13:	shadow-4.2.1-no-lock-dos.patch
 
+# (tpg) upstream git
+Patch100:	0000-Fix-regression-in-useradd-not-loading-defaults-prope.patch
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
 BuildRequires:	glibc-devel
+BuildRequires:	acl-devel
+BuildRequires:	attr-devel
+BuildRequires:	pkgconfig(libtirpc)
+# (tpg) needed for man generation
+BuildRequires:	xsltproc
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	docbook-dtd412-xml
+BuildRequires:	docbook-style-xsl
+BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
@@ -69,19 +82,14 @@ programs for managing user and group accounts.
 
 %prep
 %setup -q
-%patch2 -p1 -b .rpmsave
-%patch4 -p1 -b .dot
-%patch7 -p1 -b .salt
-%patch9 -p1 -b .shadow_perms
-%patch12 -p1
-%patch13 -p1
+%apply_patches
 
-cp -f %{SOURCE7} po/nl.po
-rm -f po/nl.gmo
+# (tpg) needed for autofoo
+autoreconf -v -f --install
 
 %build
 %serverbuild_hardened
-libtoolize --copy --force; aclocal; autoconf; automake --add-missing
+
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
 %configure \
@@ -92,24 +100,23 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --with-libcrypt \
     --with-libpam \
     --without-libcrack \
+    --enable-man \
     --with-group-name-max-length=32
 
 %make
-# because of the extra po file added manually
-make -C po update-gmo
 
 %install
-%{makeinstall_std} gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
+%makeinstall_std gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
 
 install -d -m 750 %{buildroot}%{_sysconfdir}/default
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/login.defs
 install -m 0600 %{SOURCE2} %{buildroot}%{_sysconfdir}/default/useradd
 
-ln -s useradd %{buildroot}%_sbindir/adduser
-install -m644 %SOURCE3 %{buildroot}%_mandir/man8/
-install -m644 %SOURCE4 %{buildroot}%_mandir/man8/
-install -m644 %SOURCE5 %{buildroot}%_mandir/man8/
-install -m644 %SOURCE6 %{buildroot}%_mandir/man8/
+ln -s useradd %{buildroot}%{_sbindir}/adduser
+install -m644 %{SOURCE3} %{buildroot}%{_mandir}/man8/
+install -m644 %{SOURCE4} %{buildroot}%{_mandir}/man8/
+install -m644 %{SOURCE5} %{buildroot}%{_mandir}/man8/
+install -m644 %{SOURCE6} %{buildroot}%{_mandir}/man8/
 perl -pi -e "s/encrpted/encrypted/g" %{buildroot}%{_mandir}/man8/newusers.8
 
 # add pam support files
@@ -162,6 +169,12 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
+%triggerin -p <lua> -- %{name} <= %{version}-%{release}
+shadow_lock = "/etc/shadow.lock"
+st = posix.stat(shadow_lock)
+if st and st.type == "regular" and st.size == 0 then
+    os.remove(shadow_lock)
+end
 
 %post
 # (tpg) convert groups and passwords to shadow model
@@ -169,6 +182,10 @@ if [ $1 -ge 2 ]; then
 # (tpg) set up "USE_TCB no" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
 # https://issues.openmandriva.org/show_bug.cgi?id=1370
+    if grep -Plqi '^CRYPT_PREFIX.*' %{_sysconfdir}/login.defs ; then
+	sed -i 's/^CRYPT_PREFIX.*/ENCRYPT_METHOD SHA512/g' %{_sysconfdir}/login.defs
+    fi
+
     if grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
 	sed -i -e 's/^USE_TCB.*/#USE_TCB no/g' %{_sysconfdir}/login.defs
     fi
@@ -191,17 +208,15 @@ if [ $1 -ge 2 ]; then
 fi
 
 %files -f shadow.lang
-%doc doc/HOWTO NEWS
-%doc doc/WISHLIST doc/README.limits doc/README.platforms
-%attr(0640,root,shadow)	%config(noreplace) %{_sysconfdir}/login.defs
-%attr(0600,root,root)	%config(noreplace) %{_sysconfdir}/default/useradd
+%attr(0640,root,shadow) %config(noreplace) %{_sysconfdir}/login.defs
+%attr(0600,root,root) %config(noreplace) %{_sysconfdir}/default/useradd
 %{_bindir}/sg
 %{_sbindir}/*conv
 %attr(2711,root,shadow) %{_bindir}/chage
 %{_bindir}/gpasswd
 %{_bindir}/newgidmap
 %{_bindir}/newuidmap
-%attr(4711,root,root)   %{_bindir}/newgrp
+%attr(4711,root,root) %{_bindir}/newgrp
 %{_bindir}/lastlog
 %{_sbindir}/adduser
 %{_sbindir}/user*
