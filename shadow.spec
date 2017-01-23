@@ -94,7 +94,7 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --enable-man \
     --with-group-name-max-length=32
 
-%make
+%make -j1
 
 %install
 %makeinstall_std gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
