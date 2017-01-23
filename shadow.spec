@@ -56,6 +56,7 @@ BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-style-xsl
+BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
@@ -102,7 +103,7 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --enable-man \
     --with-group-name-max-length=32
 
-%make -j1
+%make
 
 %install
 %makeinstall_std gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
