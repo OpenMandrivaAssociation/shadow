@@ -75,6 +75,9 @@ programs for managing user and group accounts.
 %setup -q
 %apply_patches
 
+# (tpg) needed for autofoo
+autoreconf -v -f --install
+
 %build
 %serverbuild_hardened
 
