@@ -6,6 +6,8 @@
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
 %define unwanted_i18n_mans sg shadow
 
+%define _disable_rebuild_configure 1
+
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
