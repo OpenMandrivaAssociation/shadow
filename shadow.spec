@@ -21,8 +21,6 @@ Source3:	adduser.8
 Source4:	pwunconv.8
 Source5:	grpconv.8
 Source6:	grpunconv.8
-# http://qa.mandriva.com/show_bug.cgi?id=27082
-Source7:	shadow-nl.po
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
@@ -32,16 +30,18 @@ Source13:	shadow.service
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 # (tpg) not needed ?
-Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
+#Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
 # (tpg) not needed ?
-Patch9:		shadow-4.1.5.1-shadow_perms.patch
+#Patch9:		shadow-4.1.5.1-shadow_perms.patch
 # (tpg) enable only if TCB is going to be enabled by default
-Patch11:	shadow-4.1.5.1-tcb-build.patch
+#Patch11:	shadow-4.1.5.1-tcb-build.patch
 
 # patches from Fedora
 Patch12:	shadow-4.1.5.1-logmsg.patch
 Patch13:	shadow-4.2.1-no-lock-dos.patch
 
+# (tpg) upstream git
+Patch100:	0000-Fix-regression-in-useradd-not-loading-defaults-prope.patch
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
@@ -71,19 +71,10 @@ programs for managing user and group accounts.
 
 %prep
 %setup -q
-%patch2 -p1 -b .rpmsave
-%patch4 -p1 -b .dot
-#patch7 -p1 -b .salt
-#patch9 -p1 -b .shadow_perms
-%patch12 -p1
-%patch13 -p1
-
-cp -f %{SOURCE7} po/nl.po
-rm -f po/nl.gmo
+%apply_patches
 
 %build
 %serverbuild_hardened
-autoreconf -fiv
 
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
@@ -99,21 +90,19 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --with-group-name-max-length=32
 
 %make
-# because of the extra po file added manually
-make -C po update-gmo
 
 %install
-%{makeinstall_std} gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
+%makeinstall_std gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
 
 install -d -m 750 %{buildroot}%{_sysconfdir}/default
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/login.defs
 install -m 0600 %{SOURCE2} %{buildroot}%{_sysconfdir}/default/useradd
 
-ln -s useradd %{buildroot}%_sbindir/adduser
-install -m644 %SOURCE3 %{buildroot}%_mandir/man8/
-install -m644 %SOURCE4 %{buildroot}%_mandir/man8/
-install -m644 %SOURCE5 %{buildroot}%_mandir/man8/
-install -m644 %SOURCE6 %{buildroot}%_mandir/man8/
+ln -s useradd %{buildroot}%{_sbindir}/adduser
+install -m644 %{SOURCE3} %{buildroot}%{_mandir}/man8/
+install -m644 %{SOURCE4} %{buildroot}%{_mandir}/man8/
+install -m644 %{SOURCE5} %{buildroot}%{_mandir}/man8/
+install -m644 %{SOURCE6} %{buildroot}%{_mandir}/man8/
 perl -pi -e "s/encrpted/encrypted/g" %{buildroot}%{_mandir}/man8/newusers.8
 
 # add pam support files
