@@ -48,6 +48,13 @@ BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
 BuildRequires:	glibc-devel
+BuildRequires:	acl-devel
+BuildRequires:	attr-devel
+BuildRequires:	pkgconfig(libtirpc)
+# (tpg) needed for man generation
+BuildRequires:	xsltproc
+BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	docbook-dtd45-xml
 Requires:	setup >= 2.8.8-13
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
