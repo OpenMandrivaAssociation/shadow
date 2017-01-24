@@ -7,12 +7,13 @@
 %define unwanted_i18n_mans sg shadow
 
 %define _disable_rebuild_configure 1
+%define _disable_lto 1
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.4
-Release:	1
+Release:	1.1
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -64,7 +65,7 @@ Provides:	/usr/sbin/groupadd
 %rename	adduser
 %rename	newgrp
 %rename	shadow-utils
-%rename shadow-conv
+%rename	shadow-conv
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
 Conflicts:	man-pages-fr < 3.03.0-19
