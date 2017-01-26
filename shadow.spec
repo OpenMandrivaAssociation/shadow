@@ -33,7 +33,7 @@ Source13:	shadow.service
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 # (tpg) not needed ?
-#Patch7:		shadow-4.1.5.1-avx-owl-crypt_gensalt.patch
+Patch7:		shadow-4.4-avx-owl-crypt_gensalt.patch
 # (tpg) not needed ?
 #Patch9:		shadow-4.1.5.1-shadow_perms.patch
 # (tpg) enable only if TCB is going to be enabled by default
