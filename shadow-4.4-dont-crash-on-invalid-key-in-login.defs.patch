@@ -1,0 +1,10 @@
+--- shadow-4.4/lib/getdef.c.omv~	2017-01-26 16:28:43.310756481 +0100
++++ shadow-4.4/lib/getdef.c	2017-01-26 16:28:56.774251554 +0100
+@@ -148,6 +148,7 @@ static struct itemdef knowndef_table[] =
+ #ifdef USE_PAM
+ 	PAMDEFS
+ #endif
++	{NULL, NULL}
+ };
+ 
+ #ifndef LOGINDEFS
