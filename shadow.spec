@@ -11,8 +11,8 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
-Version:	4.4
-Release:	2
+Version:	4.5
+Release:	1
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -98,7 +98,6 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --disable-shared \
     --disable-desrpc \
     --with-sha-crypt \
-    --with-libcrypt \
     --with-libpam \
     --without-libcrack \
     --enable-man \
