@@ -33,7 +33,6 @@ Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 # Needed to support better password encryption
 Patch7:		shadow-4.4-avx-owl-crypt_gensalt.patch
-Patch8:		shadow-4.4-dont-crash-on-invalid-key-in-login.defs.patch
 # (tpg) not needed ?
 #Patch9:		shadow-4.1.5.1-shadow_perms.patch
 # (tpg) enable only if TCB is going to be enabled by default
@@ -43,8 +42,6 @@ Patch8:		shadow-4.4-dont-crash-on-invalid-key-in-login.defs.patch
 Patch12:	shadow-4.1.5.1-logmsg.patch
 Patch13:	shadow-4.2.1-no-lock-dos.patch
 
-# (tpg) upstream git
-Patch100:	0000-Fix-regression-in-useradd-not-loading-defaults-prope.patch
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
