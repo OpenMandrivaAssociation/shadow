@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.5
-Release:	2
+Release:	3
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -60,6 +60,8 @@ Requires:	filesystem
 Requires(post):	grep
 Requires(post):	sed
 Requires(post):	/bin/sh
+Requires(post): util-linux
+Requires(post): coreutils
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
 %rename	adduser
