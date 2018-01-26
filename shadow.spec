@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.5
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -57,6 +57,9 @@ BuildRequires:	docbook-style-xsl
 BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
 Requires:	filesystem
+Requires(post):	grep
+Requires(post):	sed
+Requires(post):	/bin/sh
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
 %rename	adduser
@@ -200,8 +203,8 @@ if [ $1 -ge 2 ]; then
     done
 
 # (tpg) run convert tools
-    %{_sbindir}/grpconv
-    %{_sbindir}/pwconv
+    %{_sbindir}/grpconv ||:
+    %{_sbindir}/pwconv ||:
 fi
 
 %files -f shadow.lang
