@@ -49,6 +49,7 @@ BuildRequires:	glibc-devel
 BuildRequires:	acl-devel
 BuildRequires:	attr-devel
 BuildRequires:	pkgconfig(libtirpc)
+BuildRequires:	pkgconfig(audit)
 # (tpg) needed for man generation
 BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(libxml-2.0)
