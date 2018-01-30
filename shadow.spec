@@ -93,6 +93,11 @@ autoreconf -v -f --install
 %build
 %serverbuild_hardened
 
+%ifarch %{armx}
+export CC=gcc
+export CXX=g++
+%endif
+
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
 %configure \
