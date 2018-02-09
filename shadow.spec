@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.5
-Release:	4
+Release:	5
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -184,9 +184,8 @@ if st and st.type == "regular" and st.size == 0 then
     os.remove(shadow_lock)
 end
 
-%post
+%triggerin -- %{name} < 2:4.5-5
 # (tpg) convert groups and passwords to shadow model
-if [ $1 -ge 2 ]; then
 # (tpg) set up "USE_TCB no" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
 # https://issues.openmandriva.org/show_bug.cgi?id=1370
@@ -199,21 +198,19 @@ if [ $1 -ge 2 ]; then
     fi
 
     if grep -Plqi '^TCB_AUTH_GROUP.*' %{_sysconfdir}/login.defs ; then
-        sed -i -e 's/^TCB_AUTH_GROUP.*/#TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs ||:
+	sed -i -e 's/^TCB_AUTH_GROUP.*/#TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs ||:
     fi
 
     if grep -Plqi '^TCB_SYMLINKS.*' %{_sysconfdir}/login.defs ; then
-        sed -i -e 's/^TCB_SYMLINKS.*/#TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
+	sed -i -e 's/^TCB_SYMLINKS.*/#TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
     fi
 
     for i in gshadow shadow passwd group; do
 	[ -e /etc/$i.lock ] && rm -f /etc/$i.lock ||: ;
     done
-
 # (tpg) run convert tools
     %{_sbindir}/grpconv ||:
     %{_sbindir}/pwconv ||:
-fi
 
 %files -f shadow.lang
 %attr(0640,root,shadow) %config(noreplace) %{_sysconfdir}/login.defs
