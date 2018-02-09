@@ -58,11 +58,6 @@ BuildRequires:	docbook-style-xsl
 BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
 Requires:	filesystem
-Requires(post):	grep
-Requires(post):	sed
-Requires(post):	/bin/sh
-Requires(post):	util-linux
-Requires(post):	coreutils
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
 %rename	adduser
@@ -177,7 +172,7 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
-%triggerin -p <lua> -- %{name} <= %{version}-%{release}
+%triggerin -p <lua> -- %{name} <= %{epoch}:%{version}-%{release}
 shadow_lock = "/etc/shadow.lock"
 st = posix.stat(shadow_lock)
 if st and st.type == "regular" and st.size == 0 then
