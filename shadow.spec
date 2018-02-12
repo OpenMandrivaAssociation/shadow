@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.5
-Release:	5
+Release:	6
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -89,10 +89,10 @@ autoreconf -v -f --install
 %build
 %serverbuild_hardened
 
-%ifarch %{armx}
+#%%ifarch %{armx}
 export CC=gcc
 export CXX=g++
-%endif
+#%%endif
 
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
