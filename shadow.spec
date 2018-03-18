@@ -81,7 +81,7 @@ programs for managing user and group accounts.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 
 # (tpg) needed for autofoo
 autoreconf -v -f --install
@@ -106,10 +106,10 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --enable-man \
     --with-group-name-max-length=32
 
-%make
+%make_build
 
 %install
-%makeinstall_std gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
+%make_install gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
 
 install -d -m 750 %{buildroot}%{_sysconfdir}/default
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/login.defs
@@ -179,7 +179,7 @@ if st and st.type == "regular" and st.size == 0 then
     os.remove(shadow_lock)
 end
 
-%triggerin -- %{name} < 2:4.5-5
+%triggerun -- %{name} < 2:4.5-5
 # (tpg) convert groups and passwords to shadow model
 # (tpg) set up "USE_TCB no" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
