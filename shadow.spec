@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.5
-Release:	6
+Release:	7
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -57,6 +57,7 @@ BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
+Requires:	pam
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
@@ -129,7 +130,7 @@ install -m 0600 %{SOURCE8} %{buildroot}/etc/pam.d/user-group-mod
 install -m 0600 %{SOURCE9} %{buildroot}/etc/pam.d/chpasswd-newusers
 install -m 0600 %{SOURCE10} %{buildroot}/etc/pam.d/chage-chfn-chsh
 
-pushd %{buildroot}/etc/pam.d
+cd %{buildroot}/etc/pam.d
     for f in chpasswd newusers; do
         ln -s chpasswd-newusers ${f}
     done
@@ -140,7 +141,7 @@ pushd %{buildroot}/etc/pam.d
     for f in groupadd groupdel groupmod useradd userdel usermod; do
         ln -s user-group-mod ${f}
     done
-popd
+cd -
 
 # (cg) Remove unwanted binaries (and their corresponding man pages)
 for unwanted in %{unwanted}; do
