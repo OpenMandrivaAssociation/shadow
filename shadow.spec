@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.5
-Release:	7
+Release:	8
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -33,14 +33,11 @@ Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 # Needed to support better password encryption
 Patch7:		shadow-4.4-avx-owl-crypt_gensalt.patch
-# (tpg) not needed ?
-#Patch9:		shadow-4.1.5.1-shadow_perms.patch
-# (tpg) enable only if TCB is going to be enabled by default
-#Patch11:	shadow-4.1.5.1-tcb-build.patch
-
 # patches from Fedora
 Patch12:	shadow-4.1.5.1-logmsg.patch
 Patch13:	shadow-4.2.1-no-lock-dos.patch
+# patches from CLR Linux
+Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
@@ -90,10 +87,8 @@ autoreconf -v -f --install
 %build
 %serverbuild_hardened
 
-#%%ifarch %{armx}
 export CC=gcc
 export CXX=g++
-#%%endif
 
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
@@ -110,7 +105,7 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
 %make_build
 
 %install
-%make_install gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
+%make_install gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS="$(pwd)/mkinstalldirs"
 
 install -d -m 750 %{buildroot}%{_sysconfdir}/default
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/login.defs
