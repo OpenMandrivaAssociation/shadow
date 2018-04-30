@@ -39,6 +39,7 @@ Patch13:	shadow-4.2.1-no-lock-dos.patch
 # patches from CLR Linux
 Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
+BuildRequires:	systemd
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
