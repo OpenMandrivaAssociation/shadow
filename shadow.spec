@@ -11,8 +11,8 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
-Version:	4.5
-Release:	8
+Version:	4.6
+Release:	1
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -127,28 +127,28 @@ install -m 0600 %{SOURCE10} %{buildroot}/etc/pam.d/chage-chfn-chsh
 
 cd %{buildroot}/etc/pam.d
     for f in chpasswd newusers; do
-        ln -s chpasswd-newusers ${f}
+	ln -s chpasswd-newusers ${f}
     done
     for f in chage; do
-        # chfn and chsh are built without pam support in util-linux-ng
-        ln -s chage-chfn-chsh ${f}
+	# chfn and chsh are built without pam support in util-linux-ng
+	ln -s chage-chfn-chsh ${f}
     done
     for f in groupadd groupdel groupmod useradd userdel usermod; do
-        ln -s user-group-mod ${f}
+	ln -s user-group-mod ${f}
     done
 cd -
 
 # (cg) Remove unwanted binaries (and their corresponding man pages)
 for unwanted in %{unwanted}; do
-  rm -f %{buildroot}{%{_bindir},%{_sbindir}}/$unwanted
-  rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
+    rm -f %{buildroot}{%{_bindir},%{_sbindir}}/$unwanted
+    rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
 done
 
 rm -f %{buildroot}%{_mandir}/man1/login.1*
 
 # (cg) Remove man pages provided by the "man-pages" package...
 for unwanted in %{unwanted_i18n_mans}; do
-  rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.[[:digit:]]*
+    rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.[[:digit:]]*
 done
 
 # (cg) Find all localised man pages
@@ -157,9 +157,9 @@ find %{buildroot}%{_mandir} -depth -type d -empty -delete
 %find_lang shadow
 
 for dir in $(ls -1d %{buildroot}%{_mandir}/{??,??_??}) ; do
-  dir=$(echo $dir | sed -e "s|^%{buildroot}||")
-  lang=$(basename $dir)
-  echo "%%lang($lang) $dir/man*/*" >> shadow.lang
+    dir=$(echo $dir | sed -e "s|^%{buildroot}||")
+    lang=$(basename $dir)
+    echo "%%lang($lang) $dir/man*/*" >> shadow.lang
 done
 
 # (tpg) create last log file

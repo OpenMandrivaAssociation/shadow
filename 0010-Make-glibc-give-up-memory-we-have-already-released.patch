@@ -6,11 +6,9 @@ Subject: [PATCH 10/10] Make glibc give up memory we have already released
 ---
  src/login.c | 3 +++
  1 file changed, 3 insertions(+)
-
-diff --git a/src/login.c b/src/login.c
-index 2d2e704..127dc46 100644
---- a/src/login.c
-+++ b/src/login.c
+diff -Naur shadow-4.6/src/login.c shadow-4.6.tpg/src/login.c
+--- shadow-4.6/src/login.c	2018-04-29 16:42:37.000000000 +0000
++++ shadow-4.6.tpg/src/login.c	2018-04-30 20:13:53.130971073 +0000
 @@ -45,6 +45,8 @@
  #include <sys/stat.h>
  #include <sys/ioctl.h>
@@ -20,7 +18,7 @@ index 2d2e704..127dc46 100644
  #include "defines.h"
  #include "faillog.h"
  #include "failure.h"
-@@ -785,6 +787,7 @@ int main (int argc, char **argv)
+@@ -785,6 +787,7 @@
  			}
  #endif
  
@@ -28,6 +26,6 @@ index 2d2e704..127dc46 100644
  			retcode = pam_authenticate (pamh, 0);
  
  			get_pam_user (&pam_user);
--- 
-2.16.2
 
+--
+2.16.2
