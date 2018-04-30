@@ -11,7 +11,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
-Version:	4.5
+Version:	4.6
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -33,15 +33,13 @@ Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 # Needed to support better password encryption
 Patch7:		shadow-4.4-avx-owl-crypt_gensalt.patch
-# (tpg) not needed ?
-#Patch9:		shadow-4.1.5.1-shadow_perms.patch
-# (tpg) enable only if TCB is going to be enabled by default
-#Patch11:	shadow-4.1.5.1-tcb-build.patch
-
 # patches from Fedora
 Patch12:	shadow-4.1.5.1-logmsg.patch
 Patch13:	shadow-4.2.1-no-lock-dos.patch
+# patches from CLR Linux
+Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
+BuildRequires:	systemd
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
@@ -49,6 +47,7 @@ BuildRequires:	glibc-devel
 BuildRequires:	acl-devel
 BuildRequires:	attr-devel
 BuildRequires:	pkgconfig(libtirpc)
+BuildRequires:	pkgconfig(audit)
 # (tpg) needed for man generation
 BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(libxml-2.0)
@@ -56,6 +55,7 @@ BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
+Requires:	pam
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
@@ -80,13 +80,16 @@ programs for managing user and group accounts.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 
 # (tpg) needed for autofoo
 autoreconf -v -f --install
 
 %build
 %serverbuild_hardened
+
+export CC=gcc
+export CXX=g++
 
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
@@ -100,10 +103,10 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --enable-man \
     --with-group-name-max-length=32
 
-%make
+%make_build
 
 %install
-%makeinstall_std gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS=`pwd`/mkinstalldirs
+%make_install gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS="$(pwd)/mkinstalldirs"
 
 install -d -m 750 %{buildroot}%{_sysconfdir}/default
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/login.defs
@@ -123,30 +126,30 @@ install -m 0600 %{SOURCE8} %{buildroot}/etc/pam.d/user-group-mod
 install -m 0600 %{SOURCE9} %{buildroot}/etc/pam.d/chpasswd-newusers
 install -m 0600 %{SOURCE10} %{buildroot}/etc/pam.d/chage-chfn-chsh
 
-pushd %{buildroot}/etc/pam.d
+cd %{buildroot}/etc/pam.d
     for f in chpasswd newusers; do
-        ln -s chpasswd-newusers ${f}
+	ln -s chpasswd-newusers ${f}
     done
     for f in chage; do
-        # chfn and chsh are built without pam support in util-linux-ng
-        ln -s chage-chfn-chsh ${f}
+	# chfn and chsh are built without pam support in util-linux-ng
+	ln -s chage-chfn-chsh ${f}
     done
     for f in groupadd groupdel groupmod useradd userdel usermod; do
-        ln -s user-group-mod ${f}
+	ln -s user-group-mod ${f}
     done
-popd
+cd -
 
 # (cg) Remove unwanted binaries (and their corresponding man pages)
 for unwanted in %{unwanted}; do
-  rm -f %{buildroot}{%{_bindir},%{_sbindir}}/$unwanted
-  rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
+    rm -f %{buildroot}{%{_bindir},%{_sbindir}}/$unwanted
+    rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
 done
 
 rm -f %{buildroot}%{_mandir}/man1/login.1*
 
 # (cg) Remove man pages provided by the "man-pages" package...
 for unwanted in %{unwanted_i18n_mans}; do
-  rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.[[:digit:]]*
+    rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.[[:digit:]]*
 done
 
 # (cg) Find all localised man pages
@@ -155,9 +158,9 @@ find %{buildroot}%{_mandir} -depth -type d -empty -delete
 %find_lang shadow
 
 for dir in $(ls -1d %{buildroot}%{_mandir}/{??,??_??}) ; do
-  dir=$(echo $dir | sed -e "s|^%{buildroot}||")
-  lang=$(basename $dir)
-  echo "%%lang($lang) $dir/man*/*" >> shadow.lang
+    dir=$(echo $dir | sed -e "s|^%{buildroot}||")
+    lang=$(basename $dir)
+    echo "%%lang($lang) $dir/man*/*" >> shadow.lang
 done
 
 # (tpg) create last log file
@@ -166,43 +169,40 @@ install -Dm644 %{SOURCE11} %{buildroot}%{_tmpfilesdir}/lastlog.conf
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
-%triggerin -p <lua> -- %{name} <= %{version}-%{release}
+%triggerin -p <lua> -- %{name} <= %{epoch}:%{version}-%{release}
 shadow_lock = "/etc/shadow.lock"
 st = posix.stat(shadow_lock)
 if st and st.type == "regular" and st.size == 0 then
     os.remove(shadow_lock)
 end
 
-%post
+%triggerun -- %{name} < 2:4.5-5
 # (tpg) convert groups and passwords to shadow model
-if [ $1 -ge 2 ]; then
 # (tpg) set up "USE_TCB no" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
 # https://issues.openmandriva.org/show_bug.cgi?id=1370
     if grep -Plqi '^CRYPT_PREFIX.*' %{_sysconfdir}/login.defs ; then
-	sed -i 's/^CRYPT_PREFIX.*/ENCRYPT_METHOD SHA512/g' %{_sysconfdir}/login.defs
+	sed -i 's/^CRYPT_PREFIX.*/ENCRYPT_METHOD SHA512/g' %{_sysconfdir}/login.defs ||:
     fi
 
     if grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
-	sed -i -e 's/^USE_TCB.*/#USE_TCB no/g' %{_sysconfdir}/login.defs
+	sed -i -e 's/^USE_TCB.*/#USE_TCB no/g' %{_sysconfdir}/login.defs ||:
     fi
 
     if grep -Plqi '^TCB_AUTH_GROUP.*' %{_sysconfdir}/login.defs ; then
-        sed -i -e 's/^TCB_AUTH_GROUP.*/#TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs
+	sed -i -e 's/^TCB_AUTH_GROUP.*/#TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs ||:
     fi
 
     if grep -Plqi '^TCB_SYMLINKS.*' %{_sysconfdir}/login.defs ; then
-        sed -i -e 's/^TCB_SYMLINKS.*/#TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
+	sed -i -e 's/^TCB_SYMLINKS.*/#TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
     fi
 
     for i in gshadow shadow passwd group; do
-	[ -e /etc/$i.lock ] && rm -f /etc/$i.lock ;
+	[ -e /etc/$i.lock ] && rm -f /etc/$i.lock ||: ;
     done
-
 # (tpg) run convert tools
-    %{_sbindir}/grpconv
-    %{_sbindir}/pwconv
-fi
+    %{_sbindir}/grpconv ||:
+    %{_sbindir}/pwconv ||:
 
 %files -f shadow.lang
 %attr(0640,root,shadow) %config(noreplace) %{_sysconfdir}/login.defs
