@@ -80,7 +80,7 @@ programs for managing user and group accounts.
 
 %prep
 %setup -q
-%autopatch -p1
+%apply_patches
 
 # (tpg) needed for autofoo
 autoreconf -v -f --install
@@ -103,10 +103,10 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
     --enable-man \
     --with-group-name-max-length=32
 
-%make_build
+%make
 
 %install
-%make_install gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS="$(pwd)/mkinstalldirs"
+%makeinstall_std gnulocaledir=%{buildroot}/%{_datadir}/locale MKINSTALLDIRS="$(pwd)/mkinstalldirs"
 
 install -d -m 750 %{buildroot}%{_sysconfdir}/default
 install -m 0644 %{SOURCE1} %{buildroot}%{_sysconfdir}/login.defs
