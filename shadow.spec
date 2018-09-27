@@ -88,11 +88,8 @@ autoreconf -v -f --install
 %build
 %serverbuild_hardened
 
-export CC=gcc
-export CXX=g++
-
 # (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
-CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR" \
+CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR -fPIC" \
 %configure \
     --without-tcb \
     --disable-shared \
