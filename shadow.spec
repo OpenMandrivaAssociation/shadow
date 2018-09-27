@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.6
-Release:	2
+Release:	3
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -52,6 +52,7 @@ BuildRequires:	pkgconfig(audit)
 BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	docbook-dtd412-xml
+BuildRequires:	docbook-dtd45-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
@@ -79,8 +80,7 @@ programs for managing user and group accounts.
   group accounts.
 
 %prep
-%setup -q
-%autopatch -p1
+%autosetup -p1
 
 # (tpg) needed for autofoo
 autoreconf -v -f --install
