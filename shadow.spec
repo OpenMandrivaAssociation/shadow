@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.6
-Release:	3
+Release:	4
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -56,6 +56,10 @@ BuildRequires:	docbook-dtd45-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
+# Useradd misbehaves if /etc/passwd doesn't exist...
+# Let's make sure it's installed in the right order
+# even though "Requires(post)" is technically a lie.
+Requires(post):	setup >= 2.8.8-13
 Requires:	pam
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
