@@ -155,6 +155,11 @@ done
 # (cg) Find all localised man pages
 find %{buildroot}%{_mandir} -depth -type d -empty -delete
 
+install -d %{buildroot}%{_presetdir}
+cat > %{buildroot}%{_presetdir}/86-shadow.preset << EOF
+enable shadow.timer
+EOF
+
 %find_lang shadow
 
 for dir in $(ls -1d %{buildroot}%{_mandir}/{??,??_??}) ; do
@@ -221,6 +226,7 @@ end
 %{_sbindir}/newusers
 %{_sbindir}/vipw
 %{_sbindir}/vigr
+%{_presetdir}/86-shadow.preset
 %{_unitdir}/shadow.service
 %{_unitdir}/shadow.timer
 %{_mandir}/man1/newgidmap.1*
