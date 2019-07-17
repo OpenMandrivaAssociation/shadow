@@ -42,10 +42,11 @@ BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
 BuildRequires:	pkgconfig(libcrypt) >= 4.1.1-2
-BuildRequires:	acl-devel
-BuildRequires:	attr-devel
+BuildRequires:	pkgconfig(libacl)
+BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(audit)
+BuildRequires:	pkgconfig(libcap)
 # (tpg) needed for man generation
 BuildRequires:	xsltproc
 BuildRequires:	pkgconfig(libxml-2.0)
