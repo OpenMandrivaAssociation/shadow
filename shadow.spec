@@ -34,7 +34,6 @@ Patch4:		shadow-4.1.4.2-dotinname.patch
 Patch7:		shadow-4.4-avx-owl-crypt_gensalt.patch
 # patches from Fedora
 Patch12:	shadow-4.1.5.1-logmsg.patch
-Patch13:	shadow-4.2.1-no-lock-dos.patch
 # patches from CLR Linux
 Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
