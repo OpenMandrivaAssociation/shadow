@@ -48,7 +48,7 @@ BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(audit)
 BuildRequires:	pkgconfig(libcap)
 # (tpg) needed for man generation
-#BuildRequires:	xsltproc
+BuildRequires:	xsltproc
 BuildRequires:	itstool
 #BuildRequires:	pkgconfig(libxml-2.0)
 #BuildRequires:	docbook-dtd412-xml
