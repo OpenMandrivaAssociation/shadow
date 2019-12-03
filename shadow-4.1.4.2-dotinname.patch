@@ -1,18 +1,20 @@
---- shadow-4.1.4.2/libmisc/chkname.c.dot	2009-04-28 21:14:04.000000000 +0200
-+++ shadow-4.1.4.2/libmisc/chkname.c	2009-11-23 16:26:32.000000000 +0100
-@@ -49,18 +49,24 @@
- static bool is_valid_name (const char *name)
- {
+diff -Naur shadow-4.8/libmisc/chkname.c shadow-4.8.tpg/libmisc/chkname.c
+--- shadow-4.8/libmisc/chkname.c	2019-10-05 01:23:58.000000000 +0000
++++ shadow-4.8.tpg/libmisc/chkname.c	2019-12-03 12:32:12.942027281 +0000
+@@ -55,19 +55,25 @@
+ 	}
+ 
  	/*
 -	 * User/group names must match [a-z_][a-z0-9_-]*[$]
-+ 	 * User/group names must match gnu e-regex:
-+ 	 * [a-zA-Z0-9_.][a-zA-Z0-9_.-]{0,30}[a-zA-Z0-9_.$-]?
++	 * User/group names must match gnu e-regex:
++	 * [a-zA-Z0-9_.][a-zA-Z0-9_.-]{0,30}[a-zA-Z0-9_.$-]?
  	 */
+ 
  	if (('\0' == *name) ||
 -	    !((('a' <= *name) && ('z' >= *name)) || ('_' == *name))) {
-+	    !((('a' <= *name) && ('z' >= *name)) || 
-+	      (('A' <= *name) && ('Z' >= *name)) || 
-+	      (('0' <= *name) && ('9' >= *name)) || 
++	    !((('a' <= *name) && ('z' >= *name)) ||
++	      (('A' <= *name) && ('Z' >= *name)) ||
++	      (('0' <= *name) && ('9' >= *name)) ||
 +	       ('_' == *name) || ('.' == *name))) {
  		return false;
  	}

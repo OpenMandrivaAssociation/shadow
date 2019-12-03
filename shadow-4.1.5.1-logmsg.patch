@@ -1,7 +1,7 @@
-diff -up shadow-4.1.5.1/src/useradd.c.logmsg shadow-4.1.5.1/src/useradd.c
---- shadow-4.1.5.1/src/useradd.c.logmsg	2013-02-20 15:41:44.000000000 +0100
-+++ shadow-4.1.5.1/src/useradd.c	2013-03-19 18:40:04.908292810 +0100
-@@ -275,7 +275,7 @@ static void fail_exit (int code)
+diff -Naur shadow-4.8/src/useradd.c shadow-4.8.tpg/src/useradd.c
+--- shadow-4.8/src/useradd.c	2019-12-01 16:52:32.000000000 +0000
++++ shadow-4.8.tpg/src/useradd.c	2019-12-03 12:52:04.626034152 +0000
+@@ -331,7 +331,7 @@
  	              user_name, AUDIT_NO_ID,
  	              SHADOW_AUDIT_FAILURE);
  #endif

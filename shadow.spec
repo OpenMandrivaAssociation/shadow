@@ -98,9 +98,11 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR -fPIC" \
     --disable-shared \
     --disable-desrpc \
     --with-sha-crypt \
+    --with-bcrypt \
     --with-libpam \
     --without-libcrack \
     --enable-man \
+    --without-su \
     --with-group-name-max-length=32
 
 %make_build
@@ -117,7 +119,7 @@ install -m644 %{SOURCE3} %{buildroot}%{_mandir}/man8/
 install -m644 %{SOURCE4} %{buildroot}%{_mandir}/man8/
 install -m644 %{SOURCE5} %{buildroot}%{_mandir}/man8/
 install -m644 %{SOURCE6} %{buildroot}%{_mandir}/man8/
-perl -pi -e "s/encrpted/encrypted/g" %{buildroot}%{_mandir}/man8/newusers.8
+sed -i -e "s/encrpted/encrypted/g" %{buildroot}%{_mandir}/man8/newusers.8
 
 # add pam support files
 rm -rf %{buildroot}/etc/pam.d/
