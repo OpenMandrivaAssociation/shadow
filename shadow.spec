@@ -50,10 +50,10 @@ BuildRequires:	pkgconfig(libcap)
 # (tpg) needed for man generation
 BuildRequires:	xsltproc
 BuildRequires:	itstool
-#BuildRequires:	pkgconfig(libxml-2.0)
+BuildRequires:	libxml2-utils
 #BuildRequires:	docbook-dtd412-xml
-#BuildRequires:	docbook-dtd45-xml
-#BuildRequires:	docbook-style-xsl
+BuildRequires:	docbook-dtd45-xml
+BuildRequires:	docbook-style-xsl
 #BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
 # Useradd misbehaves if /etc/passwd doesn't exist...
