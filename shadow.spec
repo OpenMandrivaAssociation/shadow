@@ -48,12 +48,13 @@ BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(audit)
 BuildRequires:	pkgconfig(libcap)
 # (tpg) needed for man generation
-BuildRequires:	xsltproc
-BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	docbook-dtd412-xml
-BuildRequires:	docbook-dtd45-xml
-BuildRequires:	docbook-style-xsl
-BuildRequires:	xml2po
+#BuildRequires:	xsltproc
+BuildRequires:	itstool
+#BuildRequires:	pkgconfig(libxml-2.0)
+#BuildRequires:	docbook-dtd412-xml
+#BuildRequires:	docbook-dtd45-xml
+#BuildRequires:	docbook-style-xsl
+#BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
 # Useradd misbehaves if /etc/passwd doesn't exist...
 # Let's make sure it's installed in the right order
