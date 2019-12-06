@@ -5,14 +5,14 @@
 # than here so kill them off
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
 %define unwanted_i18n_mans sg shadow
-
+%global optflags %{optflags} -Oz
 %define _disable_rebuild_configure 1
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.8
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -51,10 +51,8 @@ BuildRequires:	pkgconfig(libcap)
 BuildRequires:	xsltproc
 BuildRequires:	itstool
 BuildRequires:	libxml2-utils
-#BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-dtd45-xml
 BuildRequires:	docbook-style-xsl
-#BuildRequires:	xml2po
 Requires:	setup >= 2.8.8-13
 # Useradd misbehaves if /etc/passwd doesn't exist...
 # Let's make sure it's installed in the right order
