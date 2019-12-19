@@ -51,6 +51,7 @@ BuildRequires:	pkgconfig(libcap)
 BuildRequires:	xsltproc
 BuildRequires:	itstool
 BuildRequires:	libxml2-utils
+BuildRequires:	python-libxml2
 BuildRequires:	docbook-dtd45-xml
 BuildRequires:	docbook-style-xsl
 Requires:	setup >= 2.8.8-13
