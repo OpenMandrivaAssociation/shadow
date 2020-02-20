@@ -28,6 +28,8 @@ Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
 Source12:	shadow.timer
 Source13:	shadow.service
+# (tpg) missing from tarball
+Source99:	https://raw.githubusercontent.com/shadow-maint/shadow/master/man/login.defs.d/HOME_MODE.xml
 Patch2:		shadow-4.1.5.1-rpmsave.patch
 Patch4:		shadow-4.1.4.2-dotinname.patch
 # Needed to support better password encryption
@@ -84,6 +86,7 @@ programs for managing user and group accounts.
 
 %prep
 %autosetup -p1
+cp %{SOURCE99} man/login.defs.d/HOME_MODE.xml
 
 # (tpg) needed for autofoo
 autoreconf -v -f --install
