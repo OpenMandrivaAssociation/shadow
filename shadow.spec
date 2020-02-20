@@ -95,6 +95,7 @@ autoreconf -v -f --install
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR -fPIC" \
 %configure \
     --without-tcb \
+    --enable-account-tools-setuid \
     --disable-shared \
     --disable-desrpc \
     --with-sha-crypt \
