@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.8.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -211,6 +211,12 @@ end
 # (tpg) run convert tools
     %{_sbindir}/grpconv ||:
     %{_sbindir}/pwconv ||:
+
+%post
+%systemd_post shadow.timer
+
+%preun
+%systemd_preun shadow.timer
 
 %files -f shadow.lang
 %attr(0640,root,shadow) %config(noreplace) %{_sysconfdir}/login.defs
