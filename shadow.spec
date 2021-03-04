@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.8.1
-Release:	2
+Release:	3
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
