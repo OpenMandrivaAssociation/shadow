@@ -16,7 +16,7 @@ Release:	3
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
-Source0:	http://pkg-shadow.alioth.debian.org/releases/%{name}-%{version}.tar.xz
+Source0:	https://github.com/shadow-maint/shadow/releases/download/%{version}/%{name}-%{version}.tar.xz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
