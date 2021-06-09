@@ -12,7 +12,7 @@ Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
 Version:	4.8.1
-Release:	3
+Release:	4
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -47,7 +47,6 @@ BuildRequires:	pkgconfig(libcrypt) >= 4.1.1-2
 BuildRequires:	pkgconfig(libacl)
 BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(libtirpc)
-BuildRequires:	pkgconfig(audit)
 BuildRequires:	pkgconfig(libcap)
 # (tpg) needed for man generation
 BuildRequires:	xsltproc
@@ -107,6 +106,7 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR -fPIC" \
     --without-libcrack \
     --enable-man \
     --without-su \
+    --without-audit \
     --with-group-name-max-length=32
 
 %make_build
