@@ -1,0 +1,29 @@
+From c6847011e8b656adacd9a0d2a78418cad0de34cb Mon Sep 17 00:00:00 2001
+From: Iker Pedrosa <ipedrosa@redhat.com>
+Date: Mon, 2 Aug 2021 15:54:20 +0200
+Subject: [PATCH] Makefile: include libeconf dependency in new*idmap
+
+new*idmap has a dependency with libeconf since commit
+c464ec55709dc931ba2f24073b8b1a86d5209ab0. I'm just adding it to the
+Makefile to be able to compile in distributions that include libeconf.
+
+Signed-off-by: Iker Pedrosa <ipedrosa@redhat.com>
+---
+ src/Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 7c1a3491..6cc873be 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -96,8 +96,8 @@ LIBCRYPT_NOPAM = $(LIBCRYPT)
+ endif
+ 
+ chage_LDADD    = $(LDADD) $(LIBPAM_SUID) $(LIBAUDIT) $(LIBSELINUX) $(LIBECONF)
+-newuidmap_LDADD    = $(LDADD) $(LIBAUDIT) $(LIBSELINUX) $(LIBCAP) -ldl
+-newgidmap_LDADD    = $(LDADD) $(LIBAUDIT) $(LIBSELINUX) $(LIBCAP) -ldl
++newuidmap_LDADD    = $(LDADD) $(LIBAUDIT) $(LIBSELINUX) $(LIBCAP) $(LIBECONF) -ldl
++newgidmap_LDADD    = $(LDADD) $(LIBAUDIT) $(LIBSELINUX) $(LIBCAP) $(LIBECONF) -ldl
+ chfn_LDADD     = $(LDADD) $(LIBPAM) $(LIBAUDIT) $(LIBSELINUX) $(LIBCRYPT_NOPAM) $(LIBSKEY) $(LIBMD) $(LIBECONF)
+ chgpasswd_LDADD = $(LDADD) $(LIBPAM_SUID) $(LIBAUDIT) $(LIBSELINUX) $(LIBCRYPT) $(LIBECONF)
+ chsh_LDADD     = $(LDADD) $(LIBPAM) $(LIBAUDIT) $(LIBSELINUX) $(LIBCRYPT_NOPAM) $(LIBSKEY) $(LIBMD) $(LIBECONF)

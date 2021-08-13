@@ -1,3 +1,7 @@
+%define major 3
+%define libname %mklibname subid %{major}
+%define devname %mklibname subid -d
+
 # (cg) Certain binaries build in this package are no longer wanted or are now
 # provided by other packages (e.g. coreutils, util-linux or passwd)
 %define unwanted chfn chsh expiry groups login passwd porttime su suauth faillog logoutd nologin chgpasswd getspnam
@@ -5,14 +9,17 @@
 # than here so kill them off
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
 %define unwanted_i18n_mans sg shadow
-%global optflags %{optflags} -Oz
 %define _disable_rebuild_configure 1
+
+# (tpg) let's be safe and secure
+%global optflags %{optflags} -Oz -fpie
+%global build_ldflags %{build_ldflags} -pie -Wl,-z,relro -Wl,-z,now
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Epoch:		2
-Version:	4.8.1
-Release:	4
+Version:	4.9
+Release:	1
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -23,23 +30,34 @@ Source3:	adduser.8
 Source4:	pwunconv.8
 Source5:	grpconv.8
 Source6:	grpunconv.8
+Source7:	shadow.HOME_MODE.xml
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
 Source12:	shadow.timer
 Source13:	shadow.service
-# (tpg) missing from tarball
-Source99:	https://raw.githubusercontent.com/shadow-maint/shadow/master/man/login.defs.d/HOME_MODE.xml
-Patch2:		shadow-4.1.5.1-rpmsave.patch
-Patch4:		shadow-4.1.4.2-dotinname.patch
+
+Patch1:		shadow-4.8-goodname.patch
+Patch2:		shadow-4.9-move-create-home.patch
+Patch3:		https://src.fedoraproject.org/rpms/shadow-utils/raw/rawhide/f/shadow-4.6-move-home.patch
+Patch4:		shadow-4.1.5.1-rpmsave.patch
+Patch5:		shadow-4.9-manfix.patch
 # Needed to support better password encryption
-Patch7:		shadow-4.4-avx-owl-crypt_gensalt.patch
-# patches from Fedora
-Patch12:	shadow-4.1.5.1-logmsg.patch
+Patch6:		shadow-4.4-avx-owl-crypt_gensalt.patch
+Patch7:		shadow-4.9-libpam-link.patch
+Patch8:		shadow-4.8-long-entry.patch
+Patch9:		shadow-4.6-sysugid-min-limit.patch
+
 # patches from CLR Linux
 Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
-BuildRequires:	systemd-macros
+# (tpg) upstream patches
+Patch30:	https://github.com/shadow-maint/shadow/commit/c6847011e8b656adacd9a0d2a78418cad0de34cb.patch
+Patch31:	https://github.com/shadow-maint/shadow/commit/e481437ab9ebe9a8bf8fbaabe986d42b2f765991.patch
+Patch32:	https://github.com/shadow-maint/shadow/commit/9dd720a28578eef5be8171697aae0906e4c53249.patch
+Patch33:	https://github.com/shadow-maint/shadow/commit/234e8fa7b134d1ebabfdad980a3ae5b63c046c62.patch
+
+BuildRequires:	systemd-rpm-macros
 BuildRequires:	gettext-devel
 BuildRequires:	pam-devel
 BuildRequires:	bison
@@ -60,7 +78,7 @@ Requires:	setup >= 2.8.8-13
 # Let's make sure it's installed in the right order
 # even though "Requires(post)" is technically a lie.
 Requires(post):	setup >= 2.8.8-13
-Requires:	pam
+Requires:	pam_userpass
 Requires:	filesystem
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
@@ -83,28 +101,44 @@ programs for managing user and group accounts.
 - The groupadd, groupdel and groupmod commands are used for managing
   group accounts.
 
+%package -n %{libname}
+Summary:	A library to manage subordinate uid and gid ranges
+License:	BSD and GPLv2+
+Group:		System/Libraries
+
+%description -n %{libname}
+Utility library that provides a way to manage subid ranges.
+
+%package -n %{devname}
+Summary:	Development package for shadow-utils-subid
+License:	BSD and GPLv2+
+Group:		Development/C
+
+%description -n %{devname}
+Development files for shadow-utils-subid.
+
 %prep
 %autosetup -p1
-cp %{SOURCE99} man/login.defs.d/HOME_MODE.xml
+
+cp -a %{SOURCE7} man/login.defs.d/HOME_MODE.xml
+
+# Force regeneration of getdate.c
+rm libmisc/getdate.c
 
 # (tpg) needed for autofoo
 autoreconf -v -f --install
 
 %build
-%serverbuild_hardened
-
-# (tpg) add -DSHADOWTCB to CFLAGS only if TCB is going to be enabled
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR -fPIC" \
 %configure \
     --without-tcb \
+    --enable-man \
     --enable-account-tools-setuid \
-    --disable-shared \
-    --disable-desrpc \
     --with-sha-crypt \
     --with-bcrypt \
+    --with-yescrypt \
     --with-libpam \
     --without-libcrack \
-    --enable-man \
     --without-su \
     --without-audit \
     --with-group-name-max-length=32
@@ -221,6 +255,18 @@ end
 %files -f shadow.lang
 %attr(0640,root,shadow) %config(noreplace) %{_sysconfdir}/login.defs
 %attr(0600,root,root) %config(noreplace) %{_sysconfdir}/default/useradd
+%attr(640,root,shadow) %config(noreplace) %{_sysconfdir}/pam.d/chage-chfn-chsh
+%{_sysconfdir}/pam.d/chage
+%attr(640,root,shadow) %config(noreplace) %{_sysconfdir}/pam.d/chpasswd-newusers
+%{_sysconfdir}/pam.d/chpasswd
+%{_sysconfdir}/pam.d/newusers
+%attr(640,root,shadow) %config(noreplace) %{_sysconfdir}/pam.d/user-group-mod
+%{_sysconfdir}/pam.d/useradd
+%{_sysconfdir}/pam.d/userdel
+%{_sysconfdir}/pam.d/usermod
+%{_sysconfdir}/pam.d/groupadd
+%{_sysconfdir}/pam.d/groupdel
+%{_sysconfdir}/pam.d/groupmod
 %{_bindir}/sg
 %{_sbindir}/*conv
 %attr(2711,root,shadow) %{_bindir}/chage
@@ -241,38 +287,34 @@ end
 %{_presetdir}/86-shadow.preset
 %{_unitdir}/shadow.service
 %{_unitdir}/shadow.timer
-%{_mandir}/man1/newgidmap.1*
-%{_mandir}/man1/newuidmap.1*
-%{_mandir}/man1/chage.1*
-%{_mandir}/man1/newgrp.1*
-%{_mandir}/man1/sg.1*
-%{_mandir}/man8/*conv.8*
-%{_mandir}/man1/gpasswd.1*
-%{_mandir}/man3/shadow.3*
-%{_mandir}/man5/shadow.5*
-%{_mandir}/man5/gshadow.5*
-%{_mandir}/man5/login.defs.5*
-%{_mandir}/man5/subgid.5*
-%{_mandir}/man5/subuid.5*
-%{_mandir}/man8/adduser.8*
-%{_mandir}/man8/group*.8*
-%{_mandir}/man8/user*.8*
-%{_mandir}/man8/pwck.8*
-%{_mandir}/man8/grpck.8*
-%{_mandir}/man8/chpasswd.8*
-%{_mandir}/man8/newusers.8*
-%{_mandir}/man8/vipw.8*
-%{_mandir}/man8/vigr.8*
-%{_mandir}/man8/lastlog.8*
-%attr(640,root,shadow) %config(noreplace) /etc/pam.d/chage-chfn-chsh
-/etc/pam.d/chage
-%attr(640,root,shadow) %config(noreplace) /etc/pam.d/chpasswd-newusers
-/etc/pam.d/chpasswd
-/etc/pam.d/newusers
-%attr(640,root,shadow) %config(noreplace) /etc/pam.d/user-group-mod
-/etc/pam.d/useradd
-/etc/pam.d/userdel
-/etc/pam.d/usermod
-/etc/pam.d/groupadd
-/etc/pam.d/groupdel
-/etc/pam.d/groupmod
+%doc %{_mandir}/man1/newgidmap.1*
+%doc %{_mandir}/man1/newuidmap.1*
+%doc %{_mandir}/man1/chage.1*
+%doc %{_mandir}/man1/newgrp.1*
+%doc %{_mandir}/man1/sg.1*
+%doc %{_mandir}/man8/*conv.8*
+%doc %{_mandir}/man1/gpasswd.1*
+%doc %{_mandir}/man3/shadow.3*
+%doc %{_mandir}/man5/shadow.5*
+%doc %{_mandir}/man5/gshadow.5*
+%doc %{_mandir}/man5/login.defs.5*
+%doc %{_mandir}/man5/subgid.5*
+%doc %{_mandir}/man5/subuid.5*
+%doc %{_mandir}/man8/adduser.8*
+%doc %{_mandir}/man8/group*.8*
+%doc %{_mandir}/man8/user*.8*
+%doc %{_mandir}/man8/pwck.8*
+%doc %{_mandir}/man8/grpck.8*
+%doc %{_mandir}/man8/chpasswd.8*
+%doc %{_mandir}/man8/newusers.8*
+%doc %{_mandir}/man8/vipw.8*
+%doc %{_mandir}/man8/vigr.8*
+%doc %{_mandir}/man8/lastlog.8*
+
+%files -n %{libname}
+%{_libdir}/libsubid.so.%{major}*
+
+%files -n %{devname}
+%dir %{_includedir}/shadow
+%{_includedir}/shadow/subid.h
+%{_libdir}/libsubid.so

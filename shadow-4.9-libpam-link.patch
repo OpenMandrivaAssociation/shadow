@@ -1,0 +1,18 @@
+--- shadow-4.9/libmisc/Makefile.am.orig	2021-08-06 16:42:04.525501134 -0400
++++ shadow-4.9/libmisc/Makefile.am	2021-08-06 16:42:52.942534930 -0400
+@@ -77,3 +77,4 @@ if WITH_BTRFS
+ libmisc_la_SOURCES += btrfs.c
+ endif
+ 
++libmisc_la_LIBADD = -lpam
+--- shadow-4.9/libsubid/Makefile.am.orig	2021-08-06 16:40:31.536516277 -0400
++++ shadow-4.9/libsubid/Makefile.am	2021-08-06 17:03:37.476114690 -0400
+@@ -21,7 +21,7 @@ MISCLIBS = \
+ libsubid_la_LIBADD = \
+ 	$(top_srcdir)/lib/libshadow.la \
+ 	$(top_srcdir)/libmisc/libmisc.la \
+-	$(MISCLIBS) -ldl
++	$(MISCLIBS) -ldl -lpam -lpam_misc
+ 
+ AM_CPPFLAGS = \
+ 	-I${top_srcdir}/lib \

@@ -16,7 +16,7 @@
 +			/*
 +			 * Skip the ".rpmsave", ".rpmnew" and ".rpmorig" entries
 +			 */
-+
++			
 +			len = strlen (ent->d_name);
 +			if (len > 8 && (strcmp ((ent->d_name+len-8) , ".rpmsave") == 0 ||
 +				strcmp ((ent->d_name+len-8), ".rpmorig") == 0))

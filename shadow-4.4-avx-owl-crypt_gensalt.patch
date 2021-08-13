@@ -94,8 +94,9 @@ index 6058f85..e6d03ff 100644
   * Written by Marek Michalkiewicz <marekm@i17linuxb.ists.pwr.wroc.pl>,
   * it is in the public domain.
   *
-@@ -255,3 +327,4 @@ static /*@observer@*/const char *gensalt (size_t salt_size)
+@@ -555,3 +627,5 @@ static /*@observer@*/const char *gensalt (size_t salt_size)
  	return result;
+ #endif /* USE_XCRYPT_GENSALT */
  }
- 
++
 +#endif

@@ -1,7 +1,9 @@
 #
-# /etc/login.defs - Configuration control definitions for the shadow package.
-#
-#	$Id$
+# Please note that the parameters in this configuration file control the
+# behavior of the tools from the shadow-utils component. None of these
+# tools uses the PAM mechanism, and the utilities that use PAM (such as the
+# passwd command) should therefore be configured elsewhere. Refer to
+# /etc/pam.d/system-auth for more information.
 #
 
 #
@@ -11,25 +13,16 @@
 #
 FAIL_DELAY		3
 
-#
-# Enable logging and display of /var/log/faillog login(1) failure info.
-#
-FAILLOG_ENAB		yes
+# Currently FAILLOG_ENAB is not supported
 
 #
 # Enable display of unknown usernames when login(1) failures are recorded.
 #
-LOG_UNKFAIL_ENAB	no
+#LOG_UNKFAIL_ENAB	no
 
-#
-# Enable logging of successful logins
-#
-LOG_OK_LOGINS		no
+# Currently LOG_OK_LOGINS is not supported
 
-#
-# Enable logging and display of /var/log/lastlog login(1) time info.
-#
-LASTLOG_ENAB		yes
+# Currently LASTLOG_ENAB is not supported
 
 #
 # Limit the highest user ID number for which the lastlog entries should
@@ -40,89 +33,37 @@ LASTLOG_ENAB		yes
 #
 #LASTLOG_UID_MAX
 
-#
-# Enable checking and display of mailbox status upon login.
-#
-# Disable if the shell startup files already check for mail
-# ("mailx -e" or equivalent).
-#
-MAIL_CHECK_ENAB		yes
+# Currently MAIL_CHECK_ENAB is not supported
+
+# Currently OBSCURE_CHECKS_ENAB is not supported
+
+# Currently PORTTIME_CHECKS_ENAB is not supported
+
+# Currently QUOTAS_ENAB is not supported
+
+# Currently SYSLOG_SU_ENAB is not supported
 
 #
-# Enable additional checks upon password changes.
+# Enable "syslog" logging of newgrp(1) and sg(1) activity.
 #
-OBSCURE_CHECKS_ENAB	yes
+#SYSLOG_SG_ENAB		yes
 
-#
-# Enable checking of time restrictions specified in /etc/porttime.
-#
-PORTTIME_CHECKS_ENAB	yes
+# Currently CONSOLE is not supported
 
-#
-# Enable setting of ulimit, umask, and niceness from passwd(5) gecos field.
-#
-QUOTAS_ENAB		yes
+# Currently SULOG_FILE is not supported
 
-#
-# Enable "syslog" logging of su(1) activity - in addition to sulog file logging.
-# SYSLOG_SG_ENAB does the same for newgrp(1) and sg(1).
-#
-SYSLOG_SU_ENAB		yes
-SYSLOG_SG_ENAB		yes
+# Currently MOTD_FILE is not supported
 
-#
-# If defined, either full pathname of a file containing device names or
-# a ":" delimited list of device names.  Root logins will be allowed only
-# from these devices.
-#
-#CONSOLE		/etc/securetty
-#CONSOLE	console:tty01:tty02:tty03:tty04
+# Currently ISSUE_FILE is not supported
 
-#
-# If defined, all su(1) activity is logged to this file.
-#
-#SULOG_FILE	/var/log/sulog
+# Currently TTYTYPE_FILE is not supported
 
-#
-# If defined, ":" delimited list of "message of the day" files to
-# be displayed upon login.
-#
-MOTD_FILE	/etc/motd
-#MOTD_FILE	/etc/motd:/usr/lib/news/news-motd
+# Currently FTMP_FILE is not supported
 
-#
-# If defined, this file will be output before each login(1) prompt.
-#
-#ISSUE_FILE	/etc/issue
+# Currently NOLOGINS_FILE is not supported
 
-#
-# If defined, file which maps tty line to TERM environment parameter.
-# Each line of the file is in a format similar to "vt100  tty01".
-#
-#TTYTYPE_FILE	/etc/ttytype
+# Currently SU_NAME is not supported
 
-#
-# If defined, login(1) failures will be logged here in a utmp format.
-# last(1), when invoked as lastb(1), will read /var/log/btmp, so...
-#
-FTMP_FILE	/var/log/btmp
-
-#
-# If defined, name of file whose presence will inhibit non-root
-# logins.  The content of this file should be a message indicating
-# why logins are inhibited.
-#
-NOLOGINS_FILE	/etc/nologin
-
-#
-# If defined, the command name to display when running "su -".  For
-# example, if this is defined as "su" then ps(1) will display the
-# command as "-su".  If not defined, then ps(1) will display the
-# name of the shell actually being run, e.g. something like "-sh".
-#
-SU_NAME		su
-
-#
 # *REQUIRED*
 #   Directory where mailboxes reside, _or_ name of file, relative to the
 #   home directory.  If you _do_ define both, MAIL_DIR takes precedence.
@@ -136,26 +77,15 @@ MAIL_DIR	/var/spool/mail
 # user's name or shell are found in the file.  If not a full pathname, then
 # hushed mode will be enabled if the file exists in the user's home directory.
 #
-HUSHLOGIN_FILE	.hushlogin
+#HUSHLOGIN_FILE	.hushlogin
 #HUSHLOGIN_FILE	/etc/hushlogins
 
-#
-# If defined, either a TZ environment parameter spec or the
-# fully-rooted pathname of a file containing such a spec.
-#
-#ENV_TZ		TZ=CST6CDT
-#ENV_TZ		/etc/tzname
+# Currently ENV_TZ is not supported
+
+# Currently ENV_HZ is not supported
 
 #
-# If defined, an HZ environment parameter spec.
-#
-# for Linux/x86
-ENV_HZ		HZ=100
-# For Linux/Alpha...
-#ENV_HZ		HZ=1024
-
-#
-# *REQUIRED*  The default PATH settings, for superuser and normal users.
+# The default PATH settings, for superuser and normal users.
 #
 # (they are minimal, add the rest in the shell startup files)
 ENV_SUPATH	PATH=/sbin:/bin:/usr/local/sbin:/usr/sbin:/usr/local/bin:/usr/bin
@@ -175,22 +105,7 @@ ENV_PATH	PATH=/bin:/usr/local/bin:/usr/bin
 TTYGROUP	tty
 TTYPERM		0600
 
-#
-# Login configuration initializations:
-#
-#	ERASECHAR	Terminal ERASE character ('\010' = backspace).
-#	KILLCHAR	Terminal KILL character ('\025' = CTRL/U).
-#	ULIMIT		Default "ulimit" value.
-#
-# The ERASECHAR and KILLCHAR are used only on System V machines.
-# The ULIMIT is used only if the system supports it.
-# (now it works with setrlimit too; ulimit is in 512-byte units)
-#
-# Prefix these values with "0" to get octal, "0x" to get hexadecimal.
-#
-ERASECHAR	0177
-KILLCHAR	025
-#ULIMIT		2097152
+# Currently ERASECHAR, KILLCHAR and ULIMIT are not supported
 
 # Default initial "umask" value used by login(1) on non-PAM enabled systems.
 # Default "umask" value for pam_umask(8) on PAM enabled systems.
@@ -204,9 +119,8 @@ UMASK		022
 # HOME_MODE is used by useradd(8) and newusers(8) to set the mode for new
 # home directories.
 # If HOME_MODE is not set, the value of UMASK is used to create the mode.
-#HOME_MODE        0700
+HOME_MODE	0700
 
-#
 # Password aging controls:
 #
 #	PASS_MAX_DAYS	Maximum number of days a password may be used.
@@ -216,30 +130,22 @@ UMASK		022
 #
 PASS_MAX_DAYS	99999
 PASS_MIN_DAYS	0
-PASS_MIN_LEN	5
 PASS_WARN_AGE	7
 
-#
-# If "yes", the user must be listed as a member of the first gid 0 group
-# in /etc/group (called "root" on most Linux systems) to be able to "su"
-# to uid 0 accounts.  If the group doesn't exist or is empty, no one
-# will be able to "su" to uid 0.
-#
-SU_WHEEL_ONLY	no
+# Currently PASS_MIN_LEN is not supported
 
-#
-# If compiled with cracklib support, sets the path to the dictionaries
-#
-CRACKLIB_DICTPATH	/var/cache/cracklib/cracklib_dict
+# Currently SU_WHEEL_ONLY is not supported
+
+# Currently CRACKLIB_DICTPATH is not supported
 
 #
 # Min/max values for automatic uid selection in useradd(8)
 #
-UID_MIN			 1000
-UID_MAX			60000
+UID_MIN                  1000
+UID_MAX                 60000
 # System accounts
-SYS_UID_MIN		  101
-SYS_UID_MAX		  999
+SYS_UID_MIN               101
+SYS_UID_MAX               999
 # Extra per user uids
 SUB_UID_MIN		   100000
 SUB_UID_MAX		600100000
@@ -248,11 +154,11 @@ SUB_UID_COUNT		    65536
 #
 # Min/max values for automatic gid selection in groupadd(8)
 #
-GID_MIN			 1000
-GID_MAX			60000
+GID_MIN                  1000
+GID_MAX                 60000
 # System accounts
-SYS_GID_MIN		  101
-SYS_GID_MAX		  999
+SYS_GID_MIN               101
+SYS_GID_MAX               999
 # Extra per user group ids
 SUB_GID_MIN		   100000
 SUB_GID_MAX		600100000
@@ -268,27 +174,13 @@ LOGIN_RETRIES		5
 #
 LOGIN_TIMEOUT		60
 
-#
-# Maximum number of attempts to change password if rejected (too easy)
-#
-PASS_CHANGE_TRIES	5
+# Currently PASS_CHANGE_TRIES is not supported
 
-#
-# Warn about weak passwords (but still allow them) if you are root.
-#
-PASS_ALWAYS_WARN	yes
+# Currently PASS_ALWAYS_WARN is not supported
 
-#
-# Number of significant characters in the password for crypt().
-# Default is 8, don't change unless your crypt() is better.
-# Ignored if MD5_CRYPT_ENAB set to "yes".
-#
-#PASS_MAX_LEN		8
+# Currently PASS_MAX_LEN is not supported
 
-#
-# Require password before chfn(1)/chsh(1) can make any changes.
-#
-CHFN_AUTH		yes
+# Currently CHFN_AUTH is not supported
 
 #
 # Which fields may be changed by regular users using chfn(1) - use
@@ -296,41 +188,20 @@ CHFN_AUTH		yes
 # phone, home phone).  If not defined, no changes are allowed.
 # For backward compatibility, "yes" = "rwh" and "no" = "frwh".
 # 
-CHFN_RESTRICT		rwh
+#CHFN_RESTRICT		rwh
+
+# Currently LOGIN_STRING is not supported
+
+# Currently MD5_CRYPT_ENAB is not supported
 
 #
-# Password prompt (%s will be replaced by user name).
-#
-# XXX - it doesn't work correctly yet, for now leave it commented out
-# to use the default which is just "Password: ".
-#LOGIN_STRING		"%s's Password: "
-
-#
-# Only works if compiled with MD5_CRYPT defined:
-# If set to "yes", new passwords will be encrypted using the MD5-based
-# algorithm compatible with the one used by recent releases of FreeBSD.
-# It supports passwords of unlimited length and longer salt strings.
-# Set to "no" if you need to copy encrypted passwords to other systems
-# which don't understand the new algorithm.  Default is "no".
-#
-# Note: If you use PAM, it is recommended to use a value consistent with
-# the PAM modules configuration.
-#
-# This variable is deprecated. You should use ENCRYPT_METHOD instead.
-#
-#MD5_CRYPT_ENAB	no
-
-#
-# Only works if compiled with ENCRYPTMETHOD_SELECT defined:
 # If set to MD5, MD5-based algorithm will be used for encrypting password
 # If set to SHA256, SHA256-based algorithm will be used for encrypting password
 # If set to SHA512, SHA512-based algorithm will be used for encrypting password
+# If set to BLOWFISH, BLOWFISH-based algorithm will be used for encrypting password
 # If set to BCRYPT, BCRYPT-based algorithm will be used for encrypting password
+# If set to YESCRYPT, YESCRYPT-based algorithm will be used for encrypting password
 # If set to DES, DES-based algorithm will be used for encrypting password (default)
-# Overrides the MD5_CRYPT_ENAB option
-#
-# Note: If you use PAM, it is recommended to use a value consistent with
-# the PAM modules configuration.
 #
 ENCRYPT_METHOD SHA512
 
@@ -344,11 +215,10 @@ ENCRYPT_METHOD SHA512
 #
 # If not specified, the libc will choose the default number of rounds (5000).
 # The values must be within the 1000-999999999 range.
-# If only one of the MIN or MAX values is set, then this value will be used.
-# If MIN > MAX, the highest value will be used.
 #
-#SHA_CRYPT_MIN_ROUNDS 5000
 #SHA_CRYPT_MAX_ROUNDS 5000
+
+# Currently SHA_CRYPT_MIN_ROUNDS is not supported
 
 #
 # Only works if ENCRYPT_METHOD is set to BCRYPT.
@@ -363,55 +233,30 @@ ENCRYPT_METHOD SHA512
 # If MIN > MAX, the highest value will be used.
 #
 #BCRYPT_MIN_ROUNDS 13
-#BCRYPT_MAX_ROUNDS 13
+#BCRYPT_MAX_ROUNDS 31
 
 #
-# The password hashing method and iteration count to use for group
-# passwords that may be set with gpasswd(1).
+# Only works if ENCRYPT_METHOD is set to YESCRYPT.
 #
-CRYPT_ROUNDS    8
+# Define the YESCRYPT cost factor.
+# With a higher cost factor, it is more difficult to brute-force the password.
+# However, more CPU time and more memory will be needed to authenticate users
+# if this value is increased.
+#
+# If not specified, a cost factor of 5 will be used.
+# The value must be within the 1-11 range.
+#
+#YESCRYPT_COST_FACTOR 5
 
-#
-# Whether to use tcb password shadowing scheme.  Use 'yes' if using
-# tcb and 'no' if using /etc/shadow
-#
-#USE_TCB        no
-
-#
-# Whether newly created tcb-style shadow files should be readable by
-# group "auth".
-#
-#TCB_AUTH_GROUP no
-
-#
-# Whether useradd should create symlinks rather than directories under
-# /etc/tcb for newly created accounts with UIDs over 1000.  See tcb(5)
-# for information on why this may be needed.
-#
-#TCB_SYMLINKS   no
-
-#
-# List of groups to add to the user's supplementary group set
-# when logging in from the console (as determined by the CONSOLE
-# setting).  Default is none.
-#
-# Use with caution - it is possible for users to gain permanent
-# access to these groups, even when not logged in from the console.
-# How to do it is left as an exercise for the reader...
-#
-#CONSOLE_GROUPS		floppy:audio:cdrom
+# Currently CONSOLE_GROUPS is not supported
 
 #
 # Should login be allowed if we can't cd to the home directory?
-# Default is no.
+# Default is yes.
 #
 DEFAULT_HOME	yes
 
-#
-# If this file exists and is readable, login environment will be
-# read from it.  Every line should be in the form name=value.
-#
-ENVIRON_FILE	/etc/environment
+# Currently ENVIRON_FILE is not supported
 
 #
 # If defined, this command is run when removing a user.
@@ -421,11 +266,7 @@ ENVIRON_FILE	/etc/environment
 #USERDEL_CMD	/usr/sbin/userdel_local
 
 #
-# Enable setting of the umask group bits to be the same as owner bits
-# (examples: 022 -> 002, 077 -> 007) for non-root users, if the uid is
-# the same as gid, and username is the same as the primary group name.
-#
-# This also enables userdel(8) to remove user groups if no members exist.
+# Enables userdel(8) to remove user groups if no members exist.
 #
 USERGROUPS_ENAB yes
 
@@ -446,10 +287,20 @@ USERGROUPS_ENAB yes
 # This option is overridden with the -M or -m flags on the useradd(8)
 # command-line.
 #
-CREATE_HOME     yes
+CREATE_HOME	yes
 
 #
 # Force use shadow, even if shadow passwd & shadow group files are
 # missing.
 #
 #FORCE_SHADOW    yes
+
+#
+# Select the HMAC cryptography algorithm.
+# Used in pam_timestamp module to calculate the keyed-hash message
+# authentication code.
+#
+# Note: It is recommended to check hmac(3) to see the possible algorithms
+# that are available in your system.
+#
+HMAC_CRYPTO_ALGO SHA512
