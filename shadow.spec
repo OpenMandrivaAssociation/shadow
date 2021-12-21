@@ -17,13 +17,12 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Epoch:		2
-Version:	4.9
+Version:	4.10
 Release:	1
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
-Source0:	https://github.com/shadow-maint/shadow/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source0:	https://github.com/shadow-maint/shadow/releases/download/v%{version}/shadow-%{version}.tar.xz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
@@ -38,7 +37,9 @@ Source12:	shadow.timer
 Source13:	shadow.service
 
 Patch1:		shadow-4.8-goodname.patch
-Patch2:		shadow-4.9-move-create-home.patch
+# Don't barf on unresolved symbols when building
+# libsubid as a shared library
+Patch2:		shadow-4.10-shared-libsubid-symbols.patch
 Patch3:		https://src.fedoraproject.org/rpms/shadow-utils/raw/rawhide/f/shadow-4.6-move-home.patch
 Patch4:		shadow-4.1.5.1-rpmsave.patch
 Patch5:		shadow-4.9-manfix.patch
@@ -52,10 +53,6 @@ Patch9:		shadow-4.6-sysugid-min-limit.patch
 Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
 # (tpg) upstream patches
-Patch30:	https://github.com/shadow-maint/shadow/commit/c6847011e8b656adacd9a0d2a78418cad0de34cb.patch
-Patch31:	https://github.com/shadow-maint/shadow/commit/e481437ab9ebe9a8bf8fbaabe986d42b2f765991.patch
-Patch32:	https://github.com/shadow-maint/shadow/commit/9dd720a28578eef5be8171697aae0906e4c53249.patch
-Patch33:	https://github.com/shadow-maint/shadow/commit/234e8fa7b134d1ebabfdad980a3ae5b63c046c62.patch
 
 BuildRequires:	systemd-rpm-macros
 BuildRequires:	gettext-devel

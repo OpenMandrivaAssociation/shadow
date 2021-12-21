@@ -1,0 +1,15 @@
+diff -up shadow-4.10/libsubid/api.c.omv~ shadow-4.10/libsubid/api.c
+--- shadow-4.10/libsubid/api.c.omv~	2021-12-21 16:56:51.863344775 +0100
++++ shadow-4.10/libsubid/api.c	2021-12-21 16:56:57.188385389 +0100
+@@ -39,8 +39,8 @@
+ #include "idmapping.h"
+ #include "subid.h"
+ 
+-static const char *Prog = "(libsubid)";
+-static FILE *shadow_logfd;
++const char *Prog = "(libsubid)";
++FILE *shadow_logfd;
+ 
+ bool subid_init(const char *progname, FILE * logfd)
+ {
+diff -up shadow-4.10/libsubid/api..omv~ shadow-4.10/libsubid/api.
