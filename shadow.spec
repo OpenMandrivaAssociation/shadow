@@ -1,4 +1,4 @@
-%define major 3
+%define major 0
 %define libname %mklibname subid %{major}
 %define devname %mklibname subid -d
 
