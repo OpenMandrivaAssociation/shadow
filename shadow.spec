@@ -208,7 +208,7 @@ done
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
-%triggerin -p <lua> -- %{name} <= %{epoch}:%{version}-%{release}
+%triggerin -p <lua> -- %{name} <= %{EVRD}
 shadow_lock = "/etc/shadow.lock"
 st = posix.stat(shadow_lock)
 if st and st.type == "regular" and st.size == 0 then
