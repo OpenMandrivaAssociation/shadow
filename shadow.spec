@@ -86,6 +86,7 @@ Provides:	/usr/sbin/groupadd
 Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
 Conflicts:	man-pages-fr < 3.03.0-19
+Provides:	shadow = 2:4.5
 
 %description
 The shadow package includes the necessary programs for
@@ -267,6 +268,7 @@ end
 %{_bindir}/sg
 %{_sbindir}/*conv
 %attr(2711,root,shadow) %{_bindir}/chage
+%{_bindir}/getsubids
 %{_bindir}/gpasswd
 %{_bindir}/newgidmap
 %{_bindir}/newuidmap
@@ -290,6 +292,7 @@ end
 %doc %{_mandir}/man1/newgrp.1*
 %doc %{_mandir}/man1/sg.1*
 %doc %{_mandir}/man8/*conv.8*
+%doc %{_mandir}/man1/getsubids.1*
 %doc %{_mandir}/man1/gpasswd.1*
 %doc %{_mandir}/man3/shadow.3*
 %doc %{_mandir}/man5/shadow.5*
