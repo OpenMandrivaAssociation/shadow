@@ -1,4 +1,4 @@
-%define major 0
+%define major 4
 %define libname %mklibname subid %{major}
 %define devname %mklibname subid -d
 
@@ -17,7 +17,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.10
+Version:	4.11.1
 Release:	1
 License:	BSD
 Group:		System/Base
