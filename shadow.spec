@@ -37,9 +37,6 @@ Source12:	shadow.timer
 Source13:	shadow.service
 
 Patch1:		shadow-4.8-goodname.patch
-# Don't barf on unresolved symbols when building
-# libsubid as a shared library
-Patch2:		shadow-4.10-shared-libsubid-symbols.patch
 Patch3:		https://src.fedoraproject.org/rpms/shadow-utils/raw/rawhide/f/shadow-4.6-move-home.patch
 Patch4:		shadow-4.1.5.1-rpmsave.patch
 Patch5:		shadow-4.9-manfix.patch
