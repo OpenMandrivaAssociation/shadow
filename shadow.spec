@@ -18,7 +18,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Version:	4.11.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -197,12 +197,6 @@ EOF
 
 %find_lang shadow
 
-for dir in $(ls -1d %{buildroot}%{_mandir}/{??,??_??}) ; do
-    dir=$(echo $dir | sed -e "s|^%{buildroot}||")
-    lang=$(basename $dir)
-    echo "%%lang($lang) $dir/man*/*" >> shadow.lang
-done
-
 install -D -m644 %{SOURCE12} %{buildroot}%{_unitdir}/shadow.timer
 install -D -m644 %{SOURCE13} %{buildroot}%{_unitdir}/shadow.service
 
@@ -283,30 +277,8 @@ end
 %{_presetdir}/86-shadow.preset
 %{_unitdir}/shadow.service
 %{_unitdir}/shadow.timer
-%doc %{_mandir}/man1/newgidmap.1*
-%doc %{_mandir}/man1/newuidmap.1*
-%doc %{_mandir}/man1/chage.1*
-%doc %{_mandir}/man1/newgrp.1*
-%doc %{_mandir}/man1/sg.1*
-%doc %{_mandir}/man8/*conv.8*
-%doc %{_mandir}/man1/getsubids.1*
-%doc %{_mandir}/man1/gpasswd.1*
-%doc %{_mandir}/man3/shadow.3*
-%doc %{_mandir}/man5/shadow.5*
-%doc %{_mandir}/man5/gshadow.5*
-%doc %{_mandir}/man5/login.defs.5*
-%doc %{_mandir}/man5/subgid.5*
-%doc %{_mandir}/man5/subuid.5*
-%doc %{_mandir}/man8/adduser.8*
-%doc %{_mandir}/man8/group*.8*
-%doc %{_mandir}/man8/user*.8*
-%doc %{_mandir}/man8/pwck.8*
-%doc %{_mandir}/man8/grpck.8*
-%doc %{_mandir}/man8/chpasswd.8*
-%doc %{_mandir}/man8/newusers.8*
-%doc %{_mandir}/man8/vipw.8*
-%doc %{_mandir}/man8/vigr.8*
-%doc %{_mandir}/man8/lastlog.8*
+%doc %{_mandir}/man?/*.*
+%doc %{_mandir}/*/man?/*.*
 
 %files -n %{libname}
 %{_libdir}/libsubid.so.%{major}*
