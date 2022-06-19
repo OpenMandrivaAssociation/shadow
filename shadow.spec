@@ -285,6 +285,14 @@ end
 %doc %{_mandir}/man?/*.*
 %doc %{_mandir}/*/man?/*.*
 
+%post
+# FIXME remove once usrmerge/binmerge are complete
+# /usr/sbin/useradd is required by the builders
+if [ -d /usr/sbin ]; then
+	sln /usr/bin/useradd /usr/sbin/useradd
+	sln /usr/bin/userdel /usr/sbin/userdel
+fi
+
 %files -n %{libname}
 %{_libdir}/libsubid.so.%{major}*
 
