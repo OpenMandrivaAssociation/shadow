@@ -174,9 +174,14 @@ cd %{buildroot}/etc/pam.d
     done
 cd -
 
+%if "%{_sbindir}" != "%{_prefix}/sbin"
+mv %{buildroot}%{_prefix}/sbin/* %{buildroot}%{_sbindir}/
+rmdir %{buildroot}%{_prefix}/sbin
+%endif
+
 # (cg) Remove unwanted binaries (and their corresponding man pages)
 for unwanted in %{unwanted}; do
-    rm -f %{buildroot}{%{_bindir},%{_sbindir}}/$unwanted
+    rm -f %{buildroot}%{_bindir}/$unwanted
     rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
 done
 
