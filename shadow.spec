@@ -246,12 +246,7 @@ end
 # /usr/sbin/useradd is required by the builders
 if [ -d /usr/sbin ]; then
 	for i in groupadd groupdel groupmod useradd userdel usermod; do
-		sln /usr/bin/$i /usr/sbin/$i
-	done
-fi
-if [ -d /sbin ]; then
-	for i in groupadd groupdel groupmod useradd userdel usermod; do
-		sln /usr/bin/$i /sbin/$i
+		ln -s ../bin/$i /usr/sbin/$i
 	done
 fi
 
@@ -263,12 +258,7 @@ fi
 # /usr/sbin/useradd is required by the builders
 if [ -d /usr/sbin ]; then
 	for i in groupadd groupdel groupmod useradd userdel usermod; do
-		sln /usr/bin/$i /usr/sbin/$i
-	done
-fi
-if [ -d /sbin ]; then
-	for i in groupadd groupdel groupmod useradd userdel usermod; do
-		sln /usr/bin/$i /sbin/$i
+		ln -s ../bin/$i /usr/sbin/$i
 	done
 fi
 
