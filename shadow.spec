@@ -245,8 +245,14 @@ end
 # FIXME remove once usrmerge/binmerge are complete
 # /usr/sbin/useradd is required by the builders
 if [ -d /usr/sbin ]; then
-	sln /usr/bin/useradd /usr/sbin/useradd
-	sln /usr/bin/userdel /usr/sbin/userdel
+	for i in groupadd groupdel groupmod useradd userdel usermod; do
+		sln /usr/bin/$i /usr/sbin/$i
+	done
+fi
+if [ -d /sbin ]; then
+	for i in groupadd groupdel groupmod useradd userdel usermod; do
+		sln /usr/bin/$i /sbin/$i
+	done
 fi
 
 %posttrans
@@ -256,8 +262,14 @@ fi
 # FIXME remove once usrmerge/binmerge are complete
 # /usr/sbin/useradd is required by the builders
 if [ -d /usr/sbin ]; then
-	sln /usr/bin/useradd /usr/sbin/useradd || :
-	sln /usr/bin/userdel /usr/sbin/userdel || :
+	for i in groupadd groupdel groupmod useradd userdel usermod; do
+		sln /usr/bin/$i /usr/sbin/$i
+	done
+fi
+if [ -d /sbin ]; then
+	for i in groupadd groupdel groupmod useradd userdel usermod; do
+		sln /usr/bin/$i /sbin/$i
+	done
 fi
 
 %preun
