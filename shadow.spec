@@ -249,6 +249,17 @@ if [ -d /usr/sbin ]; then
 	sln /usr/bin/userdel /usr/sbin/userdel
 fi
 
+%posttrans
+# Has to be done again just in case removing the
+# previous version (which owned those files) removed
+# the symlinks %%post created
+# FIXME remove once usrmerge/binmerge are complete
+# /usr/sbin/useradd is required by the builders
+if [ -d /usr/sbin ]; then
+	sln /usr/bin/useradd /usr/sbin/useradd || :
+	sln /usr/bin/userdel /usr/sbin/userdel || :
+fi
+
 %preun
 %systemd_preun shadow.timer
 
