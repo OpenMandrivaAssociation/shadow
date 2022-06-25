@@ -240,27 +240,34 @@ end
     %{_sbindir}/grpconv ||:
     %{_sbindir}/pwconv ||:
 
-%post
-%systemd_post shadow.timer
-# FIXME remove once usrmerge/binmerge are complete
-# /usr/sbin/useradd is required by the builders
-if [ -d /usr/sbin ]; then
-	for i in groupadd groupdel groupmod useradd userdel usermod; do
-		ln -s ../bin/$i /usr/sbin/$i
-	done
-fi
+%post -p <lua>
+--# FIXME remove once usrmerge/binmerge are complete
+--# /usr/sbin/useradd is required by the builders
+local st = posix.stat("/usr/sbin")
+if st.type ~= "link" then
+	posix.symlink("../bin/groupadd", "/usr/sbin/groupadd")
+	posix.symlink("../bin/groupdel", "/usr/sbin/groupdel")
+	posix.symlink("../bin/groupmod", "/usr/sbin/groupmod")
+	posix.symlink("../bin/useradd", "/usr/sbin/useradd")
+	posix.symlink("../bin/userdel", "/usr/sbin/userdel")
+	posix.symlink("../bin/usermod", "/usr/sbin/usermod")
+end
 
-%posttrans
-# Has to be done again just in case removing the
-# previous version (which owned those files) removed
-# the symlinks %%post created
-# FIXME remove once usrmerge/binmerge are complete
-# /usr/sbin/useradd is required by the builders
-if [ -d /usr/sbin ]; then
-	for i in groupadd groupdel groupmod useradd userdel usermod; do
-		ln -s ../bin/$i /usr/sbin/$i
-	done
-fi
+%posttrans -p <lua>
+--# Has to be done again just in case removing the
+--# previous version (which owned those files) removed
+--# the symlinks %%post created
+--# FIXME remove once usrmerge/binmerge are complete
+--# /usr/sbin/useradd is required by the builders
+local st = posix.stat("/usr/sbin")
+if st.type ~= "link" then
+	posix.symlink("../bin/groupadd", "/usr/sbin/groupadd")
+	posix.symlink("../bin/groupdel", "/usr/sbin/groupdel")
+	posix.symlink("../bin/groupmod", "/usr/sbin/groupmod")
+	posix.symlink("../bin/useradd", "/usr/sbin/useradd")
+	posix.symlink("../bin/userdel", "/usr/sbin/userdel")
+	posix.symlink("../bin/usermod", "/usr/sbin/usermod")
+end
 
 %preun
 %systemd_preun shadow.timer
