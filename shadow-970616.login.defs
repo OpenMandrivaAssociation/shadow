@@ -88,8 +88,8 @@ MAIL_DIR	/var/spool/mail
 # The default PATH settings, for superuser and normal users.
 #
 # (they are minimal, add the rest in the shell startup files)
-ENV_SUPATH	PATH=/usr/bin:/usr/sbin:/bin:/sbin:/usr/local/bin:/usr/local/sbin
-ENV_PATH	PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin
+ENV_SUPATH	PATH=/usr/bin:/usr/local/bin:/usr/local/sbin
+ENV_PATH	PATH=/usr/local/bin:/usr/bin:/usr/local/sbin
 
 #
 # Terminal permissions
