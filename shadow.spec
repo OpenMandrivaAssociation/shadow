@@ -3,8 +3,8 @@
 %define devname %mklibname subid -d
 
 # (cg) Certain binaries build in this package are no longer wanted or are now
-# provided by other packages (e.g. coreutils, util-linux or passwd)
-%define unwanted chfn chsh expiry groups login passwd porttime su suauth faillog logoutd nologin chgpasswd getspnam
+# provided by other packages (e.g. coreutils, util-linux)
+%define unwanted chfn chsh expiry groups login porttime su suauth faillog logoutd nologin chgpasswd getspnam
 # (cg) Some localised man pages are provided by the man-pages package rather
 # than here so kill them off
 # (Question: why?? See "urpmf share.*man.*/XXXX\\." where XXXX is one of the below)
@@ -18,7 +18,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Version:	4.11.1
-Release:	7
+Release:	8
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -33,6 +33,7 @@ Source7:	shadow.HOME_MODE.xml
 Source8:	user-group-mod.pamd
 Source9:	chpasswd-newusers.pamd
 Source10:	chage-chfn-chsh.pamd
+Source11:	passwd.pamd
 Source12:	shadow.timer
 Source13:	shadow.service
 
@@ -84,6 +85,8 @@ Conflicts:	msec < 0.47
 Conflicts:	util-linux-ng < 2.13.1-6
 Conflicts:	man-pages-fr < 3.03.0-19
 Provides:	shadow = 2:4.5
+Obsoletes:	passwd < 0.80-6
+Provides:	passwd = %{EVRD}
 
 %description
 The shadow package includes the necessary programs for
@@ -160,6 +163,7 @@ mkdir -p %{buildroot}/etc/pam.d/
 install -m 0600 %{SOURCE8} %{buildroot}/etc/pam.d/user-group-mod
 install -m 0600 %{SOURCE9} %{buildroot}/etc/pam.d/chpasswd-newusers
 install -m 0600 %{SOURCE10} %{buildroot}/etc/pam.d/chage-chfn-chsh
+install -m 0600 %{SOURCE11} %{buildroot}/etc/pam.d/passwd
 
 cd %{buildroot}/etc/pam.d
     for f in chpasswd newusers; do
@@ -258,6 +262,7 @@ end
 %{_sysconfdir}/pam.d/groupadd
 %{_sysconfdir}/pam.d/groupdel
 %{_sysconfdir}/pam.d/groupmod
+%{_sysconfdir}/pam.d/passwd
 %{_bindir}/sg
 %{_sbindir}/*conv
 %attr(2711,root,shadow) %{_bindir}/chage
@@ -271,6 +276,7 @@ end
 %{_sbindir}/user*
 %{_sbindir}/group*
 %{_sbindir}/grpck
+%{_bindir}/passwd
 %{_sbindir}/pwck
 %{_sbindir}/chpasswd
 %{_sbindir}/newusers
