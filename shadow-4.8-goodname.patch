@@ -1,7 +1,7 @@
-diff -up shadow-4.8/libmisc/chkname.c.goodname shadow-4.8/libmisc/chkname.c
---- shadow-4.8/libmisc/chkname.c.goodname	2020-01-13 09:44:41.968507996 +0100
-+++ shadow-4.8/libmisc/chkname.c	2020-01-13 09:46:27.863727732 +0100
-@@ -55,26 +55,44 @@ static bool is_valid_name (const char *n
+diff -up shadow-4.12/libmisc/chkname.c.1~ shadow-4.12/libmisc/chkname.c
+--- shadow-4.12/libmisc/chkname.c.1~	2022-06-19 16:16:48.000000000 +0200
++++ shadow-4.12/libmisc/chkname.c	2022-08-11 20:45:09.556609466 +0200
+@@ -32,26 +32,44 @@ static bool is_valid_name (const char *n
  	}
  
  	/*
@@ -56,12 +56,12 @@ diff -up shadow-4.8/libmisc/chkname.c.goodname shadow-4.8/libmisc/chkname.c
  }
  
  bool is_valid_user_name (const char *name)
-diff -up shadow-4.8/man/groupadd.8.xml.goodname shadow-4.8/man/groupadd.8.xml
---- shadow-4.8/man/groupadd.8.xml.goodname	2019-07-23 17:26:08.000000000 +0200
-+++ shadow-4.8/man/groupadd.8.xml	2020-01-13 09:44:41.968507996 +0100
-@@ -273,10 +273,12 @@
-    <refsect1 id='caveats'>
-      <title>CAVEATS</title>
+diff -up shadow-4.12/man/groupadd.8.xml.1~ shadow-4.12/man/groupadd.8.xml
+--- shadow-4.12/man/groupadd.8.xml.1~	2022-08-11 20:45:09.556609466 +0200
++++ shadow-4.12/man/groupadd.8.xml	2022-08-11 20:46:30.921539604 +0200
+@@ -64,10 +64,12 @@
+       files as needed.
+     </para>
       <para>
 -       Groupnames must start with a lower case letter or an underscore,
 -       followed by lower case letters, digits, underscores, or dashes.
@@ -76,10 +76,10 @@ diff -up shadow-4.8/man/groupadd.8.xml.goodname shadow-4.8/man/groupadd.8.xml
       </para>
       <para>
         Groupnames may only be up to &GROUP_NAME_MAX_LENGTH; characters long.
-diff -up shadow-4.8/man/useradd.8.xml.goodname shadow-4.8/man/useradd.8.xml
---- shadow-4.8/man/useradd.8.xml.goodname	2019-10-05 03:23:58.000000000 +0200
-+++ shadow-4.8/man/useradd.8.xml	2020-01-13 09:44:41.968507996 +0100
-@@ -661,10 +661,14 @@
+diff -up shadow-4.12/man/useradd.8.xml.1~ shadow-4.12/man/useradd.8.xml
+--- shadow-4.12/man/useradd.8.xml.1~	2022-08-09 00:30:40.000000000 +0200
++++ shadow-4.12/man/useradd.8.xml	2022-08-11 20:45:09.556609466 +0200
+@@ -692,10 +692,14 @@
      </para>
  
      <para>

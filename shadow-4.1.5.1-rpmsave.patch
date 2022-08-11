@@ -1,14 +1,15 @@
---- shadow-4.1.5.1/libmisc/copydir.c.rpmsave	2012-02-13 19:16:32.000000000 +0000
-+++ shadow-4.1.5.1/libmisc/copydir.c	2012-07-12 12:35:57.027308382 +0100
-@@ -236,6 +236,7 @@
+diff -up shadow-4.12/libmisc/copydir.c.3~ shadow-4.12/libmisc/copydir.c
+--- shadow-4.12/libmisc/copydir.c.3~	2022-08-11 16:34:20.000000000 +0200
++++ shadow-4.12/libmisc/copydir.c	2022-08-11 20:48:42.906183545 +0200
+@@ -216,6 +216,7 @@ int copy_tree (const char *src_root, con
  	bool set_orig = false;
- 	struct DIRECT *ent;
+ 	struct dirent *ent;
  	DIR *dir;
 +	int len = 0;
  
  	if (copy_root) {
  		struct stat sb;
-@@ -296,6 +297,18 @@
+@@ -276,6 +277,18 @@ int copy_tree (const char *src_root, con
  			char *dst_name;
  			size_t src_len = strlen (ent->d_name) + 2;
  			size_t dst_len = strlen (ent->d_name) + 2;

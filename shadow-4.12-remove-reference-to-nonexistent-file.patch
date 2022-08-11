@@ -1,0 +1,11 @@
+diff -up shadow-4.12/configure.ac.omv~ shadow-4.12/configure.ac
+--- shadow-4.12/configure.ac.omv~	2022-08-11 20:50:57.901752494 +0200
++++ shadow-4.12/configure.ac	2022-08-11 20:51:04.535583922 +0200
+@@ -720,7 +720,6 @@ AC_CONFIG_FILES([
+ 	man/ru/Makefile
+ 	man/sv/Makefile
+ 	man/tr/Makefile
+-	man/uk/Makefile
+ 	man/zh_CN/Makefile
+ 	man/zh_TW/Makefile
+ 	libmisc/Makefile

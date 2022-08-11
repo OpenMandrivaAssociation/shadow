@@ -17,12 +17,12 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.11.1
-Release:	8
+Version:	4.12
+Release:	1
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
-Source0:	https://github.com/shadow-maint/shadow/releases/download/v%{version}/shadow-%{version}.tar.xz
+Source0:	https://github.com/shadow-maint/shadow/releases/download/%{version}/shadow-%{version}.tar.xz
 Source1:	shadow-970616.login.defs
 Source2:	shadow-970616.useradd
 Source3:	adduser.8
@@ -46,6 +46,7 @@ Patch6:		shadow-4.4-avx-owl-crypt_gensalt.patch
 Patch7:		shadow-4.9-libpam-link.patch
 Patch8:		shadow-4.8-long-entry.patch
 Patch9:		shadow-4.6-sysugid-min-limit.patch
+Patch10:	shadow-4.12-remove-reference-to-nonexistent-file.patch
 
 # patches from CLR Linux
 Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch

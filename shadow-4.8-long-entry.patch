@@ -1,7 +1,7 @@
-diff -up shadow-4.8/lib/defines.h.long-entry shadow-4.8/lib/defines.h
---- shadow-4.8/lib/defines.h.long-entry	2020-01-13 10:29:45.288957339 +0100
-+++ shadow-4.8/lib/defines.h	2020-01-13 10:30:47.482902954 +0100
-@@ -388,6 +388,9 @@ extern char *strerror ();
+diff -up shadow-4.12/lib/defines.h.7~ shadow-4.12/lib/defines.h
+--- shadow-4.12/lib/defines.h.7~	2022-08-11 16:34:20.000000000 +0200
++++ shadow-4.12/lib/defines.h	2022-08-11 20:48:57.414814725 +0200
+@@ -351,6 +351,9 @@ extern char *strerror ();
  # endif
  #endif
  
@@ -11,10 +11,10 @@ diff -up shadow-4.8/lib/defines.h.long-entry shadow-4.8/lib/defines.h
  #ifdef HAVE_SECURE_GETENV
  #  define shadow_getenv(name) secure_getenv(name)
  # else
-diff -up shadow-4.8/lib/pwio.c.long-entry shadow-4.8/lib/pwio.c
---- shadow-4.8/lib/pwio.c.long-entry	2019-07-23 17:26:08.000000000 +0200
-+++ shadow-4.8/lib/pwio.c	2020-01-13 10:29:45.288957339 +0100
-@@ -79,7 +79,10 @@ static int passwd_put (const void *ent,
+diff -up shadow-4.12/lib/pwio.c.7~ shadow-4.12/lib/pwio.c
+--- shadow-4.12/lib/pwio.c.7~	2022-06-19 16:16:48.000000000 +0200
++++ shadow-4.12/lib/pwio.c	2022-08-11 20:48:57.415814699 +0200
+@@ -56,7 +56,10 @@ static int passwd_put (const void *ent,
  	    || (pw->pw_gid == (gid_t)-1)
  	    || (valid_field (pw->pw_gecos, ":\n") == -1)
  	    || (valid_field (pw->pw_dir, ":\n") == -1)
@@ -26,19 +26,19 @@ diff -up shadow-4.8/lib/pwio.c.long-entry shadow-4.8/lib/pwio.c
  		return -1;
  	}
  
-diff -up shadow-4.8/lib/sgetpwent.c.long-entry shadow-4.8/lib/sgetpwent.c
---- shadow-4.8/lib/sgetpwent.c.long-entry	2019-10-05 03:23:58.000000000 +0200
-+++ shadow-4.8/lib/sgetpwent.c	2020-01-13 10:29:45.288957339 +0100
-@@ -57,7 +57,7 @@
+diff -up shadow-4.12/lib/sgetpwent.c.7~ shadow-4.12/lib/sgetpwent.c
+--- shadow-4.12/lib/sgetpwent.c.7~	2022-08-09 00:30:40.000000000 +0200
++++ shadow-4.12/lib/sgetpwent.c	2022-08-11 20:49:51.701434872 +0200
+@@ -34,7 +34,7 @@
  struct passwd *sgetpwent (const char *buf)
  {
  	static struct passwd pwent;
 -	static char pwdbuf[1024];
 +	static char pwdbuf[PASSWD_ENTRY_MAX_LENGTH];
- 	register int i;
- 	register char *cp;
+ 	int i;
+ 	char *cp;
  	char *fields[NFIELDS];
-@@ -67,8 +67,10 @@ struct passwd *sgetpwent (const char *bu
+@@ -44,8 +44,10 @@ struct passwd *sgetpwent (const char *bu
  	 * the password structure remain valid.
  	 */
  
@@ -50,10 +50,10 @@ diff -up shadow-4.8/lib/sgetpwent.c.long-entry shadow-4.8/lib/sgetpwent.c
  	strcpy (pwdbuf, buf);
  
  	/*
-diff -up shadow-4.8/lib/sgetspent.c.long-entry shadow-4.8/lib/sgetspent.c
---- shadow-4.8/lib/sgetspent.c.long-entry	2019-07-23 17:26:08.000000000 +0200
-+++ shadow-4.8/lib/sgetspent.c	2020-01-13 10:29:45.289957322 +0100
-@@ -48,7 +48,7 @@
+diff -up shadow-4.12/lib/sgetspent.c.7~ shadow-4.12/lib/sgetspent.c
+--- shadow-4.12/lib/sgetspent.c.7~	2022-06-19 16:16:54.000000000 +0200
++++ shadow-4.12/lib/sgetspent.c	2022-08-11 20:48:57.415814699 +0200
+@@ -25,7 +25,7 @@
   */
  struct spwd *sgetspent (const char *string)
  {
@@ -62,7 +62,7 @@ diff -up shadow-4.8/lib/sgetspent.c.long-entry shadow-4.8/lib/sgetspent.c
  	static struct spwd spwd;
  	char *fields[FIELDS];
  	char *cp;
-@@ -61,6 +61,7 @@ struct spwd *sgetspent (const char *stri
+@@ -37,6 +37,7 @@ struct spwd *sgetspent (const char *stri
  	 */
  
  	if (strlen (string) >= sizeof spwbuf) {
@@ -70,10 +70,10 @@ diff -up shadow-4.8/lib/sgetspent.c.long-entry shadow-4.8/lib/sgetspent.c
  		return 0;	/* fail if too long */
  	}
  	strcpy (spwbuf, string);
-diff -up shadow-4.8/lib/shadowio.c.long-entry shadow-4.8/lib/shadowio.c
---- shadow-4.8/lib/shadowio.c.long-entry	2019-07-23 17:26:08.000000000 +0200
-+++ shadow-4.8/lib/shadowio.c	2020-01-13 10:29:45.289957322 +0100
-@@ -79,7 +79,9 @@ static int shadow_put (const void *ent,
+diff -up shadow-4.12/lib/shadowio.c.7~ shadow-4.12/lib/shadowio.c
+--- shadow-4.12/lib/shadowio.c.7~	2022-06-19 16:16:48.000000000 +0200
++++ shadow-4.12/lib/shadowio.c	2022-08-11 20:48:57.415814699 +0200
+@@ -56,7 +56,9 @@ static int shadow_put (const void *ent,
  
  	if (   (NULL == sp)
  	    || (valid_field (sp->sp_namp, ":\n") == -1)
