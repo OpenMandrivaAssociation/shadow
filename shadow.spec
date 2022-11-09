@@ -17,7 +17,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.12.3
+Version:	4.13
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -37,15 +37,11 @@ Source11:	passwd.pamd
 Source12:	shadow.timer
 Source13:	shadow.service
 
-Patch1:		shadow-4.8-goodname.patch
-Patch3:		https://src.fedoraproject.org/rpms/shadow-utils/raw/rawhide/f/shadow-4.6-move-home.patch
 Patch4:		shadow-4.1.5.1-rpmsave.patch
 Patch5:		shadow-4.9-manfix.patch
 # Needed to support better password encryption
 Patch6:		shadow-4.4-avx-owl-crypt_gensalt.patch
 Patch7:		shadow-4.9-libpam-link.patch
-Patch8:		shadow-4.8-long-entry.patch
-Patch9:		shadow-4.6-sysugid-min-limit.patch
 
 # patches from CLR Linux
 Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
