@@ -53,6 +53,7 @@ BuildRequires:	bison
 BuildRequires:	pkgconfig(libcrypt) >= 4.1.1-2
 BuildRequires:	pkgconfig(libacl)
 BuildRequires:	pkgconfig(libattr)
+BuildRequires:	pkgconfig(libbsd)
 BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(libcap)
 # (tpg) needed for man generation
