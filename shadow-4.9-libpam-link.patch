@@ -1,15 +1,16 @@
-diff -up shadow-4.10/libmisc/Makefile.am.6~ shadow-4.10/libmisc/Makefile.am
---- shadow-4.10/libmisc/Makefile.am.6~	2021-07-25 19:21:42.000000000 +0200
-+++ shadow-4.10/libmisc/Makefile.am	2021-12-21 16:43:53.419165634 +0100
-@@ -77,3 +77,4 @@ if WITH_BTRFS
- libmisc_la_SOURCES += btrfs.c
+diff -up shadow-4.14.0/libmisc/Makefile.am.3~ shadow-4.14.0/libmisc/Makefile.am
+--- shadow-4.14.0/libmisc/Makefile.am.3~	2023-08-16 13:55:40.443139111 +0200
++++ shadow-4.14.0/libmisc/Makefile.am	2023-08-16 13:57:14.840060090 +0200
+@@ -112,3 +112,5 @@ libmisc_la_SOURCES += \
+ 	readpassphrase.h \
+ 	readpassphrase.c
  endif
- 
++
 +libmisc_la_LIBADD = -lpam
-diff -up shadow-4.10/libsubid/Makefile.am.6~ shadow-4.10/libsubid/Makefile.am
---- shadow-4.10/libsubid/Makefile.am.6~	2021-12-21 16:43:53.419165634 +0100
-+++ shadow-4.10/libsubid/Makefile.am	2021-12-21 16:44:25.906909913 +0100
-@@ -26,7 +26,7 @@ MISCLIBS = \
+diff -up shadow-4.14.0/libsubid/Makefile.am.3~ shadow-4.14.0/libsubid/Makefile.am
+--- shadow-4.14.0/libsubid/Makefile.am.3~	2023-03-13 21:58:56.000000000 +0100
++++ shadow-4.14.0/libsubid/Makefile.am	2023-08-16 13:55:40.443139111 +0200
+@@ -22,7 +22,7 @@ MISCLIBS = \
  libsubid_la_LIBADD = \
  	$(top_builddir)/lib/libshadow.la \
  	$(top_builddir)/libmisc/libmisc.la \

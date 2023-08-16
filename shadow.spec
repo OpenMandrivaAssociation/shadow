@@ -17,8 +17,8 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.13
-Release:	2
+Version:	4.14.0
+Release:	1
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -39,8 +39,6 @@ Source13:	shadow.service
 
 Patch4:		shadow-4.1.5.1-rpmsave.patch
 Patch5:		shadow-4.9-manfix.patch
-# Needed to support better password encryption
-Patch6:		shadow-4.4-avx-owl-crypt_gensalt.patch
 Patch7:		shadow-4.9-libpam-link.patch
 
 # patches from CLR Linux
@@ -125,17 +123,18 @@ autoreconf -v -f --install
 %build
 CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR -fPIC" \
 %configure \
-    --without-tcb \
-    --enable-man \
-    --enable-account-tools-setuid \
-    --with-sha-crypt \
-    --with-bcrypt \
-    --with-yescrypt \
-    --with-libpam \
-    --without-libcrack \
-    --without-su \
-    --without-audit \
-    --with-group-name-max-length=32
+	--without-tcb \
+	--enable-man \
+	--enable-account-tools-setuid \
+	--enable-lastlog \
+	--with-sha-crypt \
+	--with-bcrypt \
+	--with-yescrypt \
+	--with-libpam \
+	--without-libcrack \
+	--without-su \
+	--without-audit \
+	--with-group-name-max-length=32
 
 %make_build
 
@@ -162,16 +161,16 @@ install -m 0600 %{SOURCE10} %{buildroot}/etc/pam.d/chage-chfn-chsh
 install -m 0600 %{SOURCE11} %{buildroot}/etc/pam.d/passwd
 
 cd %{buildroot}/etc/pam.d
-    for f in chpasswd newusers; do
-	ln -s chpasswd-newusers ${f}
-    done
-    for f in chage; do
-	# chfn and chsh are built without pam support in util-linux-ng
-	ln -s chage-chfn-chsh ${f}
-    done
-    for f in groupadd groupdel groupmod useradd userdel usermod; do
-	ln -s user-group-mod ${f}
-    done
+	for f in chpasswd newusers; do
+		ln -s chpasswd-newusers ${f}
+	done
+	for f in chage; do
+		# chfn and chsh are built without pam support in util-linux-ng
+		ln -s chage-chfn-chsh ${f}
+	done
+	for f in groupadd groupdel groupmod useradd userdel usermod; do
+		ln -s user-group-mod ${f}
+	done
 cd -
 
 %if "%{_sbindir}" != "%{_prefix}/sbin"
@@ -181,15 +180,15 @@ rmdir %{buildroot}%{_prefix}/sbin
 
 # (cg) Remove unwanted binaries (and their corresponding man pages)
 for unwanted in %{unwanted}; do
-    rm -f %{buildroot}%{_bindir}/$unwanted
-    rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
+	rm -f %{buildroot}%{_bindir}/$unwanted
+	rm -f %{buildroot}%{_mandir}/{,{??,??_??}/}man*/$unwanted.[[:digit:]]*
 done
 
 rm -f %{buildroot}%{_mandir}/man1/login.1*
 
 # (cg) Remove man pages provided by the "man-pages" package...
 for unwanted in %{unwanted_i18n_mans}; do
-    rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.[[:digit:]]*
+	rm -f %{buildroot}%{_mandir}/{??,??_??}/man*/$unwanted.[[:digit:]]*
 done
 
 # (cg) Find all localised man pages
@@ -217,28 +216,28 @@ end
 # (tpg) set up "USE_TCB no" to fix bugs
 # https://issues.openmandriva.org/show_bug.cgi?id=1375
 # https://issues.openmandriva.org/show_bug.cgi?id=1370
-    if grep -Plqi '^CRYPT_PREFIX.*' %{_sysconfdir}/login.defs ; then
+if grep -Plqi '^CRYPT_PREFIX.*' %{_sysconfdir}/login.defs ; then
 	sed -i 's/^CRYPT_PREFIX.*/ENCRYPT_METHOD SHA512/g' %{_sysconfdir}/login.defs ||:
-    fi
+fi
 
-    if grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
+if grep -Plqi '^USE_TCB.*yes.*' %{_sysconfdir}/login.defs ; then
 	sed -i -e 's/^USE_TCB.*/#USE_TCB no/g' %{_sysconfdir}/login.defs ||:
-    fi
+fi
 
-    if grep -Plqi '^TCB_AUTH_GROUP.*' %{_sysconfdir}/login.defs ; then
+if grep -Plqi '^TCB_AUTH_GROUP.*' %{_sysconfdir}/login.defs ; then
 	sed -i -e 's/^TCB_AUTH_GROUP.*/#TCB_AUTH_GROUP no/g' %{_sysconfdir}/login.defs ||:
-    fi
+fi
 
-    if grep -Plqi '^TCB_SYMLINKS.*' %{_sysconfdir}/login.defs ; then
+if grep -Plqi '^TCB_SYMLINKS.*' %{_sysconfdir}/login.defs ; then
 	sed -i -e 's/^TCB_SYMLINKS.*/#TCB_SYMLINKS no/g' %{_sysconfdir}/login.defs ||:
-    fi
+fi
 
-    for i in gshadow shadow passwd group; do
+for i in gshadow shadow passwd group; do
 	[ -e /etc/$i.lock ] && rm -f /etc/$i.lock ||: ;
-    done
+done
 # (tpg) run convert tools
-    %{_sbindir}/grpconv ||:
-    %{_sbindir}/pwconv ||:
+%{_sbindir}/grpconv ||:
+%{_sbindir}/pwconv ||:
 
 %preun
 %systemd_preun shadow.timer

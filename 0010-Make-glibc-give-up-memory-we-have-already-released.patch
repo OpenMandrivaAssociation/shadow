@@ -1,24 +1,15 @@
-From fb425f6452f56e261d85c98fb1c50afe7404831c Mon Sep 17 00:00:00 2001
-From: William Douglas <william.douglas@intel.com>
-Date: Tue, 3 Apr 2018 19:57:17 +0000
-Subject: [PATCH 10/10] Make glibc give up memory we have already released
-
----
- src/login.c | 3 +++
- 1 file changed, 3 insertions(+)
-diff -Naur shadow-4.6/src/login.c shadow-4.6.tpg/src/login.c
---- shadow-4.6/src/login.c	2018-04-29 16:42:37.000000000 +0000
-+++ shadow-4.6.tpg/src/login.c	2018-04-30 20:13:53.130971073 +0000
-@@ -45,6 +45,8 @@
+diff -up shadow-4.14.0/src/login.c.4~ shadow-4.14.0/src/login.c
+--- shadow-4.14.0/src/login.c.4~	2023-08-10 16:30:00.000000000 +0200
++++ shadow-4.14.0/src/login.c	2023-08-16 14:47:21.961716040 +0200
+@@ -24,6 +24,7 @@
  #include <sys/stat.h>
  #include <sys/ioctl.h>
  #include <assert.h>
 +#include <malloc.h>
-+
+ 
+ #include "alloc.h"
  #include "defines.h"
- #include "faillog.h"
- #include "failure.h"
-@@ -785,6 +787,7 @@
+@@ -744,6 +745,7 @@ int main (int argc, char **argv)
  			}
  #endif
  
@@ -26,6 +17,3 @@ diff -Naur shadow-4.6/src/login.c shadow-4.6.tpg/src/login.c
  			retcode = pam_authenticate (pamh, 0);
  
  			get_pam_user (&pam_user);
-
---
-2.16.2
