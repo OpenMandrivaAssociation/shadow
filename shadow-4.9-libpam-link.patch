@@ -1,19 +1,21 @@
-diff -up shadow-4.14.0/libmisc/Makefile.am.3~ shadow-4.14.0/libmisc/Makefile.am
---- shadow-4.14.0/libmisc/Makefile.am.3~	2023-08-16 13:55:40.443139111 +0200
-+++ shadow-4.14.0/libmisc/Makefile.am	2023-08-16 13:57:14.840060090 +0200
-@@ -112,3 +112,5 @@ libmisc_la_SOURCES += \
- 	readpassphrase.h \
- 	readpassphrase.c
+diff -up shadow-4.14.1/lib/Makefile.am.3~ shadow-4.14.1/lib/Makefile.am
+--- shadow-4.14.1/lib/Makefile.am.3~	2023-10-05 23:38:24.259303507 +0200
++++ shadow-4.14.1/lib/Makefile.am	2023-10-05 23:39:29.748091998 +0200
+@@ -7,6 +7,7 @@ noinst_LTLIBRARIES = libshadow.la
+ 
+ if USE_PAM
+ LIBCRYPT_PAM = $(LIBCRYPT)
++libshadow_la_LIBADD = -lpam
+ else
+ LIBCRYPT_PAM =
  endif
-+
-+libmisc_la_LIBADD = -lpam
-diff -up shadow-4.14.0/libsubid/Makefile.am.3~ shadow-4.14.0/libsubid/Makefile.am
---- shadow-4.14.0/libsubid/Makefile.am.3~	2023-03-13 21:58:56.000000000 +0100
-+++ shadow-4.14.0/libsubid/Makefile.am	2023-08-16 13:55:40.443139111 +0200
-@@ -22,7 +22,7 @@ MISCLIBS = \
+diff -up shadow-4.14.1/libsubid/Makefile.am.3~ shadow-4.14.1/libsubid/Makefile.am
+--- shadow-4.14.1/libsubid/Makefile.am.3~	2023-10-05 23:38:24.260303519 +0200
++++ shadow-4.14.1/libsubid/Makefile.am	2023-10-05 23:39:51.481350293 +0200
+@@ -21,7 +21,7 @@ MISCLIBS = \
+ 
  libsubid_la_LIBADD = \
  	$(top_builddir)/lib/libshadow.la \
- 	$(top_builddir)/libmisc/libmisc.la \
 -	$(MISCLIBS) -ldl
 +	$(MISCLIBS) -ldl -lpam -lpam_misc
  

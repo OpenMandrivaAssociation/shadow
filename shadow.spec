@@ -17,7 +17,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.14.0
+Version:	4.14.1
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -116,7 +116,7 @@ Development files for shadow-utils-subid.
 cp -a %{SOURCE7} man/login.defs.d/HOME_MODE.xml
 
 # Force regeneration of getdate.c
-rm libmisc/getdate.c
+rm lib/getdate.c
 
 # (tpg) needed for autofoo
 autoreconf -v -f --install
