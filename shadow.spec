@@ -18,7 +18,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Version:	4.14.2
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
