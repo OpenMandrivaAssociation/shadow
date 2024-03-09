@@ -1,7 +1,7 @@
-diff -up shadow-4.8.1/man/ja/man5/login.defs.5.manfix shadow-4.8.1/man/ja/man5/login.defs.5
---- shadow-4.8.1/man/ja/man5/login.defs.5.manfix	2019-07-23 17:26:08.000000000 +0200
-+++ shadow-4.8.1/man/ja/man5/login.defs.5	2020-03-17 15:34:48.750414984 +0100
-@@ -147,10 +147,6 @@ 以下の参照表は、
+diff -up shadow-4.15.0/man/ja/man5/login.defs.5.1~ shadow-4.15.0/man/ja/man5/login.defs.5
+--- shadow-4.15.0/man/ja/man5/login.defs.5.1~	2023-03-13 21:58:56.000000000 +0100
++++ shadow-4.15.0/man/ja/man5/login.defs.5	2024-03-09 02:17:30.923483002 +0100
+@@ -123,10 +123,6 @@ 以下の参照表は、
  shadow パスワード機能のどのプログラムが
  どのパラメータを使用するかを示したものである。
  .na
@@ -12,10 +12,10 @@ diff -up shadow-4.8.1/man/ja/man5/login.defs.5.manfix shadow-4.8.1/man/ja/man5/l
  .IP groupadd 12
  GID_MAX GID_MIN
  .IP newusers 12
-diff -up shadow-4.8.1/man/login.defs.5.xml.manfix shadow-4.8.1/man/login.defs.5.xml
---- shadow-4.8.1/man/login.defs.5.xml.manfix	2020-01-17 16:47:56.000000000 +0100
-+++ shadow-4.8.1/man/login.defs.5.xml	2020-03-17 15:34:48.750414984 +0100
-@@ -164,6 +164,17 @@
+diff -up shadow-4.15.0/man/login.defs.5.xml.1~ shadow-4.15.0/man/login.defs.5.xml
+--- shadow-4.15.0/man/login.defs.5.xml.1~	2024-03-01 02:50:52.000000000 +0100
++++ shadow-4.15.0/man/login.defs.5.xml	2024-03-09 02:19:28.935987276 +0100
+@@ -144,6 +144,17 @@
        long numeric parameters is machine-dependent.
      </para>
  
@@ -33,7 +33,7 @@ diff -up shadow-4.8.1/man/login.defs.5.xml.manfix shadow-4.8.1/man/login.defs.5.
      <para>The following configuration items are provided:</para>
  
      <variablelist remap='IP'>
-@@ -256,16 +267,6 @@
+@@ -240,16 +251,6 @@
  	</listitem>
        </varlistentry>
        <varlistentry>
@@ -50,7 +50,7 @@ diff -up shadow-4.8.1/man/login.defs.5.xml.manfix shadow-4.8.1/man/login.defs.5.
  	<term>chgpasswd</term>
  	<listitem>
  	  <para>
-@@ -286,14 +287,6 @@
+@@ -276,14 +277,6 @@
  	  </para>
  	</listitem>
        </varlistentry>
@@ -65,7 +65,7 @@ diff -up shadow-4.8.1/man/login.defs.5.xml.manfix shadow-4.8.1/man/login.defs.5.
        <!-- expiry: no variables (CONSOLE_GROUPS linked, but not used) -->
        <!-- faillog: no variables -->
        <varlistentry>
-@@ -359,34 +352,6 @@
+@@ -352,34 +345,6 @@
  	  <para>LASTLOG_UID_MAX</para>
  	</listitem>
        </varlistentry>
@@ -100,7 +100,7 @@ diff -up shadow-4.8.1/man/login.defs.5.xml.manfix shadow-4.8.1/man/login.defs.5.
        <!-- logoutd: no variables -->
        <varlistentry>
  	<term>newgrp / sg</term>
-@@ -415,17 +380,6 @@
+@@ -411,20 +376,6 @@
  	</listitem>
        </varlistentry>
        <!-- nologin: no variables -->
@@ -108,17 +108,20 @@ diff -up shadow-4.8.1/man/login.defs.5.xml.manfix shadow-4.8.1/man/login.defs.5.
 -	<term>passwd</term>
 -	<listitem>
 -	  <para>
+-	    <phrase condition="bcrypt">BCRYPT_MAX_ROUNDS
+-	    BCRYPT_MIN_ROUNDS</phrase>
 -	    ENCRYPT_METHOD MD5_CRYPT_ENAB OBSCURE_CHECKS_ENAB
 -	    PASS_ALWAYS_WARN PASS_CHANGE_TRIES PASS_MAX_LEN PASS_MIN_LEN
 -	    <phrase condition="sha_crypt">SHA_CRYPT_MAX_ROUNDS
 -	    SHA_CRYPT_MIN_ROUNDS</phrase>
+-	    <phrase condition="yescrypt">YESCRYPT_COST_FACTOR</phrase>
 -	  </para>
 -	</listitem>
 -      </varlistentry>
        <varlistentry>
  	<term>pwck</term>
  	<listitem>
-@@ -452,32 +406,6 @@
+@@ -451,32 +402,6 @@
  	  </para>
  	</listitem>
        </varlistentry>
@@ -139,12 +142,12 @@ diff -up shadow-4.8.1/man/login.defs.5.xml.manfix shadow-4.8.1/man/login.defs.5.
 -	  </para>
 -	</listitem>
 -      </varlistentry>
--      <varlistentry>
+-      <varlistentry condition="no_pam">
 -	<term>sulogin</term>
 -	<listitem>
 -	  <para>
 -	    ENV_HZ
--	    <phrase condition="no_pam">ENV_TZ</phrase>
+-	    ENV_TZ
 -	  </para>
 -	</listitem>
 -      </varlistentry>

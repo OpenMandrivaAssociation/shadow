@@ -17,7 +17,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.14.6
+Version:	4.15.0
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -37,7 +37,6 @@ Source11:	passwd.pamd
 Source12:	shadow.timer
 Source13:	shadow.service
 
-Patch4:		shadow-4.1.5.1-rpmsave.patch
 Patch5:		shadow-4.9-manfix.patch
 Patch7:		shadow-4.9-libpam-link.patch
 

@@ -1,6 +1,6 @@
-diff -up shadow-4.14.0/src/login.c.4~ shadow-4.14.0/src/login.c
---- shadow-4.14.0/src/login.c.4~	2023-08-10 16:30:00.000000000 +0200
-+++ shadow-4.14.0/src/login.c	2023-08-16 14:47:21.961716040 +0200
+diff -up shadow-4.15.0/src/login.c.3~ shadow-4.15.0/src/login.c
+--- shadow-4.15.0/src/login.c.3~	2024-03-08 22:27:04.000000000 +0100
++++ shadow-4.15.0/src/login.c	2024-03-09 02:20:17.568202890 +0100
 @@ -24,6 +24,7 @@
  #include <sys/stat.h>
  #include <sys/ioctl.h>
@@ -8,8 +8,8 @@ diff -up shadow-4.14.0/src/login.c.4~ shadow-4.14.0/src/login.c
 +#include <malloc.h>
  
  #include "alloc.h"
- #include "defines.h"
-@@ -744,6 +745,7 @@ int main (int argc, char **argv)
+ #include "attr.h"
+@@ -739,6 +740,7 @@ int main (int argc, char **argv)
  			}
  #endif
  
