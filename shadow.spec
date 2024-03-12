@@ -18,7 +18,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Version:	4.15.0
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -69,6 +69,8 @@ Requires:	setup >= 2.8.8-13
 Requires(post):	setup >= 2.8.8-13
 Requires:	pam_userpass
 Requires:	filesystem
+# adduser and friends establish their credentials with pam
+Requires:	pam
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
 %rename	adduser
