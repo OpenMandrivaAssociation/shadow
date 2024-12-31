@@ -1,5 +1,6 @@
-%define major 4
-%define libname %mklibname subid %{major}
+%define major 5
+%define oldlibname %mklibname subid 4
+%define libname %mklibname subid
 %define devname %mklibname subid -d
 
 # (cg) Certain binaries build in this package are no longer wanted or are now
@@ -17,7 +18,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.15.3
+Version:	4.17.1
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -99,6 +100,8 @@ programs for managing user and group accounts.
 Summary:	A library to manage subordinate uid and gid ranges
 License:	BSD and GPLv2+
 Group:		System/Libraries
+# Renamed before 6.0 2024/12/31
+%rename %{oldlibname}
 
 %description -n %{libname}
 Utility library that provides a way to manage subid ranges.
