@@ -18,7 +18,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.17.3
+Version:	4.17.4
 Release:	1
 License:	BSD
 Group:		System/Base
