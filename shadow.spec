@@ -60,6 +60,7 @@ BuildRequires:	pkgconfig(libattr)
 BuildRequires:	pkgconfig(libbsd)
 BuildRequires:	pkgconfig(libtirpc)
 BuildRequires:	pkgconfig(libcap)
+BuildRequires:	pkgconfig(libsystemd)
 # (tpg) needed for man generation
 BuildRequires:	xsltproc
 BuildRequires:	itstool
