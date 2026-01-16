@@ -19,7 +19,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Version:	4.19.0
-Release:	1
+Release:	2
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -79,6 +79,11 @@ Requires:	filesystem
 Requires:	pam
 Provides:	/usr/sbin/useradd
 Provides:	/usr/sbin/groupadd
+# Not strictly true, but we want to make sure that the
+# pam modules are definitely there by the time something
+# (e.g. systemd's sysusers files) uses groupadd, usermod
+# and friends
+Requires(pre):	pam
 %rename	adduser
 %rename	newgrp
 %rename	shadow-utils
