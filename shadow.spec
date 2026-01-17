@@ -19,7 +19,7 @@
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
 Version:	4.19.0
-Release:	2
+Release:	3
 License:	BSD
 Group:		System/Base
 URL:		https://github.com/shadow-maint/shadow
@@ -40,6 +40,8 @@ Source13:	shadow.service
 
 Patch5:		shadow-4.9-manfix.patch
 Patch7:		shadow-4.9-libpam-link.patch
+# https://github.com/shadow-maint/shadow/issues/1512
+Patch8:		shadow-no-pam-in-chroot.patch
 
 # patches originally from CLR Linux
 Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
@@ -48,7 +50,7 @@ Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
+BuildRequires:	slibtool
 BuildRequires:	make
 BuildRequires:	systemd-rpm-macros
 BuildRequires:	gettext-devel
@@ -129,8 +131,6 @@ Development files for shadow-utils-subid.
 
 cp -a %{SOURCE7} man/login.defs.d/HOME_MODE.xml
 
-# (tpg) needed for autofoo; FIXME presently not compatible with slibtool
-export LIBTOOLIZE=libtoolize
 autoreconf -v -f --install
 
 %build

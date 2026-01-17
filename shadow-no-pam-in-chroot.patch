@@ -1,0 +1,354 @@
+diff -up shadow-4.19.0/src/groupadd.c.omv~ shadow-4.19.0/src/groupadd.c
+--- shadow-4.19.0/src/groupadd.c.omv~	2026-01-16 21:02:23.526893446 +0100
++++ shadow-4.19.0/src/groupadd.c	2026-01-17 21:25:23.610252723 +0100
+@@ -634,7 +634,8 @@ int main (int argc, char **argv)
+ 	 */
+ 	process_flags (argc, argv, &flags);
+ 
+-	check_perms ();
++	if(!flags.chroot)
++		check_perms ();
+ 
+ 	if (run_parts ("/etc/shadow-maint/groupadd-pre.d", group_name,
+ 			Prog)) {
+diff -up shadow-4.19.0/src/groupdel.c.omv~ shadow-4.19.0/src/groupdel.c
+--- shadow-4.19.0/src/groupdel.c.omv~	2026-01-17 21:32:38.134581544 +0100
++++ shadow-4.19.0/src/groupdel.c	2026-01-17 21:33:01.741440961 +0100
+@@ -396,37 +396,39 @@ int main (int argc, char **argv)
+ 
+ #ifdef ACCT_TOOLS_SETUID
+ #ifdef USE_PAM
+-	{
+-		struct passwd *pampw;
+-		pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
+-		if (pampw == NULL) {
+-			fprintf (stderr,
+-			         _("%s: Cannot determine your user name.\n"),
+-			         Prog);
+-			fail_exit (1);
+-		}
++	if(!flags.chroot) {
++		{
++			struct passwd *pampw;
++			pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
++			if (pampw == NULL) {
++				fprintf (stderr,
++					 _("%s: Cannot determine your user name.\n"),
++					 Prog);
++				fail_exit (1);
++			}
+ 
+-		retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
+-	}
++			retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_authenticate (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_authenticate (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_acct_mgmt (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_acct_mgmt (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS != retval) {
+-		fprintf (stderr, _("%s: PAM: %s\n"),
+-		         Prog, pam_strerror (pamh, retval));
+-		SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
+-		if (NULL != pamh) {
+-			(void) pam_end (pamh, retval);
++		if (PAM_SUCCESS != retval) {
++			fprintf (stderr, _("%s: PAM: %s\n"),
++				 Prog, pam_strerror (pamh, retval));
++			SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
++			if (NULL != pamh) {
++				(void) pam_end (pamh, retval);
++			}
++			fail_exit (1);
+ 		}
+-		fail_exit (1);
++		(void) pam_end (pamh, retval);
+ 	}
+-	(void) pam_end (pamh, retval);
+ #endif				/* USE_PAM */
+ #endif				/* ACCT_TOOLS_SETUID */
+ 
+diff -up shadow-4.19.0/src/groupmod.c.omv~ shadow-4.19.0/src/groupmod.c
+--- shadow-4.19.0/src/groupmod.c.omv~	2026-01-17 21:27:50.734916579 +0100
++++ shadow-4.19.0/src/groupmod.c	2026-01-17 21:28:21.059837296 +0100
+@@ -817,37 +817,39 @@ int main (int argc, char **argv)
+ 
+ #ifdef ACCT_TOOLS_SETUID
+ #ifdef USE_PAM
+-	{
+-		struct passwd *pampw;
+-		pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
+-		if (NULL == pampw) {
+-			fprintf (stderr,
+-			         _("%s: Cannot determine your user name.\n"),
+-			         Prog);
+-			exit (E_PAM_USERNAME);
+-		}
++	if(!flags.chroot) {
++		{
++			struct passwd *pampw;
++			pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
++			if (NULL == pampw) {
++				fprintf (stderr,
++					 _("%s: Cannot determine your user name.\n"),
++					 Prog);
++				exit (E_PAM_USERNAME);
++			}
+ 
+-		retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
+-	}
++			retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_authenticate (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_authenticate (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_acct_mgmt (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_acct_mgmt (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS != retval) {
+-		fprintf (stderr, _("%s: PAM: %s\n"),
+-		         Prog, pam_strerror (pamh, retval));
+-		SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
+-		if (NULL != pamh) {
+-			(void) pam_end (pamh, retval);
++		if (PAM_SUCCESS != retval) {
++			fprintf (stderr, _("%s: PAM: %s\n"),
++				 Prog, pam_strerror (pamh, retval));
++			SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
++			if (NULL != pamh) {
++				(void) pam_end (pamh, retval);
++			}
++			exit (E_PAM_ERROR);
+ 		}
+-		exit (E_PAM_ERROR);
++		(void) pam_end (pamh, retval);
+ 	}
+-	(void) pam_end (pamh, retval);
+ #endif				/* USE_PAM */
+ #endif				/* ACCT_TOOLS_SETUID */
+ 
+diff -up shadow-4.19.0/src/newgrp.c.omv~ shadow-4.19.0/src/newgrp.c
+diff -up shadow-4.19.0/src/useradd.c.omv~ shadow-4.19.0/src/useradd.c
+--- shadow-4.19.0/src/useradd.c.omv~	2026-01-17 21:20:06.678980745 +0100
++++ shadow-4.19.0/src/useradd.c	2026-01-17 21:24:05.459241508 +0100
+@@ -2502,37 +2502,39 @@ int main (int argc, char **argv)
+ 
+ #ifdef ACCT_TOOLS_SETUID
+ #ifdef USE_PAM
+-	{
+-		struct passwd *pampw;
+-		pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
+-		if (pampw == NULL && getuid ()) {
+-			fprintf (stderr,
+-			         _("%s: Cannot determine your user name.\n"),
+-			         Prog);
+-			fail_exit (1, process_selinux);
+-		}
++	if (!flags.chroot) {
++		{
++			struct passwd *pampw;
++			pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
++			if (pampw == NULL && getuid ()) {
++				fprintf (stderr,
++					 _("%s: Cannot determine your user name.\n"),
++					 Prog);
++				fail_exit (1, process_selinux);
++			}
+ 
+-		retval = pam_start (Prog, pampw?pampw->pw_name:"root", &conv, &pamh);
+-	}
++			retval = pam_start (Prog, pampw?pampw->pw_name:"root", &conv, &pamh);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_authenticate (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_authenticate (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_acct_mgmt (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_acct_mgmt (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS != retval) {
+-		fprintf (stderr, _("%s: PAM: %s\n"),
+-		         Prog, pam_strerror (pamh, retval));
+-		SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
+-		if (NULL != pamh) {
+-			(void) pam_end (pamh, retval);
++		if (PAM_SUCCESS != retval) {
++			fprintf (stderr, _("%s: PAM: %s\n"),
++				 Prog, pam_strerror (pamh, retval));
++			SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
++			if (NULL != pamh) {
++				(void) pam_end (pamh, retval);
++			}
++			fail_exit (1, process_selinux);
+ 		}
+-		fail_exit (1, process_selinux);
++		(void) pam_end (pamh, retval);
+ 	}
+-	(void) pam_end (pamh, retval);
+ #endif				/* USE_PAM */
+ #endif				/* ACCT_TOOLS_SETUID */
+ 
+diff -up shadow-4.19.0/src/userdel.c.omv~ shadow-4.19.0/src/userdel.c
+--- shadow-4.19.0/src/userdel.c.omv~	2026-01-17 21:27:22.667294200 +0100
++++ shadow-4.19.0/src/userdel.c	2026-01-17 21:27:44.296563234 +0100
+@@ -1003,37 +1003,39 @@ int main (int argc, char **argv)
+ 
+ #ifdef ACCT_TOOLS_SETUID
+ #ifdef USE_PAM
+-	{
+-		struct passwd *pampw;
+-		pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
+-		if (pampw == NULL) {
+-			fprintf (stderr,
+-			         _("%s: Cannot determine your user name.\n"),
+-			         Prog);
+-			exit (E_PW_UPDATE);
+-		}
++	if(!flags.chroot) {
++		{
++			struct passwd *pampw;
++			pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
++			if (pampw == NULL) {
++				fprintf (stderr,
++					 _("%s: Cannot determine your user name.\n"),
++					 Prog);
++				exit (E_PW_UPDATE);
++			}
+ 
+-		retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
+-	}
++			retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_authenticate (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_authenticate (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_acct_mgmt (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_acct_mgmt (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS != retval) {
+-		fprintf (stderr, _("%s: PAM: %s\n"),
+-		         Prog, pam_strerror (pamh, retval));
+-		SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
+-		if (NULL != pamh) {
+-			(void) pam_end (pamh, retval);
++		if (PAM_SUCCESS != retval) {
++			fprintf (stderr, _("%s: PAM: %s\n"),
++				 Prog, pam_strerror (pamh, retval));
++			SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
++			if (NULL != pamh) {
++				(void) pam_end (pamh, retval);
++			}
++			exit (E_PW_UPDATE);
+ 		}
+-		exit (E_PW_UPDATE);
++		(void) pam_end (pamh, retval);
+ 	}
+-	(void) pam_end (pamh, retval);
+ #endif				/* USE_PAM */
+ #endif				/* ACCT_TOOLS_SETUID */
+ 
+diff -up shadow-4.19.0/src/usermod.c.omv~ shadow-4.19.0/src/usermod.c
+--- shadow-4.19.0/src/usermod.c.omv~	2026-01-16 21:03:33.450980146 +0100
++++ shadow-4.19.0/src/usermod.c	2026-01-17 21:26:27.013563763 +0100
+@@ -2184,37 +2184,39 @@ int main (int argc, char **argv)
+ 
+ #ifdef ACCT_TOOLS_SETUID
+ #ifdef USE_PAM
+-	{
+-		struct passwd *pampw;
+-		pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
+-		if (pampw == NULL) {
+-			fprintf (stderr,
+-			         _("%s: Cannot determine your user name.\n"),
+-			         Prog);
+-			exit (1);
+-		}
++	if(!flags.chroot) {
++		{
++			struct passwd *pampw;
++			pampw = getpwuid (getuid ()); /* local, no need for xgetpwuid */
++			if (pampw == NULL) {
++				fprintf (stderr,
++					 _("%s: Cannot determine your user name.\n"),
++					 Prog);
++				exit (1);
++			}
+ 
+-		retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
+-	}
++			retval = pam_start (Prog, pampw->pw_name, &conv, &pamh);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_authenticate (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_authenticate (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS == retval) {
+-		retval = pam_acct_mgmt (pamh, 0);
+-	}
++		if (PAM_SUCCESS == retval) {
++			retval = pam_acct_mgmt (pamh, 0);
++		}
+ 
+-	if (PAM_SUCCESS != retval) {
+-		fprintf (stderr, _("%s: PAM: %s\n"),
+-		         Prog, pam_strerror (pamh, retval));
+-		SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
+-		if (NULL != pamh) {
+-			(void) pam_end (pamh, retval);
++		if (PAM_SUCCESS != retval) {
++			fprintf (stderr, _("%s: PAM: %s\n"),
++				 Prog, pam_strerror (pamh, retval));
++			SYSLOG((LOG_ERR, "%s", pam_strerror (pamh, retval)));
++			if (NULL != pamh) {
++				(void) pam_end (pamh, retval);
++			}
++			exit (1);
+ 		}
+-		exit (1);
++		(void) pam_end (pamh, retval);
+ 	}
+-	(void) pam_end (pamh, retval);
+ #endif				/* USE_PAM */
+ #endif				/* ACCT_TOOLS_SETUID */
+ 
