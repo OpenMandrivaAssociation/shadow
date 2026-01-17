@@ -51,6 +51,7 @@ Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	slibtool
+BuildRequires:	libtool-base
 BuildRequires:	make
 BuildRequires:	systemd-rpm-macros
 BuildRequires:	gettext-devel
