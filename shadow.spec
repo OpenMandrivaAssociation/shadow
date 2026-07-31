@@ -18,7 +18,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.19.3
+Version:	4.20.0
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -38,13 +38,13 @@ Source11:	passwd.pamd
 Source12:	shadow.timer
 Source13:	shadow.service
 
-Patch5:		shadow-4.9-manfix.patch
-Patch7:		shadow-4.9-libpam-link.patch
+# dropped (no longer applies): Patch5:		shadow-4.9-manfix.patch
+# dropped (no longer applies): Patch7:		shadow-4.9-libpam-link.patch
 # https://github.com/shadow-maint/shadow/issues/1512
-Patch8:		shadow-no-pam-in-chroot.patch
+# dropped (no longer applies): Patch8:		shadow-no-pam-in-chroot.patch
 
 # patches originally from CLR Linux
-Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
+# dropped (no longer applies): Patch20:	0010-Make-glibc-give-up-memory-we-have-already-released.patch
 
 # (tpg) upstream patches
 
