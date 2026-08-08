@@ -1,4 +1,4 @@
-%define major 5
+%define major 6
 %define oldlibname %mklibname subid 4
 %define libname %mklibname subid
 %define devname %mklibname subid -d
@@ -18,7 +18,7 @@
 
 Summary:	Utilities for managing shadow password files and user/group accounts
 Name:		shadow
-Version:	4.20.0
+Version:	4.20.2
 Release:	1
 License:	BSD
 Group:		System/Base
@@ -51,7 +51,6 @@ Source13:	shadow.service
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	slibtool
-BuildRequires:	libtool-base
 BuildRequires:	make
 BuildRequires:	systemd-rpm-macros
 BuildRequires:	gettext-devel
@@ -132,6 +131,7 @@ Development files for shadow-utils-subid.
 
 cp -a %{SOURCE7} man/login.defs.d/HOME_MODE.xml
 
+export LIBTOOLIZE=slibtoolize
 autoreconf -v -f --install
 
 %build
@@ -139,13 +139,10 @@ CFLAGS="%{optflags} -DEXTRA_CHECK_HOME_DIR -fPIC" \
 %configure \
 	--without-tcb \
 	--enable-man \
-	--enable-account-tools-setuid \
 	--enable-lastlog \
-	--with-sha-crypt \
 	--with-bcrypt \
 	--with-yescrypt \
 	--with-libpam \
-	--without-libcrack \
 	--without-su \
 	--without-audit \
 	--with-group-name-max-length=32
@@ -252,9 +249,6 @@ done
 # (tpg) run convert tools
 %{_sbindir}/grpconv ||:
 %{_sbindir}/pwconv ||:
-
-%preun
-%systemd_preun shadow.timer
 
 %files -f shadow.lang
 %attr(0640,root,shadow) %config(noreplace) %{_sysconfdir}/login.defs
